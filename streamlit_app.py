@@ -69,16 +69,28 @@ st.markdown("""
     html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; color: var(--foreground); }
     .stApp { background: var(--bg); }
 
-    /* We render our own page title below, so hide Streamlit's built-in
-       toolbar icons (Deploy button, "..." menu) only — the header bar
-       itself must stay, since the sidebar collapse/expand arrow lives
-       inside it. Hiding the whole header traps the sidebar collapsed
-       with no way to reopen it. */
     header[data-testid="stHeader"] { background: transparent; }
-    div[data-testid="stToolbar"] { visibility: hidden; }
-    div[data-testid="stDecoration"] { display: none; }
 
     .block-container { padding-top: 1rem; padding-bottom: 3rem; max-width: 900px; }
+
+    /* ---- Card subheadings: Streamlit's default st.subheader is sized
+       for a full page section, not a small card title — scale it down. */
+    div[data-testid="stVerticalBlockBorderWrapper"] h3 {
+        font-size: 1.05rem !important;
+        font-weight: 600 !important;
+    }
+
+    /* ---- st.metric: the default truncates long text values with an
+       ellipsis (it's built for short numbers). We show text like "not
+       yet measured" in some metrics, so let it wrap instead of cutting
+       off. ---- */
+    div[data-testid="stMetricValue"] {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        font-size: 1.3rem !important;
+        line-height: 1.3 !important;
+    }
 
     /* ---- Topbar ---- */
     .topbar {
