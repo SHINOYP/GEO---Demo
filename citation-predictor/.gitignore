@@ -20,6 +20,7 @@ models/*.bin
 # Data (generated)
 ml/data/*.csv
 data/citelytics.db
+backend/data/citelytics.db
 
 # Reports
 reports/*.pdf

@@ -104,3 +104,25 @@ __pycache__/
 *$py.class
 *.sqlite3
 .pytest_cache/
+.venv/
+
+# --- Our own work (CSD 415 final review project) ---
+# The upstream `docs/` ignore above is for the unrelated Getcito project;
+# our own documentation in docs/ must be tracked.
+!/docs/
+!/docs/**
+
+# Secrets — never commit real API keys
+.env
+.env.*
+!.env.example
+
+# Pipeline-generated data (reproducible from scripts; cached/raw data can be large)
+/data/raw/
+/data/html_cache/
+/demo_cache/
+
+# Evaluation artifacts that are large/binary; metrics.json itself IS tracked
+# since the app reads it, but model pickles and figures are regenerable.
+/artifacts/*.pkl
+/artifacts/figures/
