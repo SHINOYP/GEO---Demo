@@ -7,7 +7,8 @@ import re
 import ipaddress
 import logging
 import socket
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
+from urllib.robotparser import RobotFileParser
 
 import requests
 from bs4 import BeautifulSoup
@@ -82,6 +83,34 @@ def _check_ssrf(url: str) -> None:
             )
 
 
+MAX_REDIRECTS = 5
+_ROBOTS_CACHE: dict = {}
+
+
+def _check_robots_txt(url: str) -> None:
+    """Raise ScrapingError if robots.txt disallows our user-agent on this path.
+
+    Cached per-host for the lifetime of the process so a batch pipeline run
+    doesn't refetch robots.txt for every page on the same domain.
+    """
+    parsed = urlparse(url)
+    origin = f"{parsed.scheme}://{parsed.netloc}"
+    if origin not in _ROBOTS_CACHE:
+        rp = RobotFileParser()
+        rp.set_url(urljoin(origin, "/robots.txt"))
+        try:
+            rp.read()
+        except Exception:
+            # If robots.txt can't be fetched/parsed, default to allow
+            # (most sites with no robots.txt permit crawling).
+            rp = None
+        _ROBOTS_CACHE[origin] = rp
+
+    rp = _ROBOTS_CACHE[origin]
+    if rp is not None and not rp.can_fetch(HEADERS["User-Agent"], url):
+        raise ScrapingError(f"robots.txt disallows fetching this URL for our user-agent.")
+
+
 def scrape(url: str) -> dict:
     """
     Fetch the URL, parse HTML, and return a dict with:
@@ -89,18 +118,38 @@ def scrape(url: str) -> dict:
       - raw_html: str
       - status_code: int
       - final_url: str (after redirects)
+
+    Redirects are followed manually (allow_redirects=False) with _check_ssrf
+    re-run on every hop. requests' own allow_redirects=True does its own DNS
+    resolution on each redirect target without re-validating it, which would
+    let a malicious URL 302 to a private/internal IP and bypass the SSRF
+    guard entirely.
     """
-    _check_ssrf(url)
+    current_url = url
+    _check_ssrf(current_url)
+    _check_robots_txt(current_url)
 
     try:
-        resp = requests.get(
-            url,
-            headers=HEADERS,
-            timeout=TIMEOUT,
-            allow_redirects=True,
-            stream=True,
-        )
-        resp.raise_for_status()
+        for _ in range(MAX_REDIRECTS + 1):
+            resp = requests.get(
+                current_url,
+                headers=HEADERS,
+                timeout=TIMEOUT,
+                allow_redirects=False,
+                stream=True,
+            )
+            if resp.is_redirect or resp.is_permanent_redirect:
+                next_url = resp.headers.get("Location")
+                if not next_url:
+                    raise ScrapingError("Redirect response had no Location header.")
+                current_url = urljoin(current_url, next_url)
+                _check_ssrf(current_url)
+                _check_robots_txt(current_url)
+                continue
+            resp.raise_for_status()
+            break
+        else:
+            raise ScrapingError("Too many redirects while fetching the URL.")
     except requests.exceptions.Timeout:
         raise ScrapingError("The request timed out. The website may be slow or unreachable.")
     except requests.exceptions.TooManyRedirects:
