@@ -105,6 +105,7 @@ __pycache__/
 *.sqlite3
 .pytest_cache/
 .venv/
+.wheelhouse/
 
 # --- Our own work (CSD 415 final review project) ---
 # The upstream `docs/` ignore above is for the unrelated Getcito project;
