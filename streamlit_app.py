@@ -73,7 +73,12 @@ st.markdown("""
     html, body, [class*="css"] { font-family: 'Inter', sans-serif; color: var(--c-text); }
     .stApp { background: var(--c-bg); }
 
-    .block-container { padding-top: 1.4rem; padding-bottom: 3rem; max-width: 980px; }
+    /* We render our own topbar (brand, crumb, GitHub/Deploy links) below —
+       Streamlit's built-in header toolbar would otherwise overlap it. */
+    header[data-testid="stHeader"] { display: none; }
+    div[data-testid="stDecoration"] { display: none; }
+
+    .block-container { padding-top: 2rem; padding-bottom: 3rem; max-width: 980px; }
 
     /* ---- Topbar ---- */
     .topbar {
