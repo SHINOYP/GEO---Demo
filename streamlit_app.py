@@ -9,6 +9,7 @@ import os
 import sys
 import time
 import io
+import json
 from datetime import datetime
 
 import streamlit as st
@@ -132,6 +133,30 @@ try:
 except Exception as e:
     st.error(f"Error loading model: {e}")
 
+ARTIFACTS_DIR = os.path.join(CURRENT_DIR, "artifacts")
+DATA_DIR = os.path.join(CURRENT_DIR, "data")
+
+
+def load_json_or_none(path):
+    if not os.path.exists(path):
+        return None
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_metrics():
+    """Read real evaluation metrics from artifacts/metrics.json.
+
+    Returns None if the file doesn't exist yet (e.g. the real-data pilot
+    pipeline hasn't been run), so the UI can show "not yet evaluated"
+    instead of a fabricated number.
+    """
+    return load_json_or_none(os.path.join(ARTIFACTS_DIR, "metrics.json"))
+
+
+def load_pilot_stats():
+    return load_json_or_none(os.path.join(DATA_DIR, "pilot_stats.json"))
+
 # Helper interpret functions
 def get_label(prob: float) -> str:
     score = int(prob * 100)
@@ -216,7 +241,12 @@ with st.sidebar:
 
     nav_choice = st.radio(
         "Navigation",
-        ["🔍 Analyze Webpage", "📈 Model Architecture & XAI", "🎓 College Project Overview"],
+        [
+            "🔍 Analyze Webpage",
+            "📈 Model Architecture & XAI",
+            "📋 Model Card / Limitations",
+            "🎓 College Project Overview",
+        ],
         index=0
     )
 
@@ -251,28 +281,35 @@ if nav_choice == "🔍 Analyze Webpage":
         input_url = st.text_input("Enter Target Webpage URL:", value=default_url, placeholder="https://example.com/page")
 
     analyze_btn = st.button("⚡ Analyze Citation Likelihood", type="primary", use_container_width=True)
+    st.caption("⚠️ Estimated likelihood from observed correlations, not a guarantee. See Model Card / Limitations for details.")
 
     if analyze_btn and input_url:
         target_url = input_url.strip()
         progress_bar = st.progress(10, text="Scraping webpage content...")
 
         # 1. Scraping / Fetching
+        # A fixture is only ever used when the user explicitly picked it from
+        # the "Quick-load Demo Example" dropdown above. A live scrape failure
+        # is reported as an error, never silently replaced by fixture data —
+        # swapping in someone else's page and still showing a confident score
+        # would be misleading.
         soup = None
-        mock_used = False
-        try:
-            if target_url in SAMPLE_HTML_FIXTURES:
-                from bs4 import BeautifulSoup
-                soup = BeautifulSoup(SAMPLE_HTML_FIXTURES[target_url], "html.parser")
-                mock_used = True
-            else:
+        mock_used = target_url in SAMPLE_HTML_FIXTURES and target_url == selected_preset_url
+        if mock_used:
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(SAMPLE_HTML_FIXTURES[target_url], "html.parser")
+        else:
+            try:
                 scrape_res = scrape(target_url)
                 soup = scrape_res["soup"]
-        except Exception as e:
-            # Fallback to sample if external scrape is blocked
-            from bs4 import BeautifulSoup
-            st.warning(f"Live web fetch blocked or unavailable ({str(e)[:60]}...). Using synthetic benchmark scraper for evaluation.")
-            soup = BeautifulSoup(SAMPLE_HTML_FIXTURES.get("https://sample-dental-clinic.example.com"), "html.parser")
-            mock_used = True
+            except ScrapingError as e:
+                progress_bar.empty()
+                st.error(f"Could not analyze this page: {e}")
+                st.stop()
+            except Exception as e:
+                progress_bar.empty()
+                st.error(f"Could not analyze this page: {type(e).__name__}: {e}")
+                st.stop()
 
         progress_bar.progress(40, text="Extracting 45+ content, structural, and schema features...")
         features = extract_features(soup, target_url)
@@ -309,6 +346,9 @@ if nav_choice == "🔍 Analyze Webpage":
 
         # ── RESULTS DASHBOARD ──
         st.markdown("---")
+        if mock_used:
+            st.warning("🧪 **DEMO FIXTURE** — this result is for a hand-written sample page, not a live fetch of a real URL.")
+        st.caption("Estimated likelihood from observed correlations, not a guarantee.")
         score_pct = int(prob * 100)
 
         # Main Score Header
@@ -498,13 +538,27 @@ elif nav_choice == "📈 Model Architecture & XAI":
 
     with col2:
         st.subheader("3. Model Validation & Benchmark Metrics")
-        m_c1, m_c2 = st.columns(2)
-        m_c1.metric("ROC-AUC Score", "0.888", "+0.388 vs random")
-        m_c2.metric("Classification F1", "0.784", "Balanced")
-
-        m_c3, m_c4 = st.columns(2)
-        m_c3.metric("Test Accuracy", "79.0%", "Evaluation set")
-        m_c4.metric("Precision / Recall", "80.8% / 76.0%")
+        metrics = load_metrics()
+        if metrics is None:
+            st.warning(
+                "**Not yet evaluated.** No `artifacts/metrics.json` was found. "
+                "Run `python -m pipeline.evaluate` to produce real, reproducible "
+                "metrics from the pilot dataset before any number is shown here."
+            )
+        else:
+            if metrics.get("underpowered"):
+                st.warning(
+                    "⚠️ The pilot dataset is marked **underpowered** — these "
+                    "metrics are reported for transparency but should not be "
+                    "read as strong evidence. See the Model Card page."
+                )
+            m_c1, m_c2 = st.columns(2)
+            m_c1.metric("ROC-AUC", metrics.get("roc_auc_display", "not yet evaluated"))
+            m_c2.metric("F1", metrics.get("f1_display", "not yet evaluated"))
+            m_c3, m_c4 = st.columns(2)
+            m_c3.metric("Accuracy", metrics.get("accuracy_display", "not yet evaluated"))
+            m_c4.metric("Precision / Recall", metrics.get("precision_recall_display", "not yet evaluated"))
+            st.caption(f"Source: artifacts/metrics.json (generated {metrics.get('generated_at', 'unknown date')})")
 
         st.subheader("4. Extracted Feature Dimensions (45 Total)")
         st.markdown("""
@@ -514,6 +568,66 @@ elif nav_choice == "📈 Model Architecture & XAI":
         - **Schema Markup:** LocalBusiness, Organization, FAQPage, Article, Review JSON-LD.
         - **Local Authority:** Contact phone, address, operating hours, review count.
         """)
+
+# ─────────────────────────────────────────────────────────────
+# PAGE: MODEL CARD / LIMITATIONS
+# ─────────────────────────────────────────────────────────────
+elif nav_choice == "📋 Model Card / Limitations":
+    st.title("Model Card & Limitations")
+    st.caption("Estimated likelihood from observed correlations, not a guarantee.")
+
+    pilot_stats = load_pilot_stats()
+    metrics = load_metrics()
+
+    st.subheader("Dataset")
+    if pilot_stats is None:
+        st.warning("**Not yet measured.** No `data/pilot_stats.json` found — the real-data pilot pipeline (`pipeline/run_all.py`) has not been run yet.")
+    else:
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Queries", pilot_stats.get("num_queries", "not yet measured"))
+        c2.metric("Usable rows", pilot_stats.get("usable_rows", "not yet measured"))
+        c3.metric("Class balance (positive %)", pilot_stats.get("positive_rate_display", "not yet measured"))
+        st.json(pilot_stats, expanded=False)
+
+    st.subheader("How labels were made")
+    st.markdown("""
+    A page is labeled **1 (cited)** if its canonical URL (or domain, in a
+    secondary analysis) appears among the citations returned by the
+    Perplexity `sonar` API for a given local-business query; otherwise **0**.
+    The candidate pool is the union of cited URLs and the top organic
+    search results for that query. See `docs/DATA_CARD.md` for the full rule.
+    """)
+
+    st.subheader("Cross-validated results (with uncertainty)")
+    if metrics is None:
+        st.warning("**Not yet evaluated.** Run `python -m pipeline.evaluate` to produce `artifacts/metrics.json`.")
+    else:
+        if metrics.get("underpowered"):
+            st.error("This dataset is flagged **underpowered** for strong conclusions — treat all numbers below as preliminary.")
+        st.json(metrics, expanded=False)
+
+    st.subheader("Baseline comparison")
+    st.markdown("Compare against a simple rule-based GEO checklist baseline (schema present, FAQ present, etc.) — see `artifacts/metrics.json` → `models.rule_based` once evaluation has run.")
+
+    st.subheader("Known limitations")
+    st.markdown("""
+    - **Small sample size.** The pilot dataset covers a handful of query
+      categories and cities; results may not generalize.
+    - **Negatives are biased.** Non-cited pages are drawn only from pages
+      that already rank organically for the query — true negatives from the
+      wider web are not sampled, so the model may not generalize to
+      completely unranked pages.
+    - **Citation non-determinism.** Repeating the same query against the
+      answer engine does not always return the same citations; a single
+      observation per query is a noisy label.
+    - **Correlational, not mechanistic.** This model learns which page
+      features *co-occur* with citation in the pilot sample. It does not
+      reveal how the underlying LLM actually decides what to cite, and SHAP
+      explains *this classifier*, not the LLM.
+    - **Engine behavior drifts over time.** Answer engines are updated
+      frequently; this model would need periodic retraining on fresh data
+      to stay relevant.
+    """)
 
 # ─────────────────────────────────────────────────────────────
 # PAGE 3: COLLEGE PROJECT OVERVIEW
