@@ -35,7 +35,7 @@ from services.pdf_report import generate_pdf
 # ─────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Citelytics — AI Citation Predictor",
-    page_icon="⚡",
+    page_icon="C",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -66,64 +66,42 @@ st.markdown("""
     html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
     /* tighten default top padding so our topbar sits flush */
-    .block-container { padding-top: 1.6rem; padding-bottom: 3rem; max-width: 1180px; }
+    .block-container { padding-top: 1.6rem; padding-bottom: 3rem; max-width: 1100px; }
 
     /* ---- Topbar (shown on every page) ---- */
     .topbar {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 0.4rem 0 1.1rem 0; margin-bottom: 1.2rem;
+        display: flex; align-items: center; gap: 0.5rem;
+        padding: 0.2rem 0 1.3rem 0; margin-bottom: 1.4rem;
         border-bottom: 1px solid var(--c-border);
     }
-    .topbar-left { display: flex; align-items: center; gap: 0.6rem; }
     .brand-mark {
-        width: 34px; height: 34px; border-radius: 10px; display: flex;
-        align-items: center; justify-content: center; font-size: 1.1rem;
-        background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-primary-dark) 100%);
-        box-shadow: 0 4px 14px -4px rgba(99,102,241,0.6);
+        width: 28px; height: 28px; border-radius: 7px; display: flex;
+        align-items: center; justify-content: center; font-size: 0.85rem;
+        font-weight: 800; color: white; background: var(--c-primary);
     }
-    .brand-text { font-weight: 800; font-size: 1.05rem; color: var(--c-text); letter-spacing: -0.01em; }
-    .crumb { color: var(--c-text-muted); font-size: 0.85rem; margin-left: 0.3rem; }
-    .disclaimer-chip {
-        font-size: 0.72rem; color: var(--c-text-muted); background: var(--c-surface-2);
-        border: 1px solid var(--c-border); padding: 0.3rem 0.7rem; border-radius: 9999px;
-        white-space: nowrap;
-    }
+    .brand-text { font-weight: 700; font-size: 0.95rem; color: var(--c-text); letter-spacing: -0.01em; }
+    .crumb { color: var(--c-text-muted); font-size: 0.9rem; }
 
-    /* ---- Hero ---- */
-    .main-header {
-        background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%);
-        padding: 2rem 2.2rem;
-        border-radius: var(--radius-lg);
-        color: white;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 14px 30px -10px rgba(49, 46, 129, 0.45);
+    /* ---- Page header (flat, no box) ---- */
+    .page-eyebrow {
+        color: var(--c-text-muted); font-size: 0.78rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem;
     }
-    .badge-pill {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.15);
-        color: #E0E7FF;
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        padding: 0.3rem 0.8rem;
-        border-radius: 9999px;
-        text-transform: uppercase;
-        margin-bottom: 0.7rem;
-    }
+    .page-title { font-size: 1.8rem; font-weight: 800; color: var(--c-text); margin: 0 0 0.4rem 0; letter-spacing: -0.01em; }
+    .page-sub { color: var(--c-text-muted); font-size: 0.95rem; margin: 0 0 1.4rem 0; max-width: 640px; }
 
     /* ---- Sidebar nav ---- */
     section[data-testid="stSidebar"] {
         background: var(--c-surface);
         border-right: 1px solid var(--c-border);
     }
-    .sidebar-brand { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.2rem; }
-    .sidebar-tagline { color: var(--c-text-muted); font-size: 0.82rem; margin-bottom: 1rem; }
-    .st-key-nav div[role="radiogroup"] { gap: 0.3rem; }
+    .sidebar-brand { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 1.4rem; }
+    .st-key-nav div[role="radiogroup"] { gap: 0.2rem; }
     .st-key-nav div[role="radiogroup"] label {
         background: transparent;
         border: 1px solid transparent;
         border-radius: var(--radius-md);
-        padding: 0.55rem 0.8rem !important;
+        padding: 0.5rem 0.75rem !important;
         transition: background 0.15s ease, border-color 0.15s ease;
         width: 100%;
     }
@@ -135,17 +113,13 @@ st.markdown("""
         background: rgba(99,102,241,0.14);
         border-color: rgba(99,102,241,0.4);
     }
-    .footer-card {
-        background: var(--c-surface-2);
-        border: 1px solid var(--c-border);
-        border-radius: var(--radius-md);
-        padding: 0.9rem 1rem;
+    .sidebar-footer {
+        border-top: 1px solid var(--c-border);
+        padding-top: 0.9rem;
         margin-top: 0.5rem;
-    }
-    .tech-pill {
-        display: inline-block; font-size: 0.68rem; color: var(--c-text-muted);
-        background: rgba(255,255,255,0.04); border: 1px solid var(--c-border);
-        padding: 0.15rem 0.5rem; border-radius: 9999px; margin: 0.1rem 0.15rem 0 0;
+        color: var(--c-text-muted);
+        font-size: 0.78rem;
+        line-height: 1.6;
     }
 
     /* ---- Bordered containers (st.container(border=True)) as real cards ---- */
@@ -156,14 +130,13 @@ st.markdown("""
     }
 
     /* ---- KPI tiles ---- */
-    .kpi-label { color: var(--c-text-muted); font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
-    .kpi-value { font-size: 1.9rem; font-weight: 800; color: var(--c-text); margin-top: 0.15rem; line-height: 1.1; }
-    .kpi-sub { color: var(--c-text-muted); font-size: 0.78rem; margin-top: 0.2rem; }
-    .kpi-icon { font-size: 1.3rem; opacity: 0.9; }
+    .kpi-label { color: var(--c-text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+    .kpi-value { font-size: 1.8rem; font-weight: 800; color: var(--c-text); margin-top: 0.2rem; line-height: 1.1; }
+    .kpi-sub { color: var(--c-text-muted); font-size: 0.76rem; margin-top: 0.25rem; }
 
     /* ---- Verdict / probability badges ---- */
     .prob-badge-high, .prob-badge-med, .prob-badge-low {
-        display: inline-block; padding: 0.5rem 1.1rem; border-radius: var(--radius-md); font-weight: 700; font-size: 1rem;
+        display: inline-block; padding: 0.45rem 1rem; border-radius: var(--radius-md); font-weight: 700; font-size: 0.95rem;
     }
     .prob-badge-high { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
     .prob-badge-med  { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
@@ -176,25 +149,17 @@ st.markdown("""
         margin-bottom: 0.75rem;
         border-left: 4px solid;
         background: var(--c-surface-2);
-        transition: transform 0.12s ease;
     }
-    .rec-card:hover { transform: translateX(2px); }
     .rec-high   { border-left-color: var(--c-danger); }
     .rec-medium { border-left-color: var(--c-warning); }
     .rec-low    { border-left-color: #3B82F6; }
 
-    /* ---- Section card headers ---- */
-    .section-eyebrow {
-        color: var(--c-primary); font-size: 0.75rem; font-weight: 700;
-        text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.2rem;
-    }
-
     /* ---- Footer ---- */
     .app-footer {
         margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--c-border);
-        display: flex; justify-content: space-between; align-items: center;
-        color: var(--c-text-muted); font-size: 0.78rem; flex-wrap: wrap; gap: 0.5rem;
+        color: var(--c-text-muted); font-size: 0.78rem;
     }
+    .app-footer a { color: var(--c-text-muted); }
 
     /* ---- Buttons ---- */
     .stButton > button {
@@ -206,32 +171,34 @@ st.markdown("""
 
 
 def render_topbar(crumb: str):
-    disclaimer = "Estimated likelihood from observed correlations — not a guarantee."
     st.markdown(f"""
     <div class="topbar">
-        <div class="topbar-left">
-            <div class="brand-mark">⚡</div>
-            <span class="brand-text">Citelytics</span>
-            <span class="crumb">/ {crumb}</span>
-        </div>
-        <div class="disclaimer-chip">⚠️ {disclaimer}</div>
+        <div class="brand-mark">C</div>
+        <span class="brand-text">Citelytics</span>
+        <span class="crumb">/ {crumb}</span>
     </div>
+    """, unsafe_allow_html=True)
+
+
+def page_header(eyebrow: str, title: str, subtitle: str = ""):
+    st.markdown(f"""
+    <div class="page-eyebrow">{eyebrow}</div>
+    <div class="page-title">{title}</div>
+    {f'<div class="page-sub">{subtitle}</div>' if subtitle else ''}
     """, unsafe_allow_html=True)
 
 
 def render_footer():
     st.markdown("""
     <div class="app-footer">
-        <span>Citelytics &middot; CSD 415 Final Review Capstone &middot; Explainable ML for GEO/AEO</span>
-        <span><a href="https://github.com/StephinArnold/GEO---Demo" style="color: var(--c-text-muted);">GitHub Repository</a></span>
+        <a href="https://github.com/StephinArnold/GEO---Demo">Source on GitHub</a>
     </div>
     """, unsafe_allow_html=True)
 
 
-def kpi_tile(icon: str, label: str, value: str, sub: str = ""):
+def kpi_tile(label: str, value: str, sub: str = ""):
     with st.container(border=True):
         st.markdown(f"""
-        <div class="kpi-icon">{icon}</div>
         <div class="kpi-label">{label}</div>
         <div class="kpi-value">{value}</div>
         <div class="kpi-sub">{sub}</div>
@@ -293,11 +260,11 @@ def get_tier_badge(prob: float) -> str:
 
 # Mock Fallbacks for testing demo pages
 SAMPLE_PRESETS = {
-    "Select a pre-configured sample...": "",
-    "🏥 Apex Dental Clinic (High Quality Local Business)": "https://sample-dental-clinic.example.com",
-    "🍕 Luigi's Trattoria (Italian Restaurant)": "https://sample-italian-bistro.example.com",
-    "💼 Apex Cloud Solutions (B2B SaaS / Services)": "https://sample-cloud-tech.example.com",
-    "📝 Thin Local Contractor Blog (Low Optimization)": "https://sample-basic-contractor.example.com"
+    "Select a sample page...": "",
+    "Apex Dental Clinic (high-quality local business)": "https://sample-dental-clinic.example.com",
+    "Luigi's Trattoria (Italian restaurant)": "https://sample-italian-bistro.example.com",
+    "Apex Cloud Solutions (B2B SaaS)": "https://sample-cloud-tech.example.com",
+    "Thin Local Contractor Blog (low optimization)": "https://sample-basic-contractor.example.com"
 }
 
 SAMPLE_HTML_FIXTURES = {
@@ -353,63 +320,53 @@ SAMPLE_HTML_FIXTURES = {
 with st.sidebar:
     st.markdown("""
     <div class="sidebar-brand">
-        <div class="brand-mark" style="font-size:1.3rem;">⚡</div>
-        <span class="brand-text" style="font-size:1.25rem;">Citelytics</span>
+        <div class="brand-mark" style="width:30px;height:30px;font-size:0.95rem;">C</div>
+        <span class="brand-text" style="font-size:1.1rem;">Citelytics</span>
     </div>
-    <div class="sidebar-tagline">AI Citation Likelihood Prediction System</div>
     """, unsafe_allow_html=True)
 
     with st.container(key="nav"):
         nav_choice = st.radio(
             "Navigation",
             [
-                "🔍 Analyze Webpage",
-                "📈 Model Architecture & XAI",
-                "📋 Model Card / Limitations",
-                "🎓 College Project Overview",
+                "Analyze",
+                "Explainability",
+                "Model Card",
             ],
             index=0,
             label_visibility="collapsed",
         )
 
     st.markdown("""
-    <div class="footer-card">
-        <div style="font-weight:700; font-size:0.9rem;">👤 Stephin Arnold</div>
-        <div style="color: var(--c-text-muted); font-size:0.78rem; margin-top:2px;">CSD 415 Final Review Capstone</div>
-        <div style="margin-top:0.6rem;">
-            <span class="tech-pill">XGBoost</span><span class="tech-pill">SHAP</span><span class="tech-pill">Streamlit</span>
-        </div>
-        <div style="margin-top:0.6rem;"><a href="https://github.com/StephinArnold/GEO---Demo" style="font-size:0.82rem;">🔗 GitHub Repository</a></div>
+    <div class="sidebar-footer">
+        Stephin Arnold &middot; CSD 415<br/>
+        <a href="https://github.com/StephinArnold/GEO---Demo">GitHub</a>
     </div>
     """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────────────────────
 # PAGE 1: ANALYZE WEBPAGE
 # ─────────────────────────────────────────────────────────────
-if nav_choice == "🔍 Analyze Webpage":
-    render_topbar("Analyze Webpage")
-    st.markdown("""
-    <div class="main-header">
-        <span class="badge-pill">Explainable GEO / AEO Intelligence</span>
-        <h1 style="margin: 0; font-size: 2rem; font-weight: 800;">Citation Likelihood Prediction</h1>
-        <p style="margin: 0.5rem 0 0 0; opacity: 0.85; font-size: 1rem;">
-            Predict how likely a webpage is to be cited by Generative AI Answer Engines (Perplexity, ChatGPT Search, Claude).
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+if nav_choice == "Analyze":
+    render_topbar("Analyze")
+    page_header(
+        "Explainable GEO / AEO intelligence",
+        "Citation likelihood prediction",
+        "Predict how likely a webpage is to be cited by generative AI answer engines (Perplexity, ChatGPT Search, Claude).",
+    )
 
     with st.container(border=True):
         col_input, col_preset = st.columns([3, 2])
         with col_preset:
-            preset_choice = st.selectbox("Quick-load Demo Example:", list(SAMPLE_PRESETS.keys()))
+            preset_choice = st.selectbox("Try a sample page", list(SAMPLE_PRESETS.keys()))
             selected_preset_url = SAMPLE_PRESETS[preset_choice]
 
         with col_input:
             default_url = selected_preset_url if selected_preset_url else "https://en.wikipedia.org/wiki/Artificial_intelligence"
-            input_url = st.text_input("Enter Target Webpage URL:", value=default_url, placeholder="https://example.com/page")
+            input_url = st.text_input("Webpage URL", value=default_url, placeholder="https://example.com/page")
 
-        analyze_btn = st.button("⚡ Analyze Citation Likelihood", type="primary", use_container_width=True)
-        st.caption("⚠️ Estimated likelihood from observed correlations, not a guarantee. See Model Card / Limitations for details.")
+        analyze_btn = st.button("Analyze", type="primary", use_container_width=True)
+        st.caption("Estimated likelihood from observed correlations, not a guarantee. See Model Card for details.")
 
     if analyze_btn and input_url:
         target_url = input_url.strip()
@@ -475,7 +432,7 @@ if nav_choice == "🔍 Analyze Webpage":
         # ── RESULTS DASHBOARD ──
         st.markdown("---")
         if mock_used:
-            st.warning("🧪 **DEMO FIXTURE** — this result is for a hand-written sample page, not a live fetch of a real URL.")
+            st.warning("**Demo fixture** — this result is for a hand-written sample page, not a live fetch of a real URL.")
         st.caption("Estimated likelihood from observed correlations, not a guarantee.")
         score_pct = int(prob * 100)
 
@@ -483,31 +440,31 @@ if nav_choice == "🔍 Analyze Webpage":
         kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
         delta_sign = "+" if score_pct >= 50 else ""
         with kpi_col1:
-            kpi_tile("🎯", "Citation Probability", f"{score_pct}%", f"{delta_sign}{score_pct - 50}% vs. 50% baseline")
+            kpi_tile("Citation probability", f"{score_pct}%", f"{delta_sign}{score_pct - 50}% vs. 50% baseline")
         with kpi_col2:
-            kpi_tile("🏷️", "Citation Tier", get_label(prob).split()[0] + " Likelihood")
+            kpi_tile("Citation tier", get_label(prob).split()[0] + " likelihood")
         with kpi_col3:
             macro_val = float(features.get("derived", {}).get("macro_score", mf.get("macro_structure_score", 0.5)))
             macro_s = int(macro_val * 100)
-            kpi_tile("🏗️", "Structural Quality", f"{macro_s}/100")
+            kpi_tile("Structural quality", f"{macro_s}/100")
         with kpi_col4:
             has_schema = "Active (JSON-LD)" if features["schema"]["schema_present"] else "Missing"
-            kpi_tile("🧩", "Schema Markup", has_schema)
+            kpi_tile("Schema markup", has_schema)
 
-        st.markdown(f"**Predicted Verdict:** {get_tier_badge(prob)}", unsafe_allow_html=True)
+        st.markdown(f"**Verdict:** {get_tier_badge(prob)}", unsafe_allow_html=True)
         st.markdown("")
 
         # ── TABS FOR DEEP-DIVE ──
         tab_shap, tab_struct, tab_recs, tab_pdf = st.tabs([
-            "🔍 Explainable AI (SHAP Impact)",
-            "📐 Content & Structure Breakdown",
-            "💡 Actionable Optimization Roadmap",
-            "📄 Export Official PDF Report"
+            "Why this score",
+            "Structure",
+            "Recommendations",
+            "Export PDF",
         ])
 
         # TAB 1: SHAP
         with tab_shap:
-            st.subheader("Feature Impact on AI Citation (SHAP TreeExplainer)")
+            st.subheader("Feature impact (SHAP)")
             st.write(
                 "Why did this page receive this score? SHAP calculates the exact marginal contribution of each webpage feature "
                 "towards pushing the citation probability **higher** (green) or **lower** (red)."
@@ -544,7 +501,7 @@ if nav_choice == "🔍 Analyze Webpage":
 
             col_sp1, col_sp2 = st.columns(2)
             with col_sp1:
-                st.markdown("##### 🟢 Top Positive Drivers (Strengths)")
+                st.markdown("##### Positive drivers")
                 if top_pos:
                     for p in top_pos:
                         st.success(f"**{p['feature']}** = `{p['value']}` (SHAP +{p['shap_value']:.4f})")
@@ -552,7 +509,7 @@ if nav_choice == "🔍 Analyze Webpage":
                     st.info("No strong positive drivers detected.")
 
             with col_sp2:
-                st.markdown("##### 🔴 Top Dragging Factors (Weaknesses)")
+                st.markdown("##### Negative drivers")
                 if top_neg:
                     for n in top_neg:
                         st.error(f"**{n['feature']}** = `{n['value']}` (SHAP {n['shap_value']:.4f})")
@@ -561,41 +518,41 @@ if nav_choice == "🔍 Analyze Webpage":
 
         # TAB 2: STRUCTURE BREAKDOWN
         with tab_struct:
-            st.subheader("Granular Webpage Quality Metrics")
+            st.subheader("Webpage quality metrics")
             macro_val = min(max(float(features.get("derived", {}).get("macro_score", mf.get("macro_structure_score", 0.5))), 0.0), 1.0)
             meso_val = min(max(float(features.get("derived", {}).get("meso_score", mf.get("meso_structure_score", 0.5))), 0.0), 1.0)
             micro_val = min(max(float(features.get("derived", {}).get("micro_score", mf.get("micro_structure_score", 0.5))), 0.0), 1.0)
             c1, c2, c3 = st.columns(3)
             with c1, st.container(border=True):
-                st.markdown("#### 🏢 Macro-Structure")
+                st.markdown("#### Macro-structure")
                 st.progress(macro_val)
                 st.caption(f"Score: {int(macro_val * 100)}%")
-                st.write(f"- **Word Count:** {features['content']['word_count']}")
-                st.write(f"- **Total Headings:** {features['structure']['heading_count']}")
-                st.write(f"- **H1 Headings:** {features['structure']['h1_count']}")
-                st.write(f"- **Heading Hierarchy Score:** {features['structure']['heading_hierarchy_score']:.2f}")
+                st.write(f"- **Word count:** {features['content']['word_count']}")
+                st.write(f"- **Total headings:** {features['structure']['heading_count']}")
+                st.write(f"- **H1 headings:** {features['structure']['h1_count']}")
+                st.write(f"- **Heading hierarchy score:** {features['structure']['heading_hierarchy_score']:.2f}")
 
             with c2, st.container(border=True):
-                st.markdown("#### 📑 Meso-Structure")
+                st.markdown("#### Meso-structure")
                 st.progress(meso_val)
                 st.caption(f"Score: {int(meso_val * 100)}%")
                 st.write(f"- **Paragraphs:** {features['content']['paragraph_count']}")
-                st.write(f"- **Lists Count:** {features['content']['list_count']}")
-                st.write(f"- **Tables Count:** {features['content']['table_count']}")
-                st.write(f"- **Avg Paragraph Length:** {features['content']['avg_paragraph_length']:.1f} words")
+                st.write(f"- **Lists:** {features['content']['list_count']}")
+                st.write(f"- **Tables:** {features['content']['table_count']}")
+                st.write(f"- **Avg paragraph length:** {features['content']['avg_paragraph_length']:.1f} words")
 
             with c3, st.container(border=True):
-                st.markdown("#### 🔬 Micro-Structure & Signals")
+                st.markdown("#### Micro-structure & signals")
                 st.progress(micro_val)
                 st.caption(f"Score: {int(micro_val * 100)}%")
-                st.write(f"- **Factual Density:** {mf['factual_density']:.3f}")
-                st.write(f"- **Numerical Claims:** {features['content']['number_count']}")
-                st.write(f"- **Phone Detected:** {'✅ Yes' if features['local_business']['has_phone'] else '❌ No'}")
-                st.write(f"- **Address Detected:** {'✅ Yes' if features['local_business']['has_address'] else '❌ No'}")
+                st.write(f"- **Factual density:** {mf['factual_density']:.3f}")
+                st.write(f"- **Numerical claims:** {features['content']['number_count']}")
+                st.write(f"- **Phone detected:** {'Yes' if features['local_business']['has_phone'] else 'No'}")
+                st.write(f"- **Address detected:** {'Yes' if features['local_business']['has_address'] else 'No'}")
 
         # TAB 3: RECOMMENDATIONS
         with tab_recs:
-            st.subheader("Actionable Optimization Roadmap")
+            st.subheader("Recommendations")
             if not recommendations:
                 st.success("Great job! No urgent optimization steps found.")
             else:
@@ -618,12 +575,12 @@ if nav_choice == "🔍 Analyze Webpage":
 
         # TAB 4: PDF REPORT
         with tab_pdf:
-            st.subheader("Generate & Download Audit PDF")
-            st.write("Export a clean, multi-page executive summary PDF report including all SHAP feature explanations and recommendations.")
+            st.subheader("Export PDF")
+            st.write("A multi-page report including the SHAP feature explanations and recommendations.")
             try:
                 pdf_bytes = generate_pdf(full_analysis)
                 st.download_button(
-                    label="📥 Download Citelytics Audit PDF",
+                    label="Download PDF report",
                     data=pdf_bytes,
                     file_name=f"citelytics_report_{int(time.time())}.pdf",
                     mime="application/pdf",
@@ -637,35 +594,30 @@ if nav_choice == "🔍 Analyze Webpage":
 # ─────────────────────────────────────────────────────────────
 # PAGE 2: MODEL ARCHITECTURE & XAI
 # ─────────────────────────────────────────────────────────────
-elif nav_choice == "📈 Model Architecture & XAI":
-    render_topbar("Model Architecture & XAI")
-    st.markdown("## Machine Learning Architecture & Explainability")
-    st.caption("How Citelytics models and explains Generative Answer Engine citations.")
-    st.markdown("")
+elif nav_choice == "Explainability":
+    render_topbar("Explainability")
+    page_header("How it works", "Model architecture & explainability")
 
     col1, col2 = st.columns([1, 1])
 
     with col1, st.container(border=True):
-        st.markdown('<div class="section-eyebrow">01</div>', unsafe_allow_html=True)
-        st.subheader("The Research Shift: SEO vs. GEO")
+        st.subheader("SEO vs. GEO")
         st.info("""
-        - **Traditional Search (SEO):** Ranks 10 blue links based on backlinks, keywords, and domain authority.
-        - **Generative Engines (GEO / AEO):** Synthesizes a direct synthesized paragraph answer and cites **only 1–3 definitive sources**.
-        - **Core Hypothesis:** Citation likelihood depends strongly on **factual density, structured schemas, hierarchical content chunks, and local business verification signals**.
+        - **Traditional search (SEO):** ranks 10 blue links based on backlinks, keywords, and domain authority.
+        - **Generative engines (GEO / AEO):** synthesize a direct answer and cite only 1–3 sources.
+        - **Core hypothesis:** citation likelihood depends on factual density, structured schemas, hierarchical content, and local business verification signals.
         """)
 
-        st.markdown('<div class="section-eyebrow">02</div>', unsafe_allow_html=True)
-        st.subheader("Machine Learning Pipeline")
+        st.subheader("Pipeline")
         st.markdown("""
-        1. **Webpage Ingestion:** SSRF-safe scraper extracts DOM structure, text, and metadata.
-        2. **Feature Engineering:** Extracts 45+ distinct numerical, categorical, and ratio features across Macro, Meso, and Micro layers.
-        3. **XGBoost Binary Classifier:** Tuned gradient boosted trees predict `P(Cited=1)`.
-        4. **SHAP TreeExplainer:** Deconstructs the model's non-linear decision tree paths to reveal individual feature contributions for each URL.
+        1. **Ingestion:** SSRF-safe scraper extracts DOM structure, text, and metadata.
+        2. **Feature engineering:** 45 numerical, categorical, and ratio features across macro, meso, and micro layers.
+        3. **Classifier:** gradient-boosted trees (XGBoost) predict `P(cited=1)`.
+        4. **Explainability:** SHAP decomposes the model's decision into per-feature contributions for each URL.
         """)
 
     with col2, st.container(border=True):
-        st.markdown('<div class="section-eyebrow">03</div>', unsafe_allow_html=True)
-        st.subheader("Model Validation & Benchmark Metrics")
+        st.subheader("Validation metrics")
         metrics = load_metrics()
         if metrics is None:
             st.warning(
@@ -676,7 +628,7 @@ elif nav_choice == "📈 Model Architecture & XAI":
         else:
             if metrics.get("underpowered"):
                 st.warning(
-                    "⚠️ The pilot dataset is marked **underpowered** — these "
+                    "The pilot dataset is marked **underpowered** — these "
                     "metrics are reported for transparency but should not be "
                     "read as strong evidence. See the Model Card page."
                 )
@@ -688,14 +640,13 @@ elif nav_choice == "📈 Model Architecture & XAI":
             m_c4.metric("Precision / Recall", metrics.get("precision_recall_display", "not yet evaluated"))
             st.caption(f"Source: artifacts/metrics.json (generated {metrics.get('generated_at', 'unknown date')})")
 
-        st.markdown('<div class="section-eyebrow">04</div>', unsafe_allow_html=True)
-        st.subheader("Extracted Feature Dimensions (45 Total)")
+        st.subheader("Feature groups (45 total)")
         st.markdown("""
-        - **Macro-Structure:** Heading depth, H1-H3 counts, hierarchy coherence, total word counts.
-        - **Meso-Structure:** Paragraph counts, list frequency, data tables, visual elements.
-        - **Micro-Structure:** Factual density, numbers, statistics, percentages, dates, quotes.
-        - **Schema Markup:** LocalBusiness, Organization, FAQPage, Article, Review JSON-LD.
-        - **Local Authority:** Contact phone, address, operating hours, review count.
+        - **Macro-structure:** heading depth, H1-H3 counts, hierarchy coherence, word count.
+        - **Meso-structure:** paragraph counts, list frequency, tables, visual elements.
+        - **Micro-structure:** factual density, numbers, statistics, percentages, dates, quotes.
+        - **Schema:** LocalBusiness, Organization, FAQPage, Article, Review JSON-LD.
+        - **Local authority:** contact phone, address, operating hours, review count.
         """)
 
     render_footer()
@@ -703,17 +654,15 @@ elif nav_choice == "📈 Model Architecture & XAI":
 # ─────────────────────────────────────────────────────────────
 # PAGE: MODEL CARD / LIMITATIONS
 # ─────────────────────────────────────────────────────────────
-elif nav_choice == "📋 Model Card / Limitations":
-    render_topbar("Model Card / Limitations")
-    st.markdown("## Model Card & Limitations")
-    st.caption("Estimated likelihood from observed correlations, not a guarantee.")
-    st.markdown("")
+elif nav_choice == "Model Card":
+    render_topbar("Model Card")
+    page_header("Transparency", "Model card & limitations", "Estimated likelihood from observed correlations, not a guarantee.")
 
     pilot_stats = load_pilot_stats()
     metrics = load_metrics()
 
     with st.container(border=True):
-        st.subheader("📊 Dataset")
+        st.subheader("Dataset")
         if pilot_stats is None:
             st.warning("**Not yet measured.** No `data/pilot_stats.json` found — the real-data pilot pipeline (`pipeline/run_all.py`) has not been run yet.")
         else:
@@ -725,7 +674,7 @@ elif nav_choice == "📋 Model Card / Limitations":
                 st.json(pilot_stats, expanded=False)
 
     with st.container(border=True):
-        st.subheader("🏷️ How labels were made")
+        st.subheader("How labels were made")
         st.markdown("""
         A page is labeled **1 (cited)** if its canonical URL (or domain, in a
         secondary analysis) appears among the citations returned by the
@@ -735,7 +684,7 @@ elif nav_choice == "📋 Model Card / Limitations":
         """)
 
     with st.container(border=True):
-        st.subheader("📈 Cross-validated results (with uncertainty)")
+        st.subheader("Cross-validated results (with uncertainty)")
         if metrics is None:
             st.warning("**Not yet evaluated.** Run `python -m pipeline.evaluate` to produce `artifacts/metrics.json`.")
         else:
@@ -745,11 +694,11 @@ elif nav_choice == "📋 Model Card / Limitations":
                 st.json(metrics, expanded=False)
 
     with st.container(border=True):
-        st.subheader("⚖️ Baseline comparison")
+        st.subheader("Baseline comparison")
         st.markdown("Compare against a simple rule-based GEO checklist baseline (schema present, FAQ present, etc.) — see `artifacts/metrics.json` → `models.rule_based` once evaluation has run.")
 
     with st.container(border=True):
-        st.subheader("⚠️ Known limitations")
+        st.subheader("Known limitations")
         st.markdown("""
         - **Small sample size.** The pilot dataset covers a handful of query
           categories and cities; results may not generalize.
@@ -768,38 +717,5 @@ elif nav_choice == "📋 Model Card / Limitations":
           frequently; this model would need periodic retraining on fresh data
           to stay relevant.
         """)
-
-    render_footer()
-
-# ─────────────────────────────────────────────────────────────
-# PAGE 3: COLLEGE PROJECT OVERVIEW
-# ─────────────────────────────────────────────────────────────
-elif nav_choice == "🎓 College Project Overview":
-    render_topbar("College Project Overview")
-    st.markdown("## College Project Submission Details")
-    st.markdown("#### Citation Likelihood Prediction in Generative Answer Engines")
-    st.caption("Explainable Machine Learning Approach for Local Business Content")
-    st.markdown("")
-
-    with st.container(border=True):
-        st.subheader("📌 Project Summary")
-        st.markdown("""
-        - **Student / Author:** Stephin Arnold
-        - **Focus Area:** Generative Engine Optimization (GEO), Artificial Intelligence, Applied Machine Learning, Explainable AI (XAI).
-        - **Core Tech Stack:** Python, Streamlit, FastAPI, React, Vite, XGBoost, SHAP, BeautifulSoup4, ReportLab.
-        """)
-
-    with st.container(border=True):
-        st.subheader("🎯 Key Contributions")
-        st.markdown("""
-        1. **Formulation of Citation Prediction as a Machine Learning Task:** Moved beyond generic SEO checklists into quantifiable probability scoring.
-        2. **Multi-level Feature Engineering:** Developed 45+ domain-specific features capturing document hierarchy (Macro), readability and structure (Meso), and information density (Micro).
-        3. **Model Interpretability (XAI):** Integrated SHAP (SHapley Additive exPlanations) to turn black-box predictions into transparent, actionable optimization advice for website owners.
-        4. **Dual-Deployment Architecture:**
-           - Full-stack interactive platform (FastAPI + React Vite UI).
-           - Lightweight, zero-config cloud deployment on Streamlit Cloud.
-        """)
-
-    st.markdown("Project Code & Models Repository: [https://github.com/StephinArnold/GEO---Demo](https://github.com/StephinArnold/GEO---Demo)")
 
     render_footer()
