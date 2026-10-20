@@ -16,6 +16,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import altair as alt
+from dotenv import set_key, dotenv_values
 
 # Ensure local backend modules can be imported
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -41,62 +42,76 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────────────────────
-# DESIGN SYSTEM
+# DESIGN SYSTEM — warm, editorial palette
 # ─────────────────────────────────────────────────────────────
+GITHUB_URL = "https://github.com/StephinArnold/GEO---Demo"
+DEPLOY_URL = (
+    "https://share.streamlit.io/deploy?repository=StephinArnold%2FGEO---Demo"
+    "&branch=main&mainModule=streamlit_app.py"
+)
+
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap');
 
     :root {
-        --c-bg: #0B1120;
-        --c-surface: #131B2E;
-        --c-surface-2: #1B2538;
-        --c-border: rgba(255,255,255,0.08);
-        --c-text: #E2E8F0;
-        --c-text-muted: #94A3B8;
-        --c-primary: #6366F1;
-        --c-primary-dark: #4338CA;
-        --c-success: #10B981;
-        --c-warning: #F59E0B;
-        --c-danger: #EF4444;
-        --radius-lg: 18px;
-        --radius-md: 12px;
+        --c-bg: #FAF9F5;
+        --c-surface: #FFFFFF;
+        --c-surface-2: #F0EEE6;
+        --c-border: #E6E3D8;
+        --c-text: #2B2823;
+        --c-text-muted: #7A7566;
+        --c-primary: #C2583F;
+        --c-primary-dark: #A3452F;
+        --c-success: #4F7942;
+        --c-warning: #B8793A;
+        --c-danger: #BF4040;
+        --radius-lg: 16px;
+        --radius-md: 10px;
     }
 
-    html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+    html, body, [class*="css"] { font-family: 'Inter', sans-serif; color: var(--c-text); }
+    .stApp { background: var(--c-bg); }
 
-    /* tighten default top padding so our topbar sits flush */
-    .block-container { padding-top: 1.6rem; padding-bottom: 3rem; max-width: 1100px; }
+    .block-container { padding-top: 1.4rem; padding-bottom: 3rem; max-width: 980px; }
 
-    /* ---- Topbar (shown on every page) ---- */
+    /* ---- Topbar ---- */
     .topbar {
-        display: flex; align-items: center; gap: 0.5rem;
-        padding: 0.2rem 0 1.3rem 0; margin-bottom: 1.4rem;
+        display: flex; align-items: baseline; justify-content: space-between;
+        padding: 0.2rem 0 1.1rem 0; margin-bottom: 1.6rem;
         border-bottom: 1px solid var(--c-border);
     }
-    .brand-mark {
-        width: 28px; height: 28px; border-radius: 7px; display: flex;
-        align-items: center; justify-content: center; font-size: 0.85rem;
-        font-weight: 800; color: white; background: var(--c-primary);
+    .topbar-left { display: flex; align-items: baseline; gap: 0.5rem; }
+    .brand-text {
+        font-family: 'Source Serif 4', serif; font-weight: 600; font-size: 1.15rem;
+        color: var(--c-text); letter-spacing: -0.01em;
     }
-    .brand-text { font-weight: 700; font-size: 0.95rem; color: var(--c-text); letter-spacing: -0.01em; }
     .crumb { color: var(--c-text-muted); font-size: 0.9rem; }
-
-    /* ---- Page header (flat, no box) ---- */
-    .page-eyebrow {
-        color: var(--c-text-muted); font-size: 0.78rem; font-weight: 600;
-        text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem;
+    .topbar-links { display: flex; gap: 1.25rem; }
+    .topbar-links a {
+        color: var(--c-text-muted); font-size: 0.85rem; font-weight: 500;
+        text-decoration: none; border-bottom: 1px solid transparent;
     }
-    .page-title { font-size: 1.8rem; font-weight: 800; color: var(--c-text); margin: 0 0 0.4rem 0; letter-spacing: -0.01em; }
-    .page-sub { color: var(--c-text-muted); font-size: 0.95rem; margin: 0 0 1.4rem 0; max-width: 640px; }
+    .topbar-links a:hover { color: var(--c-text); border-bottom-color: var(--c-text-muted); }
+
+    /* ---- Page header ---- */
+    .page-eyebrow {
+        color: var(--c-primary); font-size: 0.78rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem;
+    }
+    .page-title {
+        font-family: 'Source Serif 4', serif; font-size: 2rem; font-weight: 600;
+        color: var(--c-text); margin: 0 0 0.5rem 0; letter-spacing: -0.01em; line-height: 1.2;
+    }
+    .page-sub { color: var(--c-text-muted); font-size: 1rem; margin: 0 0 1.5rem 0; max-width: 620px; line-height: 1.5; }
 
     /* ---- Sidebar nav ---- */
     section[data-testid="stSidebar"] {
-        background: var(--c-surface);
+        background: var(--c-surface-2);
         border-right: 1px solid var(--c-border);
     }
-    .sidebar-brand { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 1.4rem; }
-    .st-key-nav div[role="radiogroup"] { gap: 0.2rem; }
+    .sidebar-brand { margin-bottom: 1.6rem; }
+    .st-key-nav div[role="radiogroup"] { gap: 0.15rem; }
     .st-key-nav div[role="radiogroup"] label {
         background: transparent;
         border: 1px solid transparent;
@@ -106,12 +121,12 @@ st.markdown("""
         width: 100%;
     }
     .st-key-nav div[role="radiogroup"] label:hover {
-        background: var(--c-surface-2);
-        border-color: var(--c-border);
+        background: rgba(0,0,0,0.035);
     }
     .st-key-nav div[role="radiogroup"] label[data-checked="true"] {
-        background: rgba(99,102,241,0.14);
-        border-color: rgba(99,102,241,0.4);
+        background: var(--c-surface);
+        border-color: var(--c-border);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
     .sidebar-footer {
         border-top: 1px solid var(--c-border);
@@ -119,7 +134,7 @@ st.markdown("""
         margin-top: 0.5rem;
         color: var(--c-text-muted);
         font-size: 0.78rem;
-        line-height: 1.6;
+        line-height: 1.7;
     }
 
     /* ---- Bordered containers (st.container(border=True)) as real cards ---- */
@@ -127,32 +142,38 @@ st.markdown("""
         border-radius: var(--radius-lg) !important;
         border-color: var(--c-border) !important;
         background: var(--c-surface);
+        box-shadow: 0 1px 3px rgba(43,40,35,0.04);
     }
 
     /* ---- KPI tiles ---- */
     .kpi-label { color: var(--c-text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
-    .kpi-value { font-size: 1.8rem; font-weight: 800; color: var(--c-text); margin-top: 0.2rem; line-height: 1.1; }
-    .kpi-sub { color: var(--c-text-muted); font-size: 0.76rem; margin-top: 0.25rem; }
+    .kpi-value { font-family: 'Source Serif 4', serif; font-size: 1.75rem; font-weight: 600; color: var(--c-text); margin-top: 0.25rem; line-height: 1.1; }
+    .kpi-sub { color: var(--c-text-muted); font-size: 0.76rem; margin-top: 0.3rem; }
 
     /* ---- Verdict / probability badges ---- */
     .prob-badge-high, .prob-badge-med, .prob-badge-low {
-        display: inline-block; padding: 0.45rem 1rem; border-radius: var(--radius-md); font-weight: 700; font-size: 0.95rem;
+        display: inline-block; padding: 0.4rem 0.9rem; border-radius: var(--radius-md); font-weight: 600; font-size: 0.92rem;
     }
-    .prob-badge-high { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .prob-badge-med  { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
-    .prob-badge-low  { background: rgba(239, 68, 68, 0.15);  color: #F87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .prob-badge-high { background: rgba(79, 121, 66, 0.1);  color: #3C5E33; border: 1px solid rgba(79, 121, 66, 0.25); }
+    .prob-badge-med  { background: rgba(184, 121, 58, 0.1); color: #8F5B26; border: 1px solid rgba(184, 121, 58, 0.25); }
+    .prob-badge-low  { background: rgba(191, 64, 64, 0.1);  color: #943030; border: 1px solid rgba(191, 64, 64, 0.25); }
 
     /* ---- Recommendation cards ---- */
     .rec-card {
         padding: 1rem 1.2rem;
         border-radius: var(--radius-md);
         margin-bottom: 0.75rem;
-        border-left: 4px solid;
+        border-left: 3px solid;
         background: var(--c-surface-2);
     }
     .rec-high   { border-left-color: var(--c-danger); }
     .rec-medium { border-left-color: var(--c-warning); }
-    .rec-low    { border-left-color: #3B82F6; }
+    .rec-low    { border-left-color: #4A6FA5; }
+
+    /* ---- Settings page ---- */
+    .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.4rem; }
+    .status-set { background: var(--c-success); }
+    .status-unset { background: var(--c-text-muted); opacity: 0.5; }
 
     /* ---- Footer ---- */
     .app-footer {
@@ -173,9 +194,14 @@ st.markdown("""
 def render_topbar(crumb: str):
     st.markdown(f"""
     <div class="topbar">
-        <div class="brand-mark">C</div>
-        <span class="brand-text">Citelytics</span>
-        <span class="crumb">/ {crumb}</span>
+        <div class="topbar-left">
+            <span class="brand-text">Citelytics</span>
+            <span class="crumb">/ {crumb}</span>
+        </div>
+        <div class="topbar-links">
+            <a href="{GITHUB_URL}" target="_blank">GitHub</a>
+            <a href="{DEPLOY_URL}" target="_blank">Deploy</a>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -189,9 +215,9 @@ def page_header(eyebrow: str, title: str, subtitle: str = ""):
 
 
 def render_footer():
-    st.markdown("""
+    st.markdown(f"""
     <div class="app-footer">
-        <a href="https://github.com/StephinArnold/GEO---Demo">Source on GitHub</a>
+        <a href="{GITHUB_URL}">Source on GitHub</a> &middot; <a href="{DEPLOY_URL}">Deploy your own</a>
     </div>
     """, unsafe_allow_html=True)
 
@@ -219,6 +245,14 @@ except Exception as e:
 
 ARTIFACTS_DIR = os.path.join(CURRENT_DIR, "artifacts")
 DATA_DIR = os.path.join(CURRENT_DIR, "data")
+ENV_PATH = os.path.join(CURRENT_DIR, ".env")
+
+
+def is_key_configured(name: str) -> bool:
+    """Checks only whether a key is present and non-empty — never reads or
+    returns the value itself, so it can be shown in the UI safely."""
+    value = os.environ.get(name) or dotenv_values(ENV_PATH).get(name)
+    return bool(value and value.strip())
 
 
 def load_json_or_none(path):
@@ -320,8 +354,7 @@ SAMPLE_HTML_FIXTURES = {
 with st.sidebar:
     st.markdown("""
     <div class="sidebar-brand">
-        <div class="brand-mark" style="width:30px;height:30px;font-size:0.95rem;">C</div>
-        <span class="brand-text" style="font-size:1.1rem;">Citelytics</span>
+        <span class="brand-text" style="font-size:1.2rem;">Citelytics</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -332,15 +365,16 @@ with st.sidebar:
                 "Analyze",
                 "Explainability",
                 "Model Card",
+                "Settings",
             ],
             index=0,
             label_visibility="collapsed",
         )
 
-    st.markdown("""
+    st.markdown(f"""
     <div class="sidebar-footer">
         Stephin Arnold &middot; CSD 415<br/>
-        <a href="https://github.com/StephinArnold/GEO---Demo">GitHub</a>
+        <a href="{GITHUB_URL}">GitHub</a> &middot; <a href="{DEPLOY_URL}">Deploy</a>
     </div>
     """, unsafe_allow_html=True)
 
@@ -717,5 +751,82 @@ elif nav_choice == "Model Card":
           frequently; this model would need periodic retraining on fresh data
           to stay relevant.
         """)
+
+    render_footer()
+
+# ─────────────────────────────────────────────────────────────
+# PAGE: SETTINGS
+# ─────────────────────────────────────────────────────────────
+elif nav_choice == "Settings":
+    render_topbar("Settings")
+    page_header(
+        "Configuration",
+        "API keys & pipeline",
+        "Keys are written only to a local .env file, which is gitignored and never "
+        "committed, logged, or displayed back once saved.",
+    )
+
+    with st.container(border=True):
+        st.subheader("API keys")
+
+        perplexity_set = is_key_configured("PERPLEXITY_API_KEY")
+        serpapi_set = is_key_configured("SERPAPI_KEY")
+
+        dot_class = lambda ok: "status-set" if ok else "status-unset"
+        st.markdown(
+            f'<span class="status-dot {dot_class(perplexity_set)}"></span>'
+            f'PERPLEXITY_API_KEY — {"configured" if perplexity_set else "not configured"} '
+            f'<span style="color: var(--c-text-muted); font-size: 0.85rem;">(required to collect real citations)</span>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f'<span class="status-dot {dot_class(serpapi_set)}"></span>'
+            f'SERPAPI_KEY — {"configured" if serpapi_set else "not configured"} '
+            f'<span style="color: var(--c-text-muted); font-size: 0.85rem;">(optional — improves the candidate-page pool)</span>',
+            unsafe_allow_html=True,
+        )
+
+        st.markdown("")
+        with st.form("api_keys_form", clear_on_submit=True):
+            new_perplexity = st.text_input(
+                "PERPLEXITY_API_KEY", type="password",
+                placeholder="pplx-..." if not perplexity_set else "Already set — leave blank to keep it",
+            )
+            new_serpapi = st.text_input(
+                "SERPAPI_KEY", type="password",
+                placeholder="Already set — leave blank to keep it" if serpapi_set else "optional",
+            )
+            saved = st.form_submit_button("Save")
+
+        if saved:
+            os.makedirs(os.path.dirname(ENV_PATH) or ".", exist_ok=True)
+            if not os.path.exists(ENV_PATH):
+                open(ENV_PATH, "a").close()
+            changed = []
+            if new_perplexity.strip():
+                set_key(ENV_PATH, "PERPLEXITY_API_KEY", new_perplexity.strip())
+                changed.append("PERPLEXITY_API_KEY")
+            if new_serpapi.strip():
+                set_key(ENV_PATH, "SERPAPI_KEY", new_serpapi.strip())
+                changed.append("SERPAPI_KEY")
+            if changed:
+                st.success(f"Saved to .env: {', '.join(changed)}. Restart the app to pick up new keys in this session.")
+            else:
+                st.info("No new values entered — nothing changed.")
+
+    with st.container(border=True):
+        st.subheader("Real-data pilot pipeline")
+        st.markdown("""
+        Collecting real citation data costs money (paid APIs) and is never
+        triggered automatically from this app — that's a deliberate safety
+        choice, not a missing feature. Run it yourself from a terminal once
+        your keys above are saved:
+        """)
+        st.code(
+            "python -m pipeline.run_all --dry-run      # see the plan and cost estimate, no calls made\n"
+            "python -m pipeline.run_all --yes --max-calls 60   # real run, capped",
+            language="bash",
+        )
+        st.caption("See docs/ETHICS_AND_LIMITS.md and docs/DATA_CARD.md for the full cost-safety and labeling rules.")
 
     render_footer()
