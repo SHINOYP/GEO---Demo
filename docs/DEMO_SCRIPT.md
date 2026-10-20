@@ -17,23 +17,23 @@ this note.
    whether a generative AI answer engine — Perplexity, ChatGPT-style search
    — is likely to cite a given webpage, and explains why using SHAP."*
 
-2. **Analyze Webpage page.** Pick a real, fast-loading public URL you trust
-   (e.g. a Wikipedia article) and click **Analyze Citation Likelihood**. Say:
+2. **Analyze page.** Pick a real, fast-loading public URL you trust
+   (e.g. a Wikipedia article) and click **Analyze**. Say:
    *"This is a live scrape — if it fails, the app tells you exactly why
    instead of silently making something up."* Point at the probability,
-   the Citation Tier badge, and the disclaimer caption under the button.
+   the Citation Tier tile, and the disclaimer caption under the button.
 
-3. **Demo preset fallback.** Select "🏥 Apex Dental Clinic" from the
-   dropdown. Point at the **DEMO FIXTURE** warning banner that appears in
+3. **Demo preset fallback.** Select "Apex Dental Clinic" from the
+   dropdown. Point at the **Demo fixture** warning banner that appears in
    the results — say: *"We only ever show this banner when a preset is
    explicitly chosen; a real URL that fails to scrape shows an error, not
    a fake result."*
 
-4. **SHAP tab.** Point at the green/red bars. Say: *"SHAP explains this
-   XGBoost classifier's own prediction, feature by feature — it does not
+4. **"Why this score" tab.** Point at the green/red bars. Say: *"SHAP explains
+   this XGBoost classifier's own prediction, feature by feature — it does not
    explain how the underlying LLM decided what to cite."*
 
-5. **Model Card / Limitations page.** Point at the dataset size, the label
+5. **Model Card page.** Point at the dataset size, the label
    rule, and the limitations list. Say: *"We're upfront that this is a
    small pilot and the result is correlational, not causal."* If
    `artifacts/metrics.json` doesn't exist yet, the page will honestly say
