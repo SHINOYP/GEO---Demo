@@ -1,0 +1,60 @@
+# Data Card — Real-Data Pilot
+
+## Queries
+
+`pipeline/queries.csv` — 20 realistic local-business queries, 5 per category
+across 4 categories: gyms (Kerala cities), chauffeur/limo services (GCC
+cities), kayaking/tour operators, dental clinics. Editable by the team.
+
+## Collection
+
+1. **Citations** (`pipeline/collect_citations.py`): for each query, call
+   Perplexity's search-enabled chat completions API (`model="sonar"`).
+   Default 1 run per query; `--repeats N` runs it N times per query to
+   measure label stability (citations are not always identical run to run).
+   Raw JSON responses are cached per `(query, repeat)` under
+   `data/raw/perplexity/`.
+2. **Candidates** (`pipeline/collect_candidates.py`): for the same queries,
+   get the top 10-15 organic results via SerpAPI if `SERPAPI_KEY` is set.
+   **If no SerpAPI key is configured**, the candidate pool falls back to the
+   `search_results` already embedded in the cached Perplexity response —
+   this is a real limitation: that pool is narrower and biased toward
+   whatever the answer engine itself already surfaced, not an independent
+   organic-ranking sample.
+
+## Label rule
+
+For a given query:
+
+- `label = 1` if the page's **canonical URL** (scheme/host lowercased,
+  trailing slash stripped, tracking query params like `utm_*`/`gclid`
+  removed, fragment dropped — see `pipeline/common.py: canonicalize_url`)
+  appears among that query's cited URLs returned by Perplexity.
+- `label = 0` otherwise.
+- A secondary analysis may instead match on **domain** rather than exact
+  URL, since the same business's citation sometimes lands on a slightly
+  different path.
+
+**Candidate pool** for a query = `cited_urls ∪ organic_results`. Every URL
+in that union gets one row in `data/dataset.csv` (scraped, feature-extracted,
+labeled), so the dataset contains both positive (cited) and negative
+(not-cited-but-ranking) examples per query.
+
+## Known limitations of this label rule
+
+- **Negatives are not a random sample of the web.** They are pages that
+  already rank organically (or were otherwise surfaced by the answer
+  engine) for the query — i.e. already "good enough" pages by classical
+  search standards. The model therefore learns to distinguish *cited vs.
+  not-cited among already-competitive pages*, not *citable vs. the entire
+  web*.
+- **Citation is non-deterministic.** Re-running the same query can return a
+  different citation set. A single observation per query (the default,
+  `--repeats 1`) is a noisy label; `--repeats 3+` measures this noise
+  directly by checking how often the same URL is cited across repeats.
+- **Domain-level vs URL-level matching** can disagree (e.g. a business's
+  homepage is cited in one run, a specific service page in another) —
+  reported separately as a sensitivity check in `artifacts/metrics.json`.
+- **Small n.** Twenty queries is a pilot, not a representative sample of
+  local-business search behavior; see `data/pilot_stats.json` for the
+  actual counts and `underpowered` flag.

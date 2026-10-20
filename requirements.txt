@@ -9,6 +9,10 @@ lxml>=5.2.0
 pandas>=2.2.0
 numpy>=1.26.0
 altair>=5.0.0
-matplotlib>=3.8.0
 reportlab>=4.2.0
 joblib>=1.4.0
+
+# Real-data pilot pipeline (pipeline/) and tests (CSD 415 final review work)
+python-dotenv>=1.0.0
+pytest>=8.0.0
+tldextract>=5.1.0
