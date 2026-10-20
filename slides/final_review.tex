@@ -1,0 +1,254 @@
+% ============================================================
+% CSD 415 Project Phase I Final Review — Beamer slide deck
+% Team: Shino (76), Stephin Arnold Raj S (66), Simranjeet Kour (56)
+% Group 18, NSS College of Engineering | Guide: Reshma Sudhakaran
+%
+% HOW TO COMPILE
+%   Normal deck (for presenting):
+%       pdflatex final_review.tex
+%       pdflatex final_review.tex   (run twice for TOC/refs to settle)
+%
+%   Handout for the guide's signature page (4 slides per page, no
+%   animations/overlays). Either:
+%     (a) pass the class option directly:
+%         pdflatex "\PassOptionsToClass{handout}{beamer}\input{final_review.tex}"
+%     (b) or compile the companion file final_review_handout.tex
+%         (same content, \documentclass[handout]{beamer} + pgfpages
+%          4-up layout baked in) — see that file's header comment.
+%
+% HONESTY NOTE: every number on these slides must trace back to a file
+% in this repo. Where real pilot/model numbers do not exist yet (data
+% collection is pending PERPLEXITY_API_KEY — see STATUS.md), the slide
+% says "NOT YET MEASURED (pending pilot run)" instead of a fabricated
+% figure. See docs/SLIDE_NUMBERS.md for the slide-by-slide source map.
+% ============================================================
+
+\documentclass[aspectratio=169]{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+% ---- Custom navy / accent palette ----
+\definecolor{navyPrimary}{RGB}{30,27,75}
+\definecolor{navySecondary}{RGB}{49,46,129}
+\definecolor{accentIndigo}{RGB}{67,56,202}
+\definecolor{accentGreen}{RGB}{16,185,129}
+\definecolor{accentRed}{RGB}{239,68,68}
+\definecolor{lightBg}{RGB}{248,250,252}
+
+\setbeamercolor{structure}{fg=navySecondary}
+\setbeamercolor{palette primary}{bg=navyPrimary,fg=white}
+\setbeamercolor{palette secondary}{bg=navySecondary,fg=white}
+\setbeamercolor{palette tertiary}{bg=accentIndigo,fg=white}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{frametitle}{bg=navyPrimary,fg=white}
+\setbeamercolor{background canvas}{bg=lightBg}
+\setbeamercolor{block title}{bg=accentIndigo,fg=white}
+\setbeamercolor{block body}{bg=white,fg=black}
+
+% Larger body font, consistent with "~22pt" guidance
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamerfont{normal text}{size=\large}
+\setbeamerfont{itemize/enumerate body}{size=\large}
+
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\title[Citation Likelihood Prediction]{Citation Likelihood Prediction\\in Generative Answer Engines}
+\subtitle{Explainable ML Approach for Local Business Content}
+\author{Shino (76) \quad Stephin Arnold Raj S (66) \quad Simranjeet Kour (56)}
+\institute{CSD 415 Project Phase I\\Group 18, NSS College of Engineering\\Guide: Reshma Sudhakaran}
+\date{22 October 2026}
+
+\begin{document}
+
+% ---------------- Title ----------------
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% ---------------- Existing Methodology in detail ----------------
+\begin{frame}{Existing Methodology (1/2): Post-hoc Trackers \& Checklists}
+  \begin{itemize}
+    \item \textbf{Post-hoc AI-visibility trackers} (e.g.\ the open-source Getcito/Elmo-style tool): periodically query answer engines and report \emph{whether} your page was cited.
+    \begin{itemize}
+      \item Tells you the outcome \emph{after} publication — no prediction before you write.
+      \item No explanation of \emph{why} a page was or wasn't cited.
+    \end{itemize}
+    \item \textbf{Static rule / checklist auditors}: score a page against a fixed list (schema present? FAQ present? word count?).
+    \begin{itemize}
+      \item Transparent, but every rule has equal weight — no learning from outcomes.
+      \item Cannot say \emph{how likely} citation is, only \emph{how many boxes are ticked}.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Existing Methodology (2/2): Classical SEO Factor Studies}
+  \begin{itemize}
+    \item \textbf{Bataineh et al.\ (2025), \emph{Cogent Business \& Management}}: empirical PLS-SEM study — content quality, technical SEO, backlinks, and mobile-friendliness predict search \emph{rankings}, mediated by user engagement.
+    \item Strong evidence for classical search ranking, but:
+    \begin{itemize}
+      \item Targets the 10-blue-links ranking problem, not AI-generated-answer citation.
+      \item Correlational, structural-equation based — not a page-level, explainable, per-URL predictive model.
+    \end{itemize}
+    \item \textbf{Gap}: no existing tool learns a predictive, explainable model of \emph{citation} likelihood specifically for generative answer engines.
+  \end{itemize}
+\end{frame}
+
+% ---------------- Need for Proposed Methodology ----------------
+\begin{frame}{Need for Proposed Methodology}
+  \begin{itemize}
+    \item Generative answer engines (Perplexity, ChatGPT-style search) synthesize one answer and cite only \textbf{1--3} sources — very different from ranking 10 links.
+    \item Businesses need to know \emph{before publishing} how citable a page is, and \emph{which} features to fix.
+    \item Our approach: a \textbf{learned, explainable, pre-publication predictor} —
+    \begin{itemize}
+      \item XGBoost classifier trained on real citation outcomes (not a checklist).
+      \item SHAP explains \emph{this classifier's} decision per page, per feature.
+    \end{itemize}
+    \item Positioned between post-hoc trackers (outcome only) and static checklists (no learning).
+  \end{itemize}
+\end{frame}
+
+% ---------------- Datasets ----------------
+\begin{frame}{Datasets}
+  \begin{itemize}
+    \item \textbf{Pilot design}: 20 real local-business search queries, 5 per category across 4 categories:
+    \begin{itemize}
+      \item Gyms (Kerala cities) \quad\textbullet\quad Chauffeur/limo services (GCC cities)
+      \item Kayaking/tour operators \quad\textbullet\quad Dental clinics
+    \end{itemize}
+    \item \textbf{Label rule}: a page's canonical URL is labeled \texttt{1} if cited by Perplexity's \texttt{sonar} model for that query, else \texttt{0}. Candidate pool = cited URLs $\cup$ organic results.
+    \item \textbf{Status}: collection pipeline fully built (\texttt{pipeline/collect\_citations.py}, \texttt{collect\_candidates.py}, \texttt{build\_dataset.py}) — \alert{real data collection is pending API key provisioning (NOT YET MEASURED)}.
+    \item Known limitation: negatives are drawn only from already-ranking pages, not a random web sample.
+  \end{itemize}
+\end{frame}
+
+% ---------------- Technology/Tools ----------------
+\begin{frame}{Technology / Tools Specifications}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{Collection \& Scraping}
+      \begin{itemize}
+        \item Python 3
+        \item \texttt{requests}, \texttt{BeautifulSoup4}, \texttt{lxml}
+        \item Perplexity API (\texttt{sonar}), SerpAPI (optional)
+      \end{itemize}
+      \textbf{App}
+      \begin{itemize}
+        \item Streamlit (interactive UI)
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \textbf{Modeling \& XAI}
+      \begin{itemize}
+        \item scikit-learn (baselines, GroupKFold)
+        \item XGBoost (final classifier)
+        \item SHAP (TreeExplainer)
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vspace{0.3cm}
+  \small\textit{Note: the repository also contains an unrelated open-source project (``Getcito'', forked from ``Elmo'', MIT licensed) that this project is layered on top of at the repo-root level only. That code is cited/attributed, not our work.}
+\end{frame}
+
+% ---------------- Data Collection / Partial Implementation ----------------
+\begin{frame}{Data Collection / Partial Implementation}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{tikzpicture}[node distance=0.4cm, every node/.style={font=\small}]
+        \node[draw, fill=navySecondary, text=white, rounded corners, text width=3.2cm, align=center] (q) {queries.csv (20 queries)};
+        \node[draw, fill=accentIndigo, text=white, rounded corners, text width=3.2cm, align=center, below=of q] (cite) {collect\_citations.py (Perplexity)};
+        \node[draw, fill=accentIndigo, text=white, rounded corners, text width=3.2cm, align=center, below=of cite] (cand) {collect\_candidates.py (SerpAPI / fallback)};
+        \node[draw, fill=accentIndigo, text=white, rounded corners, text width=3.2cm, align=center, below=of cand] (build) {build\_dataset.py (scrape + features + label)};
+        \node[draw, fill=accentGreen, text=white, rounded corners, text width=3.2cm, align=center, below=of build] (eval) {evaluate.py (metrics, SHAP)};
+        \draw[-{Latex}] (q) -- (cite);
+        \draw[-{Latex}] (cite) -- (cand);
+        \draw[-{Latex}] (cand) -- (build);
+        \draw[-{Latex}] (build) -- (eval);
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{itemize}
+        \item All pipeline stages implemented and dry-run tested.
+        \item Cost-safety: \texttt{--dry-run}, \texttt{--max-calls} cap, on-disk caching, retry with backoff on every API call.
+        \item Real pilot statistics: \textbf{NOT YET MEASURED} (pending API keys).
+        \item \textit{[TODO (team): insert Streamlit app screenshot here]}
+        \item \textit{[TODO (team): insert SHAP explanation screenshot here]}
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ---------------- Results so far ----------------
+\begin{frame}{Results So Far — Evaluation Plan}
+  \alert{Real pilot data collection has not yet run; no outcome metrics exist yet.} The evaluation script (\texttt{pipeline/evaluate.py}) is built and will report:
+  \begin{itemize}
+    \item \textbf{Primary split}: GroupKFold by domain (k=5) — no site appears in both train and test.
+    \item \textbf{Models compared}: rule-based checklist baseline, logistic regression, XGBoost (with \texttt{scale\_pos\_weight} for imbalance).
+    \item \textbf{Metrics}: ROC-AUC, PR-AUC, precision/recall/F1 $\pm$ std across folds, confusion matrix.
+    \item \textbf{Sanity checks}: label-shuffle control (expect AUC $\approx 0.5$), feature-group ablation, domain-type leakage check, comparison against the original (synthetic-trained) model.
+    \item \textbf{Explainability}: SHAP global summary + 3 local waterfalls; stability measured via rank correlation across folds.
+  \end{itemize}
+  \small All figures above are placeholders for the methodology, not results — see \texttt{artifacts/metrics.json} (not yet generated) for the real numbers once available.
+\end{frame}
+
+% ---------------- Conclusion & Future Work ----------------
+\begin{frame}{Conclusion \& Future Work}
+  \begin{itemize}
+    \item Reframed GEO as a \textbf{learned, explainable, pre-publication prediction problem}, distinct from post-hoc trackers and static checklists.
+    \item Built an honest, reproducible pipeline: query design $\to$ citation/candidate collection $\to$ labeled dataset $\to$ cross-validated evaluation $\to$ SHAP explanations.
+    \item \textbf{Future work}:
+    \begin{itemize}
+      \item Scale to more queries, more cities, and multiple answer engines.
+      \item Repeat queries (\texttt{--repeats}) to directly measure citation-label stability.
+      \item Establish a retraining cadence as engine behavior drifts over time.
+      \item Expand beyond local-business categories to test generality.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+% ---------------- Justification of Timeline ----------------
+\begin{frame}{Justification of Timeline}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{Semester 7 (delivered)}
+      \begin{itemize}
+        \item Codebase audit \& honesty fixes
+        \item Real-data pilot pipeline (collection, dataset build, evaluation script)
+        \item Ethics/cost-safety guardrails
+        \item Documentation \& viva prep
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \textbf{Semester 8 (planned)}
+      \begin{itemize}
+        \item Real data collection once API access is finalized
+        \item Full cross-validated evaluation \& SHAP analysis
+        \item App polish, offline demo snapshots
+        \item Final report, diary, references
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ---------------- References ----------------
+\begin{frame}{References}
+  \begin{itemize}
+    \item Bataineh, A.\ et al.\ (2025). Empirical study of SEO ranking factors via PLS-SEM. \emph{Cogent Business \& Management}.
+    \item Additional references: see \texttt{docs/REFERENCES\_TODO.md} — candidate journal references identified, impact-factor verification \textbf{TBD (team)} before the final report.
+  \end{itemize}
+\end{frame}
+
+% ---------------- Thank you ----------------
+\begin{frame}
+  \centering
+  {\Huge \color{navyPrimary} \textbf{Thank You}}\\[0.5cm]
+  {\large Questions?}
+\end{frame}
+
+\end{document}

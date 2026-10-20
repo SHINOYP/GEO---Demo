@@ -1,0 +1,15 @@
+% Handout build of final_review.tex for the guide's signature page.
+% 4 slides per page, no beamer overlays/animations.
+% Compile with: pdflatex final_review_handout.tex
+%
+% This wraps final_review.tex with the `handout` beamer class option and
+% a 4-up page layout, so the actual slide content lives in ONE file
+% (final_review.tex) and never drifts out of sync. \PassOptionsToClass
+% queues the `handout` option for beamer before it's loaded inside the
+% \input; pgfpages's layout call is deferred to \AtBeginDocument so it
+% runs after beamer (loaded via the \input below) is ready.
+
+\PassOptionsToClass{handout}{beamer}
+\RequirePackage{pgfpages}
+\AtBeginDocument{\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm,landscape]}
+\input{final_review.tex}
