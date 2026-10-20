@@ -52,145 +52,159 @@ DEPLOY_URL = (
 
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
     :root {
-        --c-bg: #FAF9F5;
-        --c-surface: #FFFFFF;
-        --c-surface-2: #F0EEE6;
-        --c-border: #E6E3D8;
-        --c-text: #2B2823;
-        --c-text-muted: #7A7566;
-        --c-primary: #C2583F;
-        --c-primary-dark: #A3452F;
-        --c-success: #4F7942;
-        --c-warning: #B8793A;
-        --c-danger: #BF4040;
-        --radius-lg: 16px;
-        --radius-md: 10px;
+        --bg: #FFFFFF;
+        --muted: #F4F4F5;
+        --muted-foreground: #71717A;
+        --border: #E4E4E7;
+        --foreground: #18181B;
+        --primary: #18181B;
+        --primary-foreground: #FAFAFA;
+        --accent: #2563EB;
+        --success: #16A34A;
+        --success-bg: #F0FDF4;
+        --warning: #B45309;
+        --warning-bg: #FFFBEB;
+        --danger: #DC2626;
+        --danger-bg: #FEF2F2;
+        --radius: 8px;
     }
 
-    html, body, [class*="css"] { font-family: 'Inter', sans-serif; color: var(--c-text); }
-    .stApp { background: var(--c-bg); }
+    html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; color: var(--foreground); }
+    .stApp { background: var(--bg); }
 
     /* We render our own topbar (brand, crumb, GitHub/Deploy links) below —
        Streamlit's built-in header toolbar would otherwise overlap it. */
     header[data-testid="stHeader"] { display: none; }
     div[data-testid="stDecoration"] { display: none; }
 
-    .block-container { padding-top: 2rem; padding-bottom: 3rem; max-width: 980px; }
+    .block-container { padding-top: 2rem; padding-bottom: 3rem; max-width: 900px; }
 
     /* ---- Topbar ---- */
     .topbar {
-        display: flex; align-items: baseline; justify-content: space-between;
-        padding: 0.2rem 0 1.1rem 0; margin-bottom: 1.6rem;
-        border-bottom: 1px solid var(--c-border);
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 0 1rem 0; margin-bottom: 1.75rem;
+        border-bottom: 1px solid var(--border);
     }
-    .topbar-left { display: flex; align-items: baseline; gap: 0.5rem; }
-    .brand-text {
-        font-family: 'Source Serif 4', serif; font-weight: 600; font-size: 1.15rem;
-        color: var(--c-text); letter-spacing: -0.01em;
-    }
-    .crumb { color: var(--c-text-muted); font-size: 0.9rem; }
+    .topbar-left { display: flex; align-items: center; gap: 0.5rem; }
+    .brand-text { font-weight: 600; font-size: 0.95rem; color: var(--foreground); }
+    .crumb { color: var(--muted-foreground); font-size: 0.9rem; }
     .topbar-links { display: flex; gap: 1.25rem; }
     .topbar-links a {
-        color: var(--c-text-muted); font-size: 0.85rem; font-weight: 500;
-        text-decoration: none; border-bottom: 1px solid transparent;
+        color: var(--muted-foreground); font-size: 0.85rem; font-weight: 500;
+        text-decoration: none;
     }
-    .topbar-links a:hover { color: var(--c-text); border-bottom-color: var(--c-text-muted); }
+    .topbar-links a:hover { color: var(--foreground); }
 
     /* ---- Page header ---- */
-    .page-eyebrow {
-        color: var(--c-primary); font-size: 0.78rem; font-weight: 600;
-        text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem;
+    .page-badge {
+        display: inline-block; background: var(--muted); color: var(--muted-foreground);
+        font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.6rem;
+        border-radius: 9999px; border: 1px solid var(--border); margin-bottom: 0.75rem;
     }
     .page-title {
-        font-family: 'Source Serif 4', serif; font-size: 2rem; font-weight: 600;
-        color: var(--c-text); margin: 0 0 0.5rem 0; letter-spacing: -0.01em; line-height: 1.2;
+        font-size: 1.6rem; font-weight: 600; color: var(--foreground);
+        margin: 0 0 0.4rem 0; letter-spacing: -0.02em; line-height: 1.3;
     }
-    .page-sub { color: var(--c-text-muted); font-size: 1rem; margin: 0 0 1.5rem 0; max-width: 620px; line-height: 1.5; }
+    .page-sub { color: var(--muted-foreground); font-size: 0.92rem; margin: 0 0 1.5rem 0; max-width: 620px; line-height: 1.55; }
 
     /* ---- Sidebar nav ---- */
     section[data-testid="stSidebar"] {
-        background: var(--c-surface-2);
-        border-right: 1px solid var(--c-border);
+        background: var(--muted);
+        border-right: 1px solid var(--border);
     }
-    .sidebar-brand { margin-bottom: 1.6rem; }
-    .st-key-nav div[role="radiogroup"] { gap: 0.15rem; }
+    .sidebar-brand { margin-bottom: 1.5rem; font-weight: 600; font-size: 0.95rem; }
+    .st-key-nav div[role="radiogroup"] { gap: 0.1rem; }
     .st-key-nav div[role="radiogroup"] label {
         background: transparent;
         border: 1px solid transparent;
-        border-radius: var(--radius-md);
-        padding: 0.5rem 0.75rem !important;
-        transition: background 0.15s ease, border-color 0.15s ease;
+        border-radius: var(--radius);
+        padding: 0.4rem 0.65rem !important;
+        transition: background 0.1s ease;
         width: 100%;
+        font-size: 0.9rem;
     }
-    .st-key-nav div[role="radiogroup"] label:hover {
-        background: rgba(0,0,0,0.035);
-    }
+    .st-key-nav div[role="radiogroup"] label:hover { background: rgba(0,0,0,0.04); }
     .st-key-nav div[role="radiogroup"] label[data-checked="true"] {
-        background: var(--c-surface);
-        border-color: var(--c-border);
-        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        background: var(--bg);
+        border-color: var(--border);
     }
     .sidebar-footer {
-        border-top: 1px solid var(--c-border);
-        padding-top: 0.9rem;
+        border-top: 1px solid var(--border);
+        padding-top: 0.85rem;
         margin-top: 0.5rem;
-        color: var(--c-text-muted);
-        font-size: 0.78rem;
+        color: var(--muted-foreground);
+        font-size: 0.76rem;
         line-height: 1.7;
     }
+    .sidebar-footer a { color: var(--muted-foreground); }
 
     /* ---- Bordered containers (st.container(border=True)) as real cards ---- */
     div[data-testid="stVerticalBlockBorderWrapper"] {
-        border-radius: var(--radius-lg) !important;
-        border-color: var(--c-border) !important;
-        background: var(--c-surface);
-        box-shadow: 0 1px 3px rgba(43,40,35,0.04);
+        border-radius: var(--radius) !important;
+        border-color: var(--border) !important;
+        background: var(--bg);
+    }
+
+    /* ---- Inputs ---- */
+    div[data-testid="stTextInput"] input, div[data-baseweb="select"] > div {
+        border-color: var(--border) !important;
+        border-radius: var(--radius) !important;
+        background: var(--bg) !important;
     }
 
     /* ---- KPI tiles ---- */
-    .kpi-label { color: var(--c-text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
-    .kpi-value { font-family: 'Source Serif 4', serif; font-size: 1.75rem; font-weight: 600; color: var(--c-text); margin-top: 0.25rem; line-height: 1.1; }
-    .kpi-sub { color: var(--c-text-muted); font-size: 0.76rem; margin-top: 0.3rem; }
+    .kpi-label { color: var(--muted-foreground); font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+    .kpi-value { font-size: 1.55rem; font-weight: 600; color: var(--foreground); margin-top: 0.3rem; line-height: 1.1; }
+    .kpi-sub { color: var(--muted-foreground); font-size: 0.74rem; margin-top: 0.3rem; }
 
     /* ---- Verdict / probability badges ---- */
     .prob-badge-high, .prob-badge-med, .prob-badge-low {
-        display: inline-block; padding: 0.4rem 0.9rem; border-radius: var(--radius-md); font-weight: 600; font-size: 0.92rem;
+        display: inline-block; padding: 0.3rem 0.75rem; border-radius: 9999px; font-weight: 500; font-size: 0.85rem;
     }
-    .prob-badge-high { background: rgba(79, 121, 66, 0.1);  color: #3C5E33; border: 1px solid rgba(79, 121, 66, 0.25); }
-    .prob-badge-med  { background: rgba(184, 121, 58, 0.1); color: #8F5B26; border: 1px solid rgba(184, 121, 58, 0.25); }
-    .prob-badge-low  { background: rgba(191, 64, 64, 0.1);  color: #943030; border: 1px solid rgba(191, 64, 64, 0.25); }
+    .prob-badge-high { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
+    .prob-badge-med  { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning); }
+    .prob-badge-low  { background: var(--danger-bg);  color: var(--danger);  border: 1px solid var(--danger); }
 
     /* ---- Recommendation cards ---- */
     .rec-card {
-        padding: 1rem 1.2rem;
-        border-radius: var(--radius-md);
-        margin-bottom: 0.75rem;
+        padding: 0.9rem 1.1rem;
+        border-radius: var(--radius);
+        margin-bottom: 0.6rem;
+        border: 1px solid var(--border);
         border-left: 3px solid;
-        background: var(--c-surface-2);
+        background: var(--bg);
     }
-    .rec-high   { border-left-color: var(--c-danger); }
-    .rec-medium { border-left-color: var(--c-warning); }
-    .rec-low    { border-left-color: #4A6FA5; }
+    .rec-high   { border-left-color: var(--danger); }
+    .rec-medium { border-left-color: var(--warning); }
+    .rec-low    { border-left-color: var(--accent); }
 
     /* ---- Settings page ---- */
-    .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.4rem; }
-    .status-set { background: var(--c-success); }
-    .status-unset { background: var(--c-text-muted); opacity: 0.5; }
+    .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 0.4rem; }
+    .status-set { background: var(--success); }
+    .status-unset { background: var(--muted-foreground); opacity: 0.5; }
 
     /* ---- Footer ---- */
     .app-footer {
-        margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--c-border);
-        color: var(--c-text-muted); font-size: 0.78rem;
+        margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
+        color: var(--muted-foreground); font-size: 0.78rem;
     }
-    .app-footer a { color: var(--c-text-muted); }
+    .app-footer a { color: var(--muted-foreground); }
 
     /* ---- Buttons ---- */
     .stButton > button {
-        border-radius: var(--radius-md);
-        font-weight: 600;
+        border-radius: var(--radius);
+        font-weight: 500;
+    }
+    .stButton > button[kind="primary"] {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        border: none;
+    }
+    .stButton > button[kind="primary"]:hover {
+        background: #27272A;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -211,9 +225,9 @@ def render_topbar(crumb: str):
     """, unsafe_allow_html=True)
 
 
-def page_header(eyebrow: str, title: str, subtitle: str = ""):
+def page_header(badge: str, title: str, subtitle: str = ""):
     st.markdown(f"""
-    <div class="page-eyebrow">{eyebrow}</div>
+    <div class="page-badge">{badge}</div>
     <div class="page-title">{title}</div>
     {f'<div class="page-sub">{subtitle}</div>' if subtitle else ''}
     """, unsafe_allow_html=True)
@@ -389,7 +403,7 @@ with st.sidebar:
 if nav_choice == "Analyze":
     render_topbar("Analyze")
     page_header(
-        "Explainable GEO / AEO intelligence",
+        "GEO / AEO",
         "Citation likelihood prediction",
         "Predict how likely a webpage is to be cited by generative AI answer engines (Perplexity, ChatGPT Search, Claude).",
     )
