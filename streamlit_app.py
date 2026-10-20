@@ -16,7 +16,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import altair as alt
-from dotenv import set_key, dotenv_values
 
 # Ensure local backend modules can be imported
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -42,13 +41,8 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────────────────────
-# DESIGN SYSTEM — warm, editorial palette
+# DESIGN SYSTEM
 # ─────────────────────────────────────────────────────────────
-GITHUB_URL = "https://github.com/StephinArnold/GEO---Demo"
-DEPLOY_URL = (
-    "https://share.streamlit.io/deploy?repository=StephinArnold%2FGEO---Demo"
-    "&branch=main&mainModule=streamlit_app.py"
-)
 
 st.markdown("""
 <style>
@@ -84,19 +78,13 @@ st.markdown("""
 
     /* ---- Topbar ---- */
     .topbar {
-        display: flex; align-items: center; justify-content: space-between;
+        display: flex; align-items: center;
         padding: 0 0 1rem 0; margin-bottom: 1.75rem;
         border-bottom: 1px solid var(--border);
     }
     .topbar-left { display: flex; align-items: center; gap: 0.5rem; }
     .brand-text { font-weight: 600; font-size: 0.95rem; color: var(--foreground); }
     .crumb { color: var(--muted-foreground); font-size: 0.9rem; }
-    .topbar-links { display: flex; gap: 1.25rem; }
-    .topbar-links a {
-        color: var(--muted-foreground); font-size: 0.85rem; font-weight: 500;
-        text-decoration: none;
-    }
-    .topbar-links a:hover { color: var(--foreground); }
 
     /* ---- Page header ---- */
     .page-badge {
@@ -181,18 +169,6 @@ st.markdown("""
     .rec-medium { border-left-color: var(--warning); }
     .rec-low    { border-left-color: var(--accent); }
 
-    /* ---- Settings page ---- */
-    .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 0.4rem; }
-    .status-set { background: var(--success); }
-    .status-unset { background: var(--muted-foreground); opacity: 0.5; }
-
-    /* ---- Footer ---- */
-    .app-footer {
-        margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
-        color: var(--muted-foreground); font-size: 0.78rem;
-    }
-    .app-footer a { color: var(--muted-foreground); }
-
     /* ---- Buttons ---- */
     .stButton > button {
         border-radius: var(--radius);
@@ -217,10 +193,6 @@ def render_topbar(crumb: str):
             <span class="brand-text">Citelytics</span>
             <span class="crumb">/ {crumb}</span>
         </div>
-        <div class="topbar-links">
-            <a href="{GITHUB_URL}" target="_blank">GitHub</a>
-            <a href="{DEPLOY_URL}" target="_blank">Deploy</a>
-        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -230,14 +202,6 @@ def page_header(badge: str, title: str, subtitle: str = ""):
     <div class="page-badge">{badge}</div>
     <div class="page-title">{title}</div>
     {f'<div class="page-sub">{subtitle}</div>' if subtitle else ''}
-    """, unsafe_allow_html=True)
-
-
-def render_footer():
-    st.markdown(f"""
-    <div class="app-footer">
-        <a href="{GITHUB_URL}">Source on GitHub</a> &middot; <a href="{DEPLOY_URL}">Deploy your own</a>
-    </div>
     """, unsafe_allow_html=True)
 
 
@@ -264,14 +228,6 @@ except Exception as e:
 
 ARTIFACTS_DIR = os.path.join(CURRENT_DIR, "artifacts")
 DATA_DIR = os.path.join(CURRENT_DIR, "data")
-ENV_PATH = os.path.join(CURRENT_DIR, ".env")
-
-
-def is_key_configured(name: str) -> bool:
-    """Checks only whether a key is present and non-empty — never reads or
-    returns the value itself, so it can be shown in the UI safely."""
-    value = os.environ.get(name) or dotenv_values(ENV_PATH).get(name)
-    return bool(value and value.strip())
 
 
 def load_json_or_none(path):
@@ -384,16 +340,14 @@ with st.sidebar:
                 "Analyze",
                 "Explainability",
                 "Model Card",
-                "Settings",
             ],
             index=0,
             label_visibility="collapsed",
         )
 
-    st.markdown(f"""
+    st.markdown("""
     <div class="sidebar-footer">
-        Stephin Arnold &middot; CSD 415<br/>
-        <a href="{GITHUB_URL}">GitHub</a> &middot; <a href="{DEPLOY_URL}">Deploy</a>
+        Stephin Arnold &middot; CSD 415
     </div>
     """, unsafe_allow_html=True)
 
@@ -642,7 +596,6 @@ if nav_choice == "Analyze":
             except Exception as e:
                 st.error(f"Could not generate PDF: {e}")
 
-    render_footer()
 
 # ─────────────────────────────────────────────────────────────
 # PAGE 2: MODEL ARCHITECTURE & XAI
@@ -702,7 +655,6 @@ elif nav_choice == "Explainability":
         - **Local authority:** contact phone, address, operating hours, review count.
         """)
 
-    render_footer()
 
 # ─────────────────────────────────────────────────────────────
 # PAGE: MODEL CARD / LIMITATIONS
@@ -771,81 +723,3 @@ elif nav_choice == "Model Card":
           to stay relevant.
         """)
 
-    render_footer()
-
-# ─────────────────────────────────────────────────────────────
-# PAGE: SETTINGS
-# ─────────────────────────────────────────────────────────────
-elif nav_choice == "Settings":
-    render_topbar("Settings")
-    page_header(
-        "Configuration",
-        "API keys & pipeline",
-        "Keys are written only to a local .env file, which is gitignored and never "
-        "committed, logged, or displayed back once saved.",
-    )
-
-    with st.container(border=True):
-        st.subheader("API keys")
-
-        perplexity_set = is_key_configured("PERPLEXITY_API_KEY")
-        serpapi_set = is_key_configured("SERPAPI_KEY")
-
-        dot_class = lambda ok: "status-set" if ok else "status-unset"
-        st.markdown(
-            f'<span class="status-dot {dot_class(perplexity_set)}"></span>'
-            f'PERPLEXITY_API_KEY — {"configured" if perplexity_set else "not configured"} '
-            f'<span style="color: var(--c-text-muted); font-size: 0.85rem;">(required to collect real citations)</span>',
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            f'<span class="status-dot {dot_class(serpapi_set)}"></span>'
-            f'SERPAPI_KEY — {"configured" if serpapi_set else "not configured"} '
-            f'<span style="color: var(--c-text-muted); font-size: 0.85rem;">(optional — improves the candidate-page pool)</span>',
-            unsafe_allow_html=True,
-        )
-
-        st.markdown("")
-        with st.form("api_keys_form", clear_on_submit=True):
-            new_perplexity = st.text_input(
-                "PERPLEXITY_API_KEY", type="password",
-                placeholder="pplx-..." if not perplexity_set else "Already set — leave blank to keep it",
-            )
-            new_serpapi = st.text_input(
-                "SERPAPI_KEY", type="password",
-                placeholder="Already set — leave blank to keep it" if serpapi_set else "optional",
-            )
-            saved = st.form_submit_button("Save")
-
-        if saved:
-            os.makedirs(os.path.dirname(ENV_PATH) or ".", exist_ok=True)
-            if not os.path.exists(ENV_PATH):
-                open(ENV_PATH, "a").close()
-            changed = []
-            if new_perplexity.strip():
-                set_key(ENV_PATH, "PERPLEXITY_API_KEY", new_perplexity.strip())
-                changed.append("PERPLEXITY_API_KEY")
-            if new_serpapi.strip():
-                set_key(ENV_PATH, "SERPAPI_KEY", new_serpapi.strip())
-                changed.append("SERPAPI_KEY")
-            if changed:
-                st.success(f"Saved to .env: {', '.join(changed)}. Restart the app to pick up new keys in this session.")
-            else:
-                st.info("No new values entered — nothing changed.")
-
-    with st.container(border=True):
-        st.subheader("Real-data pilot pipeline")
-        st.markdown("""
-        Collecting real citation data costs money (paid APIs) and is never
-        triggered automatically from this app — that's a deliberate safety
-        choice, not a missing feature. Run it yourself from a terminal once
-        your keys above are saved:
-        """)
-        st.code(
-            "python -m pipeline.run_all --dry-run      # see the plan and cost estimate, no calls made\n"
-            "python -m pipeline.run_all --yes --max-calls 60   # real run, capped",
-            language="bash",
-        )
-        st.caption("See docs/ETHICS_AND_LIMITS.md and docs/DATA_CARD.md for the full cost-safety and labeling rules.")
-
-    render_footer()
