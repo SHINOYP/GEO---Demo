@@ -69,12 +69,16 @@ st.markdown("""
     html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; color: var(--foreground); }
     .stApp { background: var(--bg); }
 
-    /* We render our own topbar (brand, crumb, GitHub/Deploy links) below —
-       Streamlit's built-in header toolbar would otherwise overlap it. */
-    header[data-testid="stHeader"] { display: none; }
+    /* We render our own page title below, so hide Streamlit's built-in
+       toolbar icons (Deploy button, "..." menu) only — the header bar
+       itself must stay, since the sidebar collapse/expand arrow lives
+       inside it. Hiding the whole header traps the sidebar collapsed
+       with no way to reopen it. */
+    header[data-testid="stHeader"] { background: transparent; }
+    div[data-testid="stToolbar"] { visibility: hidden; }
     div[data-testid="stDecoration"] { display: none; }
 
-    .block-container { padding-top: 2rem; padding-bottom: 3rem; max-width: 900px; }
+    .block-container { padding-top: 1rem; padding-bottom: 3rem; max-width: 900px; }
 
     /* ---- Topbar ---- */
     .topbar {
