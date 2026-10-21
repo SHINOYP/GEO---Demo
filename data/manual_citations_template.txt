@@ -17,7 +17,8 @@
 # - Separate multiple urls with a comma. Full https://... urls only.
 # - If Perplexity genuinely cited nothing usable (rare), leave it blank —
 #   don't invent one.
-# - Fine to spread this across several sittings — 20 searches total.
+# - Fine to spread this across many sittings — 100 searches total.
+#   Roughly 1 minute each = 1.5-2 hours; split across days if you like.
 # - When done, save this file as data/manual_citations.txt (drop
 #   "_template" from the name) in the same folder, and tell me.
 
@@ -80,3 +81,243 @@ Q19:
 
 # Query: affordable root canal treatment Coimbatore
 Q20:
+
+# Query: best gym in Kollam for weight loss
+Q21:
+
+# Query: affordable gym membership Alappuzha
+Q22:
+
+# Query: top crossfit gym in Palakkad
+Q23:
+
+# Query: 24 hour gym in Malappuram
+Q24:
+
+# Query: gym with personal trainer in Kottayam
+Q25:
+
+# Query: best gym for beginners in Pathanamthitta
+Q26:
+
+# Query: fitness center near me in Idukki
+Q27:
+
+# Query: gym membership plans in Wayanad
+Q28:
+
+# Query: best gym in Kasaragod for bodybuilding
+Q29:
+
+# Query: ladies gym in Ernakulam
+Q30:
+
+# Query: crossfit gym in Kochi
+Q31:
+
+# Query: gym with swimming pool Thiruvananthapuram
+Q32:
+
+# Query: gym near railway station Kozhikode
+Q33:
+
+# Query: best gym for weight loss Thrissur
+Q34:
+
+# Query: gym with sauna Kannur
+Q35:
+
+# Query: gym open early morning Kollam
+Q36:
+
+# Query: gym for seniors Alappuzha
+Q37:
+
+# Query: budget gym Palakkad
+Q38:
+
+# Query: gym with yoga classes Kottayam
+Q39:
+
+# Query: best gym for students Malappuram
+Q40:
+
+# Query: best chauffeur service in Jeddah
+Q41:
+
+# Query: luxury car with driver Dammam
+Q42:
+
+# Query: chauffeur hire Manama Bahrain
+Q43:
+
+# Query: corporate chauffeur service Kuwait City
+Q44:
+
+# Query: airport transfer chauffeur Sharjah
+Q45:
+
+# Query: limo rental Ajman
+Q46:
+
+# Query: chauffeur service Ras Al Khaimah
+Q47:
+
+# Query: hourly car hire with driver Al Ain
+Q48:
+
+# Query: chauffeur service Salalah Oman
+Q49:
+
+# Query: corporate car service Khobar
+Q50:
+
+# Query: wedding car hire Dubai
+Q51:
+
+# Query: executive chauffeur service Abu Dhabi
+Q52:
+
+# Query: airport pickup chauffeur Doha
+Q53:
+
+# Query: limousine rental Riyadh
+Q54:
+
+# Query: corporate car rental with driver Muscat
+Q55:
+
+# Query: airport transfer service Jeddah
+Q56:
+
+# Query: chauffeur for business travel Dammam
+Q57:
+
+# Query: luxury limo Manama
+Q58:
+
+# Query: chauffeur driven car rental Kuwait City
+Q59:
+
+# Query: wedding limousine Sharjah
+Q60:
+
+# Query: kayaking tour in Kumarakom backwaters
+Q61:
+
+# Query: kayaking experience Pondicherry
+Q62:
+
+# Query: kayaking tour Andaman Islands
+Q63:
+
+# Query: kayak rental Kovalam beach
+Q64:
+
+# Query: kayaking tour Bekal fort
+Q65:
+
+# Query: kayaking in Ashtamudi lake Kollam
+Q66:
+
+# Query: kayaking tour Rameswaram
+Q67:
+
+# Query: kayaking tour Chilika lake
+Q68:
+
+# Query: kayaking near Mangalore
+Q69:
+
+# Query: kayak rental Udupi beach
+Q70:
+
+# Query: night kayaking tour Alleppey
+Q71:
+
+# Query: kayaking and camping Munnar
+Q72:
+
+# Query: mangrove kayaking tour Goa
+Q73:
+
+# Query: sunrise kayaking Varkala
+Q74:
+
+# Query: guided kayak tour Gokarna
+Q75:
+
+# Query: bird watching kayak tour Kumarakom
+Q76:
+
+# Query: backwater kayaking Pondicherry
+Q77:
+
+# Query: snorkeling and kayaking Andaman
+Q78:
+
+# Query: sunset kayak tour Kovalam
+Q79:
+
+# Query: family kayaking tour Bekal
+Q80:
+
+# Query: best dental clinic in Mumbai for implants
+Q81:
+
+# Query: emergency dentist Delhi open now
+Q82:
+
+# Query: pediatric dental clinic Pune
+Q83:
+
+# Query: cosmetic dentist Kolkata
+Q84:
+
+# Query: affordable root canal treatment Ahmedabad
+Q85:
+
+# Query: braces and orthodontist Jaipur
+Q86:
+
+# Query: wisdom tooth extraction Lucknow
+Q87:
+
+# Query: dental clinic for veneers Mysore
+Q88:
+
+# Query: best dentist Thiruvananthapuram
+Q89:
+
+# Query: dental implants Kozhikode
+Q90:
+
+# Query: dental clinic Madurai
+Q91:
+
+# Query: gum treatment clinic Nagpur
+Q92:
+
+# Query: denture clinic Surat
+Q93:
+
+# Query: dental scaling and cleaning Indore
+Q94:
+
+# Query: invisalign clinic Bhopal
+Q95:
+
+# Query: emergency dental care Mumbai
+Q96:
+
+# Query: best orthodontist Delhi
+Q97:
+
+# Query: teeth whitening clinic Pune
+Q98:
+
+# Query: dental crown treatment Kolkata
+Q99:
+
+# Query: pediatric dentist Ahmedabad
+Q100:

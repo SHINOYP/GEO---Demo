@@ -2,7 +2,7 @@
 
 ## Queries
 
-`pipeline/queries.csv` — 20 realistic local-business queries, 5 per category
+`pipeline/queries.csv` — 100 realistic local-business queries, 25 per category
 across 4 categories: gyms (Kerala cities), chauffeur/limo services (GCC
 cities), kayaking/tour operators, dental clinics. Editable by the team.
 
@@ -37,7 +37,7 @@ of the data, and they are NOT the same kind of source — this distinction
 matters and should be stated plainly in the viva:
 
 - **Citations** (`data/citations.json`, `cited_urls`): a team member
-  manually searched each of the 20 queries on the free `perplexity.ai`
+  manually searched each of the 100 queries on the free `perplexity.ai`
   website and copied down the URLs Perplexity's AI actually cited in its
   answer. This is the part that has to be a real AI answer engine's own
   behavior — nothing else can substitute for it, since the whole research

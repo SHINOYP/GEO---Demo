@@ -90,7 +90,7 @@ Derivable from the project proposal plus Chapter 2 framing.
 - Data flow diagram for the pipeline (pipeline/*.py).
 
 ## 8. Dataset and Pipeline (3 pages)
-- pipeline/queries.csv: 20 queries, 4 categories (gyms in Kerala,
+- pipeline/queries.csv: 100 queries, 4 categories (gyms in Kerala,
   chauffeur services in GCC cities, kayaking tours, dental clinics).
 - Label rule and known limitations: see docs/DATA_CARD.md verbatim.
 - Real counts (dataset size, scrape success rate, class balance,
