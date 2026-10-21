@@ -1,0 +1,312 @@
+# Manual citation collection worksheet — BATCH 2 (Q101-Q200)
+#
+# Same process as before: go to https://www.perplexity.ai, paste the
+# query text shown in the comment, hit enter, wait for the answer, copy
+# the REAL cited source url(s), fill in the "Q101:" line as:
+#   Q101: https://example.com/page1, https://example.com/page2
+#
+# The candidate pool (data/candidates.json) for these 100 new queries is
+# being collected automatically via web search while you work on this.
+#
+# When done, save this file as data/manual_citations_batch2.txt in the
+# same folder and tell me.
+
+# Query: personal training gym Bangalore
+Q101:
+
+# Query: powerlifting gym Chennai
+Q102:
+
+# Query: women's fitness studio Mumbai
+Q103:
+
+# Query: functional training gym Pune
+Q104:
+
+# Query: gym with nutrition counseling Hyderabad
+Q105:
+
+# Query: martial arts gym Coimbatore
+Q106:
+
+# Query: gym for weight gain Mangalore
+Q107:
+
+# Query: group fitness classes Mysore
+Q108:
+
+# Query: gym near IT park Madurai
+Q109:
+
+# Query: corporate gym membership Vijayawada
+Q110:
+
+# Query: gym with physiotherapy Visakhapatnam
+Q111:
+
+# Query: senior citizen fitness center Nagpur
+Q112:
+
+# Query: gym open on Sundays Indore
+Q113:
+
+# Query: gym with steam room Surat
+Q114:
+
+# Query: boxing gym Ahmedabad
+Q115:
+
+# Query: pilates studio Jaipur
+Q116:
+
+# Query: gym for diabetics Lucknow
+Q117:
+
+# Query: home gym setup service Kanpur
+Q118:
+
+# Query: gym with locker facility Bhopal
+Q119:
+
+# Query: 24 hour unmanned gym Chandigarh
+Q120:
+
+# Query: group workout classes Delhi
+Q121:
+
+# Query: functional fitness gym Kolkata
+Q122:
+
+# Query: strength and conditioning gym Guwahati
+Q123:
+
+# Query: gym for athletes Patna
+Q124:
+
+# Query: best gym near railway station Ranchi
+Q125:
+
+# Query: long distance intercity chauffeur Dubai
+Q126:
+
+# Query: VIP chauffeur service Abu Dhabi
+Q127:
+
+# Query: bilingual chauffeur service Doha
+Q128:
+
+# Query: chauffeur for medical appointments Riyadh
+Q129:
+
+# Query: SUV chauffeur hire Muscat
+Q130:
+
+# Query: female chauffeur service Jeddah
+Q131:
+
+# Query: monthly chauffeur package Dammam
+Q132:
+
+# Query: chauffeur for events Manama
+Q133:
+
+# Query: premium sedan chauffeur Kuwait City
+Q134:
+
+# Query: Rolls Royce chauffeur hire Sharjah
+Q135:
+
+# Query: minivan chauffeur group travel Ajman
+Q136:
+
+# Query: diplomatic chauffeur service Ras Al Khaimah
+Q137:
+
+# Query: chauffeur for school pickup Al Ain
+Q138:
+
+# Query: chauffeur with child seat Salalah
+Q139:
+
+# Query: night shift chauffeur Khobar
+Q140:
+
+# Query: chauffeur service Fujairah
+Q141:
+
+# Query: limo hire Umm Al Quwain
+Q142:
+
+# Query: chauffeur for Umrah pilgrims Mecca
+Q143:
+
+# Query: chauffeur service Medina
+Q144:
+
+# Query: car with driver Taif
+Q145:
+
+# Query: chauffeur service Sohar Oman
+Q146:
+
+# Query: car rental with driver Nizwa
+Q147:
+
+# Query: chauffeur hire Buraimi
+Q148:
+
+# Query: electric car chauffeur Dubai
+Q149:
+
+# Query: one way airport drop chauffeur Abu Dhabi
+Q150:
+
+# Query: kayaking tour Diu
+Q151:
+
+# Query: kayak rental Daman
+Q152:
+
+# Query: kayaking tour Lakshadweep
+Q153:
+
+# Query: kayaking experience Mahabalipuram
+Q154:
+
+# Query: kayaking tour Netrani Island
+Q155:
+
+# Query: kayak rental Malvan
+Q156:
+
+# Query: kayaking tour Tarkarli
+Q157:
+
+# Query: kayaking near Murudeshwar
+Q158:
+
+# Query: kayak rental Honnavar
+Q159:
+
+# Query: kayaking tour Maravanthe beach
+Q160:
+
+# Query: kayaking in Valapattanam river Kannur
+Q161:
+
+# Query: kayak rental Payyanur
+Q162:
+
+# Query: kayaking tour Thalassery
+Q163:
+
+# Query: kayaking in Kumbalangi Kochi
+Q164:
+
+# Query: kayak rental Fort Kochi
+Q165:
+
+# Query: kayaking Munroe Island Kollam
+Q166:
+
+# Query: kayaking tour Poovar
+Q167:
+
+# Query: kayaking Neyyar Dam
+Q168:
+
+# Query: kayaking tour Periyar Thekkady
+Q169:
+
+# Query: kayak rental Vagamon
+Q170:
+
+# Query: kayaking Idukki dam
+Q171:
+
+# Query: kayaking Banasura Sagar dam
+Q172:
+
+# Query: kayak rental Pookode lake
+Q173:
+
+# Query: kayaking tour Kuttanad
+Q174:
+
+# Query: kayak rental Thanneermukkom
+Q175:
+
+# Query: best dental clinic Guwahati
+Q176:
+
+# Query: dental implants Patna
+Q177:
+
+# Query: emergency dentist Ranchi
+Q178:
+
+# Query: pediatric dental clinic Bhubaneswar
+Q179:
+
+# Query: cosmetic dentist Chandigarh
+Q180:
+
+# Query: dental clinic Amritsar
+Q181:
+
+# Query: root canal treatment Ludhiana
+Q182:
+
+# Query: braces and orthodontist Kanpur
+Q183:
+
+# Query: wisdom tooth extraction Varanasi
+Q184:
+
+# Query: dental clinic for veneers Agra
+Q185:
+
+# Query: best dentist Vadodara
+Q186:
+
+# Query: dental implants Rajkot
+Q187:
+
+# Query: dental clinic Nashik
+Q188:
+
+# Query: gum treatment clinic Aurangabad
+Q189:
+
+# Query: denture clinic Thrissur
+Q190:
+
+# Query: dental scaling and cleaning Kollam
+Q191:
+
+# Query: invisalign clinic Kannur
+Q192:
+
+# Query: emergency dental care Salem
+Q193:
+
+# Query: best orthodontist Trichy
+Q194:
+
+# Query: teeth whitening clinic Vellore
+Q195:
+
+# Query: dental crown treatment Mangalore
+Q196:
+
+# Query: pediatric dentist Belgaum
+Q197:
+
+# Query: dental clinic Hubli
+Q198:
+
+# Query: dental implants Warangal
+Q199:
+
+# Query: best dental clinic Guntur
+Q200:
