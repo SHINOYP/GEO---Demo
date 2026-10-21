@@ -32,22 +32,39 @@ unchanged either way.
 ### Method B — manual (free, no API keys)
 
 Used for this project's actual pilot run, since a paid Perplexity API key
-was not available to the team. A team member manually searched each of
-the 20 queries on the free `perplexity.ai` website (recording the cited
-source URLs) and on `google.com` (recording the top organic result URLs,
-to serve as real "not cited" comparison examples). Those results were
-typed into `data/manual_citations_template.txt` and converted to the
-standard format with `python -m pipeline.import_manual_citations`.
+was not available to the team. Two different sources fed the two halves
+of the data, and they are NOT the same kind of source — this distinction
+matters and should be stated plainly in the viva:
 
-This is genuinely real, human-collected data — not synthetic — just
-gathered by a person using the public websites instead of a script
-calling a paid API. Every record from this path is tagged
-`"collection_method": "manual_web_ui"` in `data/citations.json` so this
-is never ambiguous later, and the limitations are the same as Method A
-plus: a human's reading of "which sources were cited" can occasionally
-miss or misread a source compared to parsing raw API JSON, and only 1
-observation per query was collected (no `--repeats` equivalent for
-measuring citation stability under the manual method).
+- **Citations** (`data/citations.json`, `cited_urls`): a team member
+  manually searched each of the 20 queries on the free `perplexity.ai`
+  website and copied down the URLs Perplexity's AI actually cited in its
+  answer. This is the part that has to be a real AI answer engine's own
+  behavior — nothing else can substitute for it, since the whole research
+  question is "what does an AI engine choose to cite."
+- **Candidate pool** (`data/candidates.json`, the "not necessarily cited"
+  comparison set): built using an AI coding assistant's own web search
+  tool, run once per query, NOT a human manually searching google.com.
+  It is organic-style search results, used only to give the model real
+  "not cited" examples to contrast against — it is not claimed to be
+  Google's actual ranking, and its results may differ from what a human
+  typing the same query into google.com would see (different backend,
+  no personalization, no login).
+
+Results were typed/compiled into `data/manual_citations_template.txt`
+format and converted to the standard JSON shape with
+`python -m pipeline.import_manual_citations`.
+
+This is genuinely real, non-fabricated data for both halves — just
+collected by a human using a website (citations) and a different search
+tool (candidates) instead of the two paid APIs. Every citation record is
+tagged `"collection_method": "manual_web_ui"` so this is never ambiguous
+later. Limitations beyond Method A's: a human's reading of "which
+sources were cited" can occasionally miss or misread a source compared
+to parsing raw API JSON; only 1 observation per query was collected (no
+`--repeats` equivalent for measuring citation stability); and the
+candidate pool's search backend is not identified/guaranteed to match
+Google's, so "organic ranking" here is approximate, not authoritative.
 
 ## Label rule
 

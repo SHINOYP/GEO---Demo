@@ -1,102 +1,82 @@
-# Manual data collection worksheet (free — no API key, no paid account)
+# Manual citation collection worksheet (free — no API key needed)
 #
-# For each of the 20 queries below, do TWO quick searches:
+# The "candidate pool" (data/candidates.json) is already done — it was
+# built from an AI assistant's web search tool, not a human Google search.
+# All that's left is the PERPLEXITY half, which only a human (or a paid
+# API) can genuinely do, since it requires Perplexity's own AI answer
+# engine to decide what it cites.
 #
-# 1) PERPLEXITY (https://www.perplexity.ai) — paste the query text exactly,
-#    hit enter, wait for the answer. It cites sources as small numbered
-#    links in the text and/or a row of source cards. Click each one (or
-#    right-click > copy link) to get its REAL url, not just the site name.
-#    Write those urls after "Cited:".
+# For each query: go to https://www.perplexity.ai, paste the query text
+# shown in the comment, hit enter, wait for the answer. Perplexity shows
+# its sources as small numbered citations in the text and/or a row of
+# source cards above/beside the answer. Copy the REAL url of each source
+# (click the card, or right-click > copy link — don't just use the site
+# name), then fill in the "Q01:" line as:
+#   Q01: https://example.com/page1, https://example.com/page2
 #
-# 2) GOOGLE (https://www.google.com) — search the same query text, skip
-#    any ads and the map pack, and copy the first 5 REGULAR organic
-#    result urls. Write those after "Organic:". These give the model
-#    real "not cited" examples to learn from — without them every row
-#    would look identical and the model couldn't learn anything.
-#
-# Rules:
 # - Separate multiple urls with a comma. Full https://... urls only.
-# - If a section genuinely has nothing, leave it blank — don't invent one.
-# - Fine to spread this across several sittings.
+# - If Perplexity genuinely cited nothing usable (rare), leave it blank —
+#   don't invent one.
+# - Fine to spread this across several sittings — 20 searches total.
 # - When done, save this file as data/manual_citations.txt (drop
 #   "_template" from the name) in the same folder, and tell me.
 
 # Query: best gym in Kochi for weight training
-Q01 Cited:
-Q01 Organic:
+Q01:
 
 # Query: top rated gym in Thiruvananthapuram with personal trainers
-Q02 Cited:
-Q02 Organic:
+Q02:
 
 # Query: affordable gym membership Kozhikode
-Q03 Cited:
-Q03 Organic:
+Q03:
 
 # Query: 24 hour gym in Thrissur
-Q04 Cited:
-Q04 Organic:
+Q04:
 
 # Query: women's only gym in Kannur
-Q05 Cited:
-Q05 Organic:
+Q05:
 
 # Query: best chauffeur service in Dubai for airport transfer
-Q06 Cited:
-Q06 Organic:
+Q06:
 
 # Query: luxury limo rental Abu Dhabi
-Q07 Cited:
-Q07 Organic:
+Q07:
 
 # Query: hourly chauffeur hire Doha
-Q08 Cited:
-Q08 Organic:
+Q08:
 
 # Query: corporate chauffeur service Riyadh
-Q09 Cited:
-Q09 Organic:
+Q09:
 
 # Query: wedding limousine service Muscat
-Q10 Cited:
-Q10 Organic:
+Q10:
 
 # Query: best kayaking tour in Alleppey backwaters
-Q11 Cited:
-Q11 Organic:
+Q11:
 
 # Query: guided kayaking experience Munnar
-Q12 Cited:
-Q12 Organic:
+Q12:
 
 # Query: sunset kayaking tour Goa
-Q13 Cited:
-Q13 Organic:
+Q13:
 
 # Query: kayaking and snorkeling Varkala
-Q14 Cited:
-Q14 Organic:
+Q14:
 
 # Query: kayak rental Gokarna beach
-Q15 Cited:
-Q15 Organic:
+Q15:
 
 # Query: best dental clinic in Kochi for implants
-Q16 Cited:
-Q16 Organic:
+Q16:
 
 # Query: emergency dentist Bangalore open now
-Q17 Cited:
-Q17 Organic:
+Q17:
 
 # Query: pediatric dental clinic Chennai
-Q18 Cited:
-Q18 Organic:
+Q18:
 
 # Query: cosmetic dentist for teeth whitening Hyderabad
-Q19 Cited:
-Q19 Organic:
+Q19:
 
 # Query: affordable root canal treatment Coimbatore
-Q20 Cited:
-Q20 Organic:
+Q20:
