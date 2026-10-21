@@ -92,6 +92,24 @@ calls, so every step is cost-safe by default.
    python -m pipeline.evaluate
    ```
 
+### No budget for API keys? Use the free manual path instead
+
+You don't need a paid key to collect real data. Copy
+`data/manual_citations_template.txt` to `data/manual_citations.txt`, fill
+it in by hand-searching each query on the free `perplexity.ai` and
+`google.com` websites (instructions are in the file's comments), then run:
+
+```bash
+python -m pipeline.import_manual_citations
+python -m pipeline.build_dataset
+python -m pipeline.pilot_stats
+python -m pipeline.evaluate
+```
+
+This produces the exact same `data/citations.json` / `data/candidates.json`
+shape the automated path would have, so every later step is identical
+either way. See "Method B" in `docs/DATA_CARD.md`.
+
 Re-running any step is free once responses are cached under
 `data/raw/` (gitignored) — only new, uncached queries spend real API calls,
 and the number of real calls made is always printed.

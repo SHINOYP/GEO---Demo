@@ -1,0 +1,102 @@
+# Manual data collection worksheet (free — no API key, no paid account)
+#
+# For each of the 20 queries below, do TWO quick searches:
+#
+# 1) PERPLEXITY (https://www.perplexity.ai) — paste the query text exactly,
+#    hit enter, wait for the answer. It cites sources as small numbered
+#    links in the text and/or a row of source cards. Click each one (or
+#    right-click > copy link) to get its REAL url, not just the site name.
+#    Write those urls after "Cited:".
+#
+# 2) GOOGLE (https://www.google.com) — search the same query text, skip
+#    any ads and the map pack, and copy the first 5 REGULAR organic
+#    result urls. Write those after "Organic:". These give the model
+#    real "not cited" examples to learn from — without them every row
+#    would look identical and the model couldn't learn anything.
+#
+# Rules:
+# - Separate multiple urls with a comma. Full https://... urls only.
+# - If a section genuinely has nothing, leave it blank — don't invent one.
+# - Fine to spread this across several sittings.
+# - When done, save this file as data/manual_citations.txt (drop
+#   "_template" from the name) in the same folder, and tell me.
+
+# Query: best gym in Kochi for weight training
+Q01 Cited:
+Q01 Organic:
+
+# Query: top rated gym in Thiruvananthapuram with personal trainers
+Q02 Cited:
+Q02 Organic:
+
+# Query: affordable gym membership Kozhikode
+Q03 Cited:
+Q03 Organic:
+
+# Query: 24 hour gym in Thrissur
+Q04 Cited:
+Q04 Organic:
+
+# Query: women's only gym in Kannur
+Q05 Cited:
+Q05 Organic:
+
+# Query: best chauffeur service in Dubai for airport transfer
+Q06 Cited:
+Q06 Organic:
+
+# Query: luxury limo rental Abu Dhabi
+Q07 Cited:
+Q07 Organic:
+
+# Query: hourly chauffeur hire Doha
+Q08 Cited:
+Q08 Organic:
+
+# Query: corporate chauffeur service Riyadh
+Q09 Cited:
+Q09 Organic:
+
+# Query: wedding limousine service Muscat
+Q10 Cited:
+Q10 Organic:
+
+# Query: best kayaking tour in Alleppey backwaters
+Q11 Cited:
+Q11 Organic:
+
+# Query: guided kayaking experience Munnar
+Q12 Cited:
+Q12 Organic:
+
+# Query: sunset kayaking tour Goa
+Q13 Cited:
+Q13 Organic:
+
+# Query: kayaking and snorkeling Varkala
+Q14 Cited:
+Q14 Organic:
+
+# Query: kayak rental Gokarna beach
+Q15 Cited:
+Q15 Organic:
+
+# Query: best dental clinic in Kochi for implants
+Q16 Cited:
+Q16 Organic:
+
+# Query: emergency dentist Bangalore open now
+Q17 Cited:
+Q17 Organic:
+
+# Query: pediatric dental clinic Chennai
+Q18 Cited:
+Q18 Organic:
+
+# Query: cosmetic dentist for teeth whitening Hyderabad
+Q19 Cited:
+Q19 Organic:
+
+# Query: affordable root canal treatment Coimbatore
+Q20 Cited:
+Q20 Organic:

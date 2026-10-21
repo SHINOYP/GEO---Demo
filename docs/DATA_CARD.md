@@ -8,6 +8,13 @@ cities), kayaking/tour operators, dental clinics. Editable by the team.
 
 ## Collection
 
+Two collection methods are supported, producing the identical
+`data/citations.json` / `data/candidates.json` shape so every downstream
+script (`build_dataset.py`, `pilot_stats.py`, `evaluate.py`) works
+unchanged either way.
+
+### Method A — automated (requires paid API keys)
+
 1. **Citations** (`pipeline/collect_citations.py`): for each query, call
    Perplexity's search-enabled chat completions API (`model="sonar"`).
    Default 1 run per query; `--repeats N` runs it N times per query to
@@ -21,6 +28,26 @@ cities), kayaking/tour operators, dental clinics. Editable by the team.
    this is a real limitation: that pool is narrower and biased toward
    whatever the answer engine itself already surfaced, not an independent
    organic-ranking sample.
+
+### Method B — manual (free, no API keys)
+
+Used for this project's actual pilot run, since a paid Perplexity API key
+was not available to the team. A team member manually searched each of
+the 20 queries on the free `perplexity.ai` website (recording the cited
+source URLs) and on `google.com` (recording the top organic result URLs,
+to serve as real "not cited" comparison examples). Those results were
+typed into `data/manual_citations_template.txt` and converted to the
+standard format with `python -m pipeline.import_manual_citations`.
+
+This is genuinely real, human-collected data — not synthetic — just
+gathered by a person using the public websites instead of a script
+calling a paid API. Every record from this path is tagged
+`"collection_method": "manual_web_ui"` in `data/citations.json` so this
+is never ambiguous later, and the limitations are the same as Method A
+plus: a human's reading of "which sources were cited" can occasionally
+miss or misread a source compared to parsing raw API JSON, and only 1
+observation per query was collected (no `--repeats` equivalent for
+measuring citation stability under the manual method).
 
 ## Label rule
 
