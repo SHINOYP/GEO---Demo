@@ -1,0 +1,636 @@
+# Manual citation collection worksheet (free — no API key needed)
+#
+# The "candidate pool" (data/candidates.json) is already done — it was
+# built from an AI assistant's web search tool, not a human Google search.
+# All that's left is the PERPLEXITY half, which only a human (or a paid
+# API) can genuinely do, since it requires Perplexity's own AI answer
+# engine to decide what it cites.
+#
+# For each query: go to https://www.perplexity.ai, paste the query text
+# shown in the comment, hit enter, wait for the answer. Perplexity shows
+# its sources as small numbered citations in the text and/or a row of
+# source cards above/beside the answer. Copy the REAL url of each source
+# (click the card, or right-click > copy link — don't just use the site
+# name), then fill in the "Q01:" line as:
+#   Q01: https://example.com/page1, https://example.com/page2
+#
+# - Separate multiple urls with a comma. Full https://... urls only.
+# - If Perplexity genuinely cited nothing usable (rare), leave it blank —
+#   don't invent one.
+# - Fine to spread this across many sittings — 100 searches total.
+#   Roughly 1 minute each = 1.5-2 hours; split across days if you like.
+# - When done, save this file as data/manual_citations.txt (drop
+#   "_template" from the name) in the same folder, and tell me.
+
+# Query: best gym in Kochi for weight training
+Q01:https://www.sector7.in/
+
+
+# Query: top rated gym in Thiruvananthapuram with personal trainers
+Q02:https://www.justdial.com/Thiruvananthapuram/Gyms-in-Poikamukku/nct-11575244
+
+# Query: affordable gym membership Kozhikode
+Q03:https://magicpin.in/india/Kozhikode/All/Fitness/
+
+# Query: 24 hour gym in Thrissur
+Q04:https://www.justdial.com/Thrissur/24-Hours-Gyms-in-Avanur/nct-11575258
+
+# Query: women's only gym in Kannur
+Q05:https://www.justdial.com/Kannur/Gyms/nct-11575244
+
+# Query: best chauffeur service in Dubai for airport transfer
+Q06:https://www.blacklane.com/en/countries/uae/dubai/airport-transfer/
+
+# Query: luxury limo rental Abu Dhabi
+Q07:https://prominentlimo.com/
+
+# Query: hourly chauffeur hire Doha
+Q08:https://www.blacklane.com/en/countries/qatar/
+
+# Query: corporate chauffeur service Riyadh
+Q09:https://www.chauffiq.com/services/corporate-chauffeur
+
+# Query: wedding limousine service Muscat
+Q10:https://omantour.in/luxury-chauffeur-muscat
+
+# Query: best kayaking tour in Alleppey backwaters
+Q11:https://nadodikayaking.com/
+
+# Query: guided kayaking experience Munnar
+Q12:https://www.universaladventures.in/products/munnar-backwater-kayaking
+
+# Query: sunset kayaking tour Goa
+Q13:https://www.kayakgoa.com/
+
+# Query: kayaking and snorkeling Varkala
+Q14:https://www.tripadvisor.in/Attractions-g17794977-Activities-c61-t191-Varkala_Thiruvananthapuram_District_Kerala.html
+
+# Query: kayak rental Gokarna beach
+Q15:https://www.junglelodges.com/resort/om-beach-resort/
+
+# Query: best dental clinic in Kochi for implants
+Q16:https://www.asterhospitals.in/hospitals/aster-medcity-kochi/specialities/dentistry
+
+# Query: emergency dentist Bangalore open now
+Q17:https://dentickdentalcare.in/emergency-dentist-bengaluru/
+
+# Query: pediatric dental clinic Chennai
+Q18:https://kidznteenz.in/about-us/
+
+# Query: cosmetic dentist for teeth whitening Hyderabad
+Q19:https://www.fmsdental.com/tooth-whitening/
+
+# Query: affordable root canal treatment Coimbatore
+Q20:https://teeth.in/cost/root-canal/coimbatore/
+# Query: best gym in Kollam for weight loss
+Q21:https://gym-india.nears.me/listings/india/kerala/kollam/highly-rated-the-fit-nation-gym-in-kollam-kl/
+
+# Query: affordable gym membership Alappuzha
+Q22:https://www.justdial.com/Alappuzha/Men-Gyms-in-Kandiyoor/nct-11575265
+
+# Query: top crossfit gym in Palakkad
+Q23:https://www.justdial.com/Palakkad/Crossfit-Gyms/nct-11614003
+
+# Query: 24 hour gym in Malappuram
+Q24:https://www.justdial.com/Malappuram/24-Hours-Gyms/nct-11575258
+
+# Query: gym with personal trainer in Kottayam
+Q25:https://www.justdial.com/Kottayam/Personal-Gym-Trainers-in-Kottayam-Collectorate/nct-1200258
+
+# Query: best gym for beginners in Pathanamthitta
+Q26:https://www.justdial.com/Pathanamthitta/Gyms/nct-11575244
+
+# Query: fitness center near me in Idukki
+Q27:https://www.justdial.com/Idukki/Gyms-in-Kuttikkanam/nct-11575244
+
+# Query: gym membership plans in Wayanad
+Q28:https://www.justdial.com/Wayanad/Women-Gyms-in-Tharuvana/nct-11995807
+
+# Query: best gym in Kasaragod for bodybuilding
+Q29:https://www.justdial.com/Kasaragod/Gyms/nct-11575244
+
+# Query: ladies gym in Ernakulam
+Q30:https://www.justdial.com/Ernakulam/Women-Gyms/nct-11995807
+
+# Query: crossfit gym in Kochi
+Q31:https://www.sector7.in/
+
+# Query: gym with swimming pool Thiruvananthapuram
+Q32:https://playsport.com/trivandrumclubswimmingpool_ag_2b1e3a2c
+
+# Query: gym near railway station Kozhikode
+Q33:https://www.justdial.com/Kozhikode/Fitness-Centres-in-Railway-Station-Road-Calicut-Fort-Gate/nct-10208976
+
+# Query: best gym for weight loss Thrissur
+Q34:https://www.justdial.com/Kozhikode/Fitness-Centres-in-Railway-Station-Road-Calicut-Fort-Gate/nct-10208976
+
+# Query: gym with sauna Kannur
+Q35:https://www.goibibo.com/hotels/hotels-in-kannur/near-kannur-railway-station-lh/
+
+# Query: gym open early morning Kollam
+Q36:https://gym-india.nears.me/listings/india/kerala/kollam/highly-rated-the-fit-nation-gym-in-kollam-kl/
+
+# Query: gym for seniors Alappuzha
+Q37:https://www.findby.in/fitness/gym/the-fit-your-fitness-destination-in-cherthala-alappuzha
+
+# Query: budget gym Palakkad
+Q38:https://www.justdial.com/Palakkad/Gyms/nct-11575244
+
+# Query: gym with yoga classes Kottayam
+Q39:https://www.justdial.com/Kottayam/Yoga-Classes-in-Kottamuri/nct-10545576
+
+# Query: best gym for students Malappuram
+Q40:https://www.justdial.com/Malappuram/Gyms/nct-11575244
+
+# Query: best chauffeur service in Jeddah
+Q41:https://naylam.com/
+
+# Query: luxury car with driver Dammam
+Q42:https://chauffeursgcc.com/ksa/dammam
+
+# Query: chauffeur hire Manama Bahrain
+Q43:https://chauffeursgcc.com/bhr/manama/services/hourly-car-with-driver
+
+# Query: corporate chauffeur service Kuwait City
+Q44:https://www.swvl.com/luxury-transit/kuwait-city
+
+# Query: airport transfer chauffeur Sharjah
+Q45:https://www.swvl.com/luxury-transit/sharjah
+
+# Query: limo rental Ajman
+Q46:https://limousines.ae/limo-rental-ajman/
+
+# Query: chauffeur service Ras Al Khaimah
+Q47:https://www.chauffeurr.ae/chauffeur-service-ras-al-khaimah
+
+# Query: hourly car hire with driver Al Ain
+Q48:https://www.oneclickdrive.com/chauffeur-service-al-ain
+
+# Query: chauffeur service Salalah Oman
+Q49:https://gorideoman.com/faq
+
+# Query: corporate car service Khobar
+Q50:https://ghtrips.com/saudi-arabia/khobar/
+
+# Query: wedding car hire Dubai
+Q51:https://tourtransfer.ae/wedding-car-dubai/
+
+# Query: executive chauffeur service Abu Dhabi
+Q52:https://www.myprivateservice.com/chauffeur-service/private-chauffeur-abu-dhabi/
+
+# Query: airport pickup chauffeur Doha
+Q53:https://www.blacklane.com/en/countries/qatar/doha/chauffeur-service/
+
+# Query: limousine rental Riyadh
+Q54:https://www.blacklane.com/en-gb/countries/saudi-arabia/riyadh/limousine-service/
+
+# Query: corporate car rental with driver Muscat
+Q55:https://slf-drives.com/en/services/corporate-car-rental-oman
+
+# Query: airport transfer service Jeddah
+Q56:https://www.sixt.com/ride/airport-transfer/jeddah/
+
+# Query: chauffeur for business travel Dammam
+Q57:https://dammamchauffeur.com/
+
+# Query: luxury limo Manama
+Q58:https://skylimobh.com/
+
+# Query: chauffeur driven car rental Kuwait City
+Q59:https://www.hertz.com.kw/rentacar/productservice/index.jsp?targetPage=ME_KW_Chauffeur_Drive.jsp
+
+# Query: wedding limousine Sharjah
+Q60:https://alinsafbusrental.ae/service/limousine-rental-services
+
+# Query: kayaking tour in Kumarakom backwaters
+Q61:https://www.getyourguide.com/en-gb/alappuzha-l2626/water-sports-tc55/?visitor-id=C80673GCY29SLM6F6O3FVI9XF75L8B82&locale_autoredirect_optout=true
+
+# Query: kayaking experience Pondicherry
+Q62:https://www.thrillophilia.com/tours/kayaking-in-mangroves-forest-pondicherry
+
+# Query: kayaking tour Andaman Islands
+Q63:https://www.andamanislands.com/activity/kayaking-in-havelock-island
+
+# Query: kayak rental Kovalam beach
+Q64:https://cruoo.com/blog/kovalam-beach-activities-water-sports-to-try-and-what-each-costs
+
+# Query: kayaking tour Bekal fort
+Q65:https://www.waytoindia.com/travel-guide/kerala/bekal-town
+
+# Query: kayaking in Ashtamudi lake Kollam
+Q66:https://www.keralatourism.org/destination/kollam-aquatourism/264/
+
+# Query: kayaking tour Rameswaram
+Q67:https://www.quest-asia.com/kayaking
+
+# Query: kayaking tour Chilika lake
+Q68:https://apps.odishatourism.gov.in/water-sports
+
+# Query: kayaking near Mangalore
+Q69:https://www.incredibleindia.gov.in/en/karnataka/mangalore/embrace-the-thrill-of-adventure-sports-in-vibrant-mangalore
+
+# Query: kayak rental Udupi beach
+Q70:https://www.universaladventures.in/city/Udupi
+
+# Query: night kayaking tour Alleppey
+Q71:https://www.getyourguide.com/en-au/alappuzha-l2626/beach-trips-tc63/
+
+# Query: kayaking and camping Munnar
+Q72:https://www.universaladventures.in/state/Kerala
+
+# Query: mangrove kayaking tour Goa
+Q73:https://www.peek.com/kandoli-goa-india/r0w4xxn/mangrove-kayak-tour-explore-exotic-green-channels/a09b3by9
+
+# Query: sunrise kayaking Varkala
+Q74:https://www.walkingtrees.in/
+
+# Query: guided kayak tour Gokarna
+Q75:https://monsterwatersports.in/kayaking-gokarna
+
+# Query: bird watching kayak tour Kumarakom
+Q76:https://www.tripadvisor.co.uk/Attractions-g678552-Activities-Kumarakom_Kottayam_District_Kerala.html
+
+# Query: backwater kayaking Pondicherry
+Q77:https://southindia-tours.net/kayaking-in-backwaters-of-pondicherry/
+
+# Query: snorkeling and kayaking Andaman
+Q78:https://www.andamantourism.org/water-sports-in-andaman/
+
+# Query: sunset kayak tour Kovalam
+Q79:https://trekgo.in/blog/kayaking-kerala
+
+# Query: family kayaking tour Bekal
+Q80:https://www.tajhotels.com/en-in/hotels/taj-bekal-kerala/places-to-visit/coir-clams-and-kayaks-bekal-kerala
+
+# Query: best dental clinic in Mumbai for implants
+Q81:https://www.dazzle.dental/
+
+# Query: emergency dentist Delhi open now
+Q82:https://www.blkmaxhospital.com/delhi/hospital/emergency-dental-treatment-hospital-delhi
+
+# Query: pediatric dental clinic Pune
+Q83:https://www.panditclinic.com/pediatric-dentistry/
+
+# Query: cosmetic dentist Kolkata
+Q84:https://apollodental.in/kolkata/vip-road/our-clinics/apollo-dental-clinic-in-vip-road
+
+# Query: affordable root canal treatment Ahmedabad
+Q85:https://brijdentalclinic.com/root-canal-treatment-rct/
+
+# Query: braces and orthodontist Jaipur
+Q86:https://onlybraces.com/
+
+# Query: wisdom tooth extraction Lucknow
+Q87:https://realtooth.in/wisdom-tooth/
+
+# Query: dental clinic for veneers Mysore
+Q88:https://www.kamaladental.com/
+
+# Query: best dentist Thiruvananthapuram
+Q89:https://www.kamaladental.com/
+
+# Query: dental implants Kozhikode
+Q90:https://www.justdial.com/Kozhikode/Doctors-For-Dental-Implantation-in-Meenchanda/nct-11311983
+
+# Query: dental clinic Madurai
+Q91:https://apollodental.in/madurai/our-clinics
+
+# Query: gum treatment clinic Nagpur
+Q92:https://www.aryasdentalclinic.com/gum-treatment-in-nagpur.php
+
+# Query: denture clinic Surat
+Q93:https://www.whatclinic.com/dentists/india/surat/dentures
+
+# Query: dental scaling and cleaning Indore
+Q94:https://teeth.in/dentists/indore/
+
+# Query: invisalign clinic Bhopal
+Q95:https://toothembrace.com/about-us/
+
+# Query: emergency dental care Mumbai
+Q96:https://www.kokilabenhospital.com/departments/clinicaldepartments/dentalsurgery.html
+
+# Query: best orthodontist Delhi
+Q97:https://www.bestinhood.com/delhi/healthcare/best-orthodontists-in-delhi/
+
+# Query: teeth whitening clinic Pune
+Q98:https://siddhantdentalclinic.com/cosmetic-dentistry/teeth-whitening
+
+# Query: dental crown treatment Kolkata
+Q99:https://teeth.in/dentists/kolkata/
+
+# Query: pediatric dentist Ahmedabad
+Q100:https://kivihealth.com/clinic/vasupujya-pediatric-dental-hospital-3
+# Manual citation collection worksheet — BATCH 2 (Q101-Q200)
+#
+# Same process as before: go to https://www.perplexity.ai, paste the
+# query text shown in the comment, hit enter, wait for the answer, copy
+# the REAL cited source url(s), fill in the "Q101:" line as:
+#   Q101: https://example.com/page1, https://example.com/page2
+#
+# The candidate pool (data/candidates.json) for these 100 new queries is
+# being collected automatically via web search while you work on this.
+#
+# When done, save this file as data/manual_citations_batch2.txt in the
+# same folder and tell me.
+
+# Query: personal training gym Bangalore
+Q101:https://www.tarzanfitness.in/book-personal-training
+
+# Query: powerlifting gym Chennai
+Q102:https://www.justdial.com/Chennai/Powerlifting-Training-Centres-in-R3-Police-Station-Ashok-Nagar/nct-11382099
+
+# Query: women's fitness studio Mumbai
+Q103:https://www.justdial.com/Mumbai/Women-Gyms/nct-11995807
+
+# Query: functional training gym Pune
+Q104:https://fitpass.co.in/activities/gym/pune
+
+# Query: gym with nutrition counseling Hyderabad
+Q105:https://pulse8gym.com/marredpally/
+
+# Query: martial arts gym Coimbatore
+Q106:https://bigbmma.com/
+
+# Query: gym for weight gain Mangalore
+Q107:https://onemorerepgym.in/about/
+
+# Query: group fitness classes Mysore
+Q108:https://threebestrated.in/gym-in-mysore-ka
+
+# Query: gym near IT park Madurai
+Q109:https://fitnebula.online/india/madurai/madurai/fitness-center
+
+# Query: corporate gym membership Vijayawada
+Q110:https://www.anytimefitness.com/en-in/locations/vijayawada-andhra-pradesh-in-1070
+
+# Query: gym with physiotherapy Visakhapatnam
+Q111:https://www.justdial.com/Visakhapatnam/Unisex-Gyms-in-Akkayyapalem/nct-11576125
+
+# Query: senior citizen fitness center Nagpur
+Q112:https://elevatefitnessngp.in/
+
+# Query: gym open on Sundays Indore
+Q113:https://fitpass.co.in/studio/the-fitness-lan-gym-mahalaxmi-nagar
+
+# Query: gym with steam room Surat
+Q114:https://gym-city.in/
+
+# Query: boxing gym Ahmedabad
+Q115:https://www.apexfitnesscentre.com/
+
+# Query: pilates studio Jaipur
+Q116:https://theyogahousejaipur.com/
+
+# Query: gym for diabetics Lucknow
+Q117:https://theyogahousejaipur.com/
+
+# Query: home gym setup service Kanpur
+Q118:https://shinefitness.in/gym-equipment-manufacturer-kanpur/
+
+# Query: gym with locker facility Bhopal
+Q119:https://thefitnessheadquator.vercel.app/
+
+# Query: 24 hour unmanned gym Chandigarh
+Q120:https://www.anytimefitness.com/en-in/locations/chandigarh-chandigarh-in-1107
+
+# Query: group workout classes Delhi
+Q121:https://www.boxfit.in/post/group-fitness-classes-new-delhi
+
+# Query: functional fitness gym Kolkata
+Q122:https://www.justdial.com/Kolkata/Functional-Fitness-Classes/nct-10935946
+
+# Query: strength and conditioning gym Guwahati
+Q123:https://www.superfightleague.com/sfl-gyms-guwahati/
+
+# Query: gym for athletes Patna
+Q124:https://goldsgym.in/our-gyms/golds-gym-patna-danapur/
+
+# Query: best gym near railway station Ranchi
+Q125:https://www.anytimefitness.com/en-in/locations/ranchi-jharkhand-in-1111
+
+# Query: long distance intercity chauffeur Dubai
+Q126:https://safedryver.com/services/inter-emirates-across-the-uae-tour/
+
+# Query: VIP chauffeur service Abu Dhabi
+Q127:https://blacklimo.ae/services/chauffeur-service-abu-dhabi/
+
+# Query: bilingual chauffeur service Doha
+Q128:https://chauffeursgcc.com/qat/doha
+
+# Query: chauffeur for medical appointments Riyadh
+Q129:https://www.taxiserviceksa.com/services/private-driver/
+
+# Query: SUV chauffeur hire Muscat
+Q130:https://platinum.rent/en/rent-car-with-driver-muscat/
+
+# Query: female chauffeur service Jeddah
+Q131:https://www.cntravellerme.com/story/these-taxi-services-in-saudi-arabia-are-only-for-women
+
+# Query: monthly chauffeur package Dammam
+Q132:https://hellochauffeurlimo.com/service/car-rental-driver-saudi-arabia/
+
+# Query: chauffeur for events Manama
+Q133:https://hellochauffeurlimo.com/service/car-rental-driver-saudi-arabia/
+
+# Query: premium sedan chauffeur Kuwait City
+Q134:https://www.blacklane.com/en/countries/kuwait/kuwait-city/chauffeur-service/
+
+# Query: Rolls Royce chauffeur hire Sharjah
+Q135:https://chauffeursgcc.com/fleet/rolls-royce-phantom-chauffeur-service-sharjah-uae
+
+# Query: minivan chauffeur group travel Ajman
+Q136:https://busrentalajman.ae/
+
+# Query: diplomatic chauffeur service Ras Al Khaimah
+Q137:https://wasalnilimousine.com/limousine-service-uae/
+
+# Query: chauffeur for school pickup Al Ain
+Q138:https://wasalnilimousine.com/limousine-service-uae/
+
+# Query: chauffeur with child seat Salalah
+Q139:https://pilotandcar.ae/chauffeur-service-al-ain/
+
+# Query: night shift chauffeur Khobar
+Q140:https://www.swvl.com/luxury-transit/al-khobar
+
+# Query: chauffeur service Fujairah
+Q141:https://www.swvl.com/luxury-transit/fujairah
+
+# Query: limo hire Umm Al Quwain
+Q142:https://limousines.ae/limo-rental-umm-al-quwain/
+
+# Query: chauffeur for Umrah pilgrims Mecca
+Q143:https://mashaerfleet.com/umrah-packages
+
+# Query: chauffeur service Medina
+Q144:https://umrahtransit.com/routes/madinah-airport
+
+# Query: car with driver Taif
+Q145:https://umrahtransit.com/day-trip-driver-taif
+
+# Query: chauffeur service Sohar Oman
+Q146:https://www.chauffeur-services.com/de/reiseziele/oman/sohar/
+
+# Query: car rental with driver Nizwa
+Q147:https://slf-drives.com/en/car-rental/nizwa
+
+# Query: chauffeur hire Buraimi
+Q148:https://lifewaytours.ae/dubai-to-al-buraimi-chauffeur-service/
+
+# Query: electric car chauffeur Dubai
+Q149:https://www.blacklane.com/en/dubai/
+
+# Query: one way airport drop chauffeur Abu Dhabi
+Q150:https://luxuryescapes.com/de/experience/abu-dhabi-private-one-way-airport-transfers-from-zayed-international-airport/led:006RF00000C54SHYAZ?mrid=7209f63f-4c94-419d-b80f-ee129571469a&mrvid=01bd4800-114a-411b-9545-9b9112f8ffc4
+
+# Query: kayaking tour Diu
+Q151:https://wanderon.in/blogs/water-sports-activities-in-daman-and-diu
+
+# Query: kayak rental Daman
+Q152:https://www.universaladventures.in/products/adventure-water-sports-activity-package
+
+# Query: kayaking tour Lakshadweep
+Q153:https://lakshadweep.gov.in/tourism/adventures/
+
+# Query: kayaking experience Mahabalipuram
+Q154:https://www.tripadvisor.in/AttractionProductReview-g1162480-d17616326-Sunset_Kayaking_Mahabalipuram-Mahabalipuram_Kanchipuram_District_Tamil_Nadu.html
+
+# Query: kayaking tour Netrani Island
+Q155:https://www.scubamurudeshwar.in/blog/water-sports-murudeshwar
+
+# Query: kayak rental Malvan
+Q156:https://www.universaladventures.in/products/kayaking-in-tarkarli-beach-or-devbag-beach
+
+# Query: kayaking tour Tarkarli
+Q157:https://www.weekendwander.in/blog/tarkarli-travel-guide
+
+# Query: kayaking near Murudeshwar
+Q158:https://www.murudeshwarscubadive.in/blog/murudeshwar-adventure-activities-things-to-do
+
+# Query: kayak rental Honnavar
+Q159:https://yappe.in/karnataka/honnavar/sharavati-adventures/809931
+
+# Query: kayaking tour Maravanthe beach
+Q160:https://maravanthe-adventure-water.wheree.com/
+
+# Query: kayaking in Valapattanam river Kannur
+Q161:https://kannur.nic.in/en/activities-of-interest/
+
+# Query: kayak rental Payyanur
+Q162:https://www.universaladventures.in/tours/kavvayi-kayaking
+
+# Query: kayaking tour Thalassery
+Q163:https://hikannur.in/mangrovekayaking.html
+
+# Query: kayaking in Kumbalangi Kochi
+Q164:https://www.kayakifykochi.com/
+
+# Query: kayak rental Fort Kochi
+Q165:https://aquariusadventures.com/cost-of-kayaking-in-kochi/
+
+# Query: kayaking Munroe Island Kollam
+Q166:https://www.visitmunroeisland.com/boating/4fdc0b18-6625-4641-a6cd-d015873eda90
+
+# Query: kayaking tour Poovar
+Q167:https://www.indianpanorama.in/kerala/poovar
+
+# Query: kayaking Neyyar Dam
+Q168:https://irisholidays.com/thiruvananthapuram/neyyar-dam
+
+# Query: kayaking tour Periyar Thekkady
+Q169:https://www.periyartigerreserve.org/program/bamboo-rafting-half-day
+
+# Query: kayak rental Vagamon
+Q170:https://wintervalevagamon.com/blog/things-to-do-in-vagamon/
+
+# Query: kayaking Idukki dam
+Q171:https://wintervalevagamon.com/blog/things-to-do-in-vagamon/
+
+# Query: kayaking Banasura Sagar dam
+Q172:https://www.dtpcwayanad.com/destination/banasura-sagar-dam-wayanad
+
+# Query: kayak rental Pookode lake
+Q173:https://www.keralatourism.org/destination/pookkot-lake-wayanad/220/
+
+# Query: kayaking tour Kuttanad
+Q174:https://www.nannibikerentals.com/alappuzha/kerala-kayaking-tours
+
+# Query: kayak rental Thanneermukkom
+Q175:https://www.rhythmhospitality.com/resorts/rhythm-kumarakom/activities/kayaking-in-kumarakom.html
+
+# Query: best dental clinic Guwahati
+Q176:https://apollodental.in/guwahati/rg-baruah-rd/our-clinics/apollo-dental-clinic-in-rg-baruah-rd
+
+# Query: dental implants Patna
+Q177:https://www.ratandental.com/
+
+# Query: emergency dentist Ranchi
+Q178:https://apollodental.in/ranchi/bariatu-rd/our-clinics/apollo-dental-clinic-in-ranchi
+
+# Query: pediatric dental clinic Bhubaneswar
+Q179:https://pediadent.in/
+
+# Query: cosmetic dentist Chandigarh
+Q180:https://www.tricitysmiles.in/services/veneers-smile-design/
+
+# Query: dental clinic Amritsar
+Q181:https://zospital.com/doctor/dr-om-parkash-dental
+
+# Query: root canal treatment Ludhiana
+Q182:https://clovedental.in/specialties/root-canal-treatment/ludhiana
+
+# Query: braces and orthodontist Kanpur
+Q183:https://mydentistkanpur.com/
+
+# Query: wisdom tooth extraction Varanasi
+Q184:https://orodental.co.in/treatments/painless-tooth-extraction/
+
+# Query: dental clinic for veneers Agra
+Q185:https://drsagarclinic.netlify.app/
+
+# Query: best dentist Vadodara
+Q186:https://auradental.com/
+
+# Query: dental implants Rajkot
+Q187:https://aarogyams.com/
+
+# Query: dental clinic Nashik
+Q188:https://apollodental.in/nashik/panchavati/our-clinics/apollo-dental-clinic-in-nashik
+
+# Query: gum treatment clinic Aurangabad
+Q189:https://jamburedental.com/
+
+# Query: denture clinic Thrissur
+Q190:https://smilecaremsdc.com/
+
+# Query: dental scaling and cleaning Kollam
+Q191:https://www.thevisageclinic.com/
+
+# Query: invisalign clinic Kannur
+Q192:https://elitedentalstudio.co.in/service/invisible-aligners
+
+# Query: emergency dental care Salem
+Q193:https://www.drkohilasdentalcentre.in/
+
+# Query: best orthodontist Trichy
+Q194:https://akpdental.com/
+
+# Query: teeth whitening clinic Vellore
+Q195:https://www.velloredental.com/en/services/cosmetic-dentistry/teeth-whitening
+
+# Query: dental crown treatment Mangalore
+Q196:https://www.manipal.edu/academics/departments/prosthodontics-and-crown-bridge-mcods-mangalore
+
+# Query: pediatric dentist Belgaum
+Q197:https://onedentall.com/
+
+# Query: dental clinic Hubli
+Q198:https://www.vishwavandedental.com/
+
+
+# Query: dental implants Warangal
+Q199:https://apollodental.in/warangal/balasamudram-main-road/our-clinics/apollo-dental-clinic-in-hanumakonda-2
+
+# Query: best dental clinic Guntur
+Q200:https://apollodental.in/guntur/our-clinics

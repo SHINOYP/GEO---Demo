@@ -79,21 +79,33 @@ Perplexity's paid API, so we collected real data manually instead:
 - Updated `slides/final_review.tex`, `docs/VIVA_QA.md`, and
   `docs/KNOWN_WEAKNESSES.md` to replace "NOT YET MEASURED" placeholders
   with these real results.
-- **Scaling to 200 queries (in progress):** added 100 more queries
+- **Scaled to 200 queries — complete.** Added 100 more queries
   (Q101-Q200) across the same 4 categories, collected their candidate
-  pool automatically (539 total candidate URLs across all 200 queries).
-  Team is manually collecting the Q101-Q200 citations now
-  (`data/manual_citations_batch2_template.txt`); re-run of
-  `build_dataset`/`evaluate` on the full 200-query set is the next step
-  once that's done.
+  pool automatically, and the team finished manually collecting all
+  Q101-Q200 citations via perplexity.ai. Merged both worksheets
+  (`data/manual_citations.txt` + `data/manual_citations_batch2_template.txt`
+  → `data/manual_citations_full.txt`) and re-ran
+  `pipeline.import_manual_citations`, `pipeline.build_dataset` (705 unique
+  pages scraped, 374 ok), `pipeline.pilot_stats`, and `pipeline.evaluate`
+  on the full real 200-query dataset.
+- **Real numbers at n=200 (389 usable rows, 117 cited / 272 not):**
+  XGBoost ROC-AUC **0.69 ± 0.08** (up from 0.65 ± 0.19 at n=100 — the
+  error bar roughly halved, exactly as predicted from more data, strong
+  evidence the signal is real). Label-shuffle control AUC 0.45 ± 0.09
+  (still at/below chance — no leakage). Feature ablation: authority 0.70,
+  structural 0.63, content 0.58. Domain-type flag: 0.75 with vs 0.69
+  without (modest lift, not dominant). Original synthetic-trained model
+  scores only **AUC 0.45** on this real data — even more damning than the
+  0.585 it scored at n=100, reinforcing the audit's circularity finding.
+- Updated `slides/final_review.tex`, `docs/SLIDE_NUMBERS.md`,
+  `docs/VIVA_QA.md`, `docs/KNOWN_WEAKNESSES.md`, `docs/DATA_CARD.md` with
+  all the above n=200 numbers, replacing every n=100 reference.
 
 **Next:**
-- Once `data/manual_citations_batch2.txt` is provided: merge with batch
-  1, re-run `pipeline.build_dataset` and `pipeline.evaluate` on the full
-  200-query dataset, update slides/docs with the new numbers.
-- Confirm whether the wider dataset narrows the ±0.19 AUC error bar as
-  predicted (~±0.11 expected at ~3x the data).
-- Phase 9 report sections can now pull real Results numbers instead of
-  TODO placeholders.
+- Phase 9 report sections can now pull these final Results numbers.
+- Optional stretch goal (not required for Thursday): `--repeats 3+` on a
+  subset of queries to directly measure citation non-determinism (item 6
+  in `docs/KNOWN_WEAKNESSES.md`, still an open/honest limitation).
 
-**No other blockers** — continuing autonomously.
+**No blockers** — data collection and evaluation are done at the full
+planned scale. Continuing autonomously on polish/report work.

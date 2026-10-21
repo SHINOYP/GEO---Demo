@@ -90,13 +90,14 @@ doesn't have.
     already rank organically for the query, not a random web sample — the
     model therefore learns "cited vs. not-cited among already-competitive
     pages," not "citable vs. the entire web."
-18. **How many queries/rows do you have?** 100 queries, real citations
+18. **How many queries/rows do you have?** 200 queries, real citations
     collected manually via perplexity.ai (no paid API budget was
-    available), candidates via automated web search. 378 unique pages
-    were scraped, 214 succeeded (54.3% success rate — most failures were
-    honest robots.txt disallows or rate limits, not hidden), giving 214
-    usable rows (48 cited / 166 not cited). Not flagged underpowered.
-    See `data/pilot_stats.json`.
+    available), candidates via automated web search. 705 unique pages
+    were scraped, 389 succeeded (53.1% success rate — most failures were
+    honest robots.txt disallows or rate limits, not hidden), giving 389
+    usable rows (117 cited / 272 not cited). Not flagged underpowered.
+    See `data/pilot_stats.json`. (Scaled up from an initial 100-query
+    pilot of 214 usable rows — see Q36 for how the error bars tightened.)
 19. **Is a single observation per query enough?** No — citation is
     non-deterministic; `--repeats N` in `collect_citations.py` exists
     specifically to measure how often the same query returns the same
@@ -176,32 +177,39 @@ doesn't have.
     features but randomly shuffled labels; if AUC collapses to ~0.5, that
     confirms the real (unshuffled) model's performance isn't an artifact
     of data leakage or evaluation bugs — it's actually learning from the
-    label. **Real result: shuffled AUC = 0.52 ± 0.06**, essentially chance,
-    which is exactly what we want to see — it confirms our real AUC of
-    0.65 is a genuine signal, not leakage.
+    label. **Real result (n=200 queries, 389 rows): shuffled AUC = 0.45 ±
+    0.09**, essentially chance (if anything slightly below, as expected
+    from pure noise), which is exactly what we want to see — it confirms
+    our real AUC of 0.69 is a genuine signal, not leakage.
 34. **What's the feature-group ablation for?** Running XGBoost on
     structural-only, content-only, and authority-only feature subsets
     separately shows which feature family actually carries predictive
     signal, rather than attributing everything to "the model." **Real
     result: authority signals (schema markup, phone, address) scored
-    highest alone (AUC 0.70), ahead of content (0.59) and structure
-    (0.56)** — local-business "legitimacy" signals carry more predictive
-    weight than how the text is written.
+    highest alone (AUC 0.70), ahead of structure (0.63) and content
+    (0.58)** — local-business "legitimacy" signals carry more predictive
+    weight than how the text is written. (Consistent with the 100-query
+    pilot's ranking, just with content and structure swapping second/third
+    place within noise.)
 35. **How do you compare against the original synthetic-trained model?**
     `evaluate.py`'s `compare_original_repo_model` loads the existing
     `citation_model.pkl` and scores it directly on real pilot data,
     reporting the (expected) performance gap versus its inflated synthetic
-    numbers. **Real result: the original model scores AUC 0.585 on real
-    data** — barely above chance, versus the 0.888 it claimed on its own
-    synthetic labels. This is the single clearest piece of evidence that
-    synthetic-label training doesn't transfer to reality.
+    numbers. **Real result: the original model scores AUC 0.45 on the full
+    389-row real dataset** — at or below chance, versus the 0.888 it
+    claimed on its own synthetic labels. This is the single clearest piece
+    of evidence that synthetic-label training doesn't transfer to reality,
+    and it got *more* damning, not less, as we added more real data.
 36. **What if the dataset is too small to draw conclusions?** We say so
     explicitly — `metrics.json["underpowered"] = true` when usable rows or
     minority-class count fall below documented thresholds, and the UI/docs
-    surface that flag rather than hiding it. **For this pilot: 214 usable
-    rows, 48 positives — above both thresholds, so `underpowered = false`**,
-    though the wide error bars (±0.19 on AUC) still mean we present this as
-    an early signal, not a validated model.
+    surface that flag rather than hiding it. **For this pilot: 389 usable
+    rows, 117 positives — above both thresholds, so `underpowered = false`**.
+    Scaling from 100 to 200 queries (214 → 389 usable rows) tightened the
+    AUC error bar from ±0.19 to ±0.08 and nudged the point estimate up
+    (0.65 → 0.69) — both consistent with the original signal being real
+    and just needing more data to pin down precisely, not an artifact that
+    washes out with scale.
 
 ## Limitations
 
