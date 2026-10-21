@@ -90,9 +90,13 @@ doesn't have.
     already rank organically for the query, not a random web sample — the
     model therefore learns "cited vs. not-cited among already-competitive
     pages," not "citable vs. the entire web."
-18. **How many queries/rows do you have?** NOT YET MEASURED — depends on
-    the real collection run; `data/pilot_stats.json` will report the exact
-    count once `pipeline/run_all.py` has been executed with real API keys.
+18. **How many queries/rows do you have?** 100 queries, real citations
+    collected manually via perplexity.ai (no paid API budget was
+    available), candidates via automated web search. 378 unique pages
+    were scraped, 214 succeeded (54.3% success rate — most failures were
+    honest robots.txt disallows or rate limits, not hidden), giving 214
+    usable rows (48 cited / 166 not cited). Not flagged underpowered.
+    See `data/pilot_stats.json`.
 19. **Is a single observation per query enough?** No — citation is
     non-deterministic; `--repeats N` in `collect_citations.py` exists
     specifically to measure how often the same query returns the same
@@ -172,20 +176,32 @@ doesn't have.
     features but randomly shuffled labels; if AUC collapses to ~0.5, that
     confirms the real (unshuffled) model's performance isn't an artifact
     of data leakage or evaluation bugs — it's actually learning from the
-    label.
+    label. **Real result: shuffled AUC = 0.52 ± 0.06**, essentially chance,
+    which is exactly what we want to see — it confirms our real AUC of
+    0.65 is a genuine signal, not leakage.
 34. **What's the feature-group ablation for?** Running XGBoost on
     structural-only, content-only, and authority-only feature subsets
     separately shows which feature family actually carries predictive
-    signal, rather than attributing everything to "the model."
+    signal, rather than attributing everything to "the model." **Real
+    result: authority signals (schema markup, phone, address) scored
+    highest alone (AUC 0.70), ahead of content (0.59) and structure
+    (0.56)** — local-business "legitimacy" signals carry more predictive
+    weight than how the text is written.
 35. **How do you compare against the original synthetic-trained model?**
     `evaluate.py`'s `compare_original_repo_model` loads the existing
     `citation_model.pkl` and scores it directly on real pilot data,
     reporting the (expected) performance gap versus its inflated synthetic
-    numbers.
+    numbers. **Real result: the original model scores AUC 0.585 on real
+    data** — barely above chance, versus the 0.888 it claimed on its own
+    synthetic labels. This is the single clearest piece of evidence that
+    synthetic-label training doesn't transfer to reality.
 36. **What if the dataset is too small to draw conclusions?** We say so
     explicitly — `metrics.json["underpowered"] = true` when usable rows or
     minority-class count fall below documented thresholds, and the UI/docs
-    surface that flag rather than hiding it.
+    surface that flag rather than hiding it. **For this pilot: 214 usable
+    rows, 48 positives — above both thresholds, so `underpowered = false`**,
+    though the wide error bars (±0.19 on AUC) still mean we present this as
+    an early signal, not a validated model.
 
 ## Limitations
 
