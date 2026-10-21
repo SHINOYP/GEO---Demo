@@ -17,10 +17,10 @@
 %          4-up layout baked in) — see that file's header comment.
 %
 % HONESTY NOTE: every number on these slides must trace back to a file
-% in this repo. Where real pilot/model numbers do not exist yet (data
-% collection is pending PERPLEXITY_API_KEY — see STATUS.md), the slide
-% says "NOT YET MEASURED (pending pilot run)" instead of a fabricated
-% figure. See docs/SLIDE_NUMBERS.md for the slide-by-slide source map.
+% in this repo. Real pilot data was collected manually (100 queries via
+% perplexity.ai, no paid API budget available) and real model metrics
+% now exist in artifacts/metrics.json / data/pilot_stats.json — see
+% docs/SLIDE_NUMBERS.md for the slide-by-slide source map.
 % ============================================================
 
 \documentclass[aspectratio=169]{beamer}
@@ -117,14 +117,14 @@
 % ---------------- Datasets ----------------
 \begin{frame}{Datasets}
   \begin{itemize}
-    \item \textbf{Pilot design}: 20 real local-business search queries, 5 per category across 4 categories:
+    \item \textbf{Pilot design}: 100 real local-business search queries, 25 per category across 4 categories:
     \begin{itemize}
-      \item Gyms (Kerala cities) \quad\textbullet\quad Chauffeur/limo services (GCC cities)
-      \item Kayaking/tour operators \quad\textbullet\quad Dental clinics
+      \item Gyms (14 Kerala cities) \quad\textbullet\quad Chauffeur/limo services (10 GCC cities)
+      \item Kayaking/tour operators (15 Indian destinations) \quad\textbullet\quad Dental clinics (15 Indian cities)
     \end{itemize}
     \item \textbf{Label rule}: a page's canonical URL is labeled \texttt{1} if cited by Perplexity's \texttt{sonar} model for that query, else \texttt{0}. Candidate pool = cited URLs $\cup$ organic results.
-    \item \textbf{Status}: collection pipeline fully built (\texttt{pipeline/collect\_citations.py}, \texttt{collect\_candidates.py}, \texttt{build\_dataset.py}) — \alert{real data collection is pending API key provisioning (NOT YET MEASURED)}.
-    \item Known limitation: negatives are drawn only from already-ranking pages, not a random web sample.
+    \item \textbf{Status — real data collected}: 100/100 queries collected (citations via \texttt{perplexity.ai}, tagged \texttt{collection\_method="manual\_web\_ui"} — no paid API budget was available); 378 unique candidate pages scraped, \textbf{214 usable rows} (48 cited / 166 not), \textbf{54.3\% scrape success rate}. Not flagged underpowered.
+    \item Known limitation: negatives are drawn only from already-ranking pages, not a random web sample. 22\% of real citations went to directory/aggregator listings (JustDial, MagicPin, WhatClinic) rather than the business's own site.
   \end{itemize}
 \end{frame}
 
@@ -161,7 +161,7 @@
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
       \begin{tikzpicture}[node distance=0.4cm, every node/.style={font=\small}]
-        \node[draw, fill=navySecondary, text=white, rounded corners, text width=3.2cm, align=center] (q) {queries.csv (20 queries)};
+        \node[draw, fill=navySecondary, text=white, rounded corners, text width=3.2cm, align=center] (q) {queries.csv (100 queries)};
         \node[draw, fill=accentIndigo, text=white, rounded corners, text width=3.2cm, align=center, below=of q] (cite) {collect\_citations.py (Perplexity)};
         \node[draw, fill=accentIndigo, text=white, rounded corners, text width=3.2cm, align=center, below=of cite] (cand) {collect\_candidates.py (SerpAPI / fallback)};
         \node[draw, fill=accentIndigo, text=white, rounded corners, text width=3.2cm, align=center, below=of cand] (build) {build\_dataset.py (scrape + features + label)};
@@ -174,9 +174,9 @@
     \end{column}
     \begin{column}{0.48\textwidth}
       \begin{itemize}
-        \item All pipeline stages implemented and dry-run tested.
+        \item All pipeline stages implemented and run end-to-end on real data.
         \item Cost-safety: \texttt{--dry-run}, \texttt{--max-calls} cap, on-disk caching, retry with backoff on every API call.
-        \item Real pilot statistics: \textbf{NOT YET MEASURED} (pending API keys).
+        \item Real pilot statistics: \textbf{100 queries, 214 usable rows, 54.3\% scrape success} (see \texttt{data/pilot\_stats.json}).
         \item \textit{[TODO (team): insert Streamlit app screenshot here]}
         \item \textit{[TODO (team): insert SHAP explanation screenshot here]}
       \end{itemize}
@@ -185,16 +185,16 @@
 \end{frame}
 
 % ---------------- Results so far ----------------
-\begin{frame}{Results So Far — Evaluation Plan}
-  \alert{Real pilot data collection has not yet run; no outcome metrics exist yet.} The evaluation script (\texttt{pipeline/evaluate.py}) is built and will report:
+\begin{frame}{Results So Far — Real Evaluation}
+  \textbf{Evaluated on 214 real rows} (48 cited / 166 not), GroupKFold by domain ($k=5$), all numbers from \texttt{artifacts/metrics.json}:
   \begin{itemize}
-    \item \textbf{Primary split}: GroupKFold by domain (k=5) — no site appears in both train and test.
-    \item \textbf{Models compared}: rule-based checklist baseline, logistic regression, XGBoost (with \texttt{scale\_pos\_weight} for imbalance).
-    \item \textbf{Metrics}: ROC-AUC, PR-AUC, precision/recall/F1 $\pm$ std across folds, confusion matrix.
-    \item \textbf{Sanity checks}: label-shuffle control (expect AUC $\approx 0.5$), feature-group ablation, domain-type leakage check, comparison against the original (synthetic-trained) model.
-    \item \textbf{Explainability}: SHAP global summary + 3 local waterfalls; stability measured via rank correlation across folds.
+    \item \textbf{XGBoost}: ROC-AUC $0.65 \pm 0.19$, F1 $0.44 \pm 0.18$ — beats logistic regression (AUC $0.55$) and the rule-based checklist baseline.
+    \item \textbf{Label-shuffle sanity check}: AUC $0.52 \pm 0.06$ — correctly near chance, confirming \textbf{no leakage}; the real $0.65$ is a genuine signal.
+    \item \textbf{Feature-group ablation}: authority signals (schema, phone, address) are the strongest group (AUC $0.70$), ahead of content ($0.59$) and structure ($0.56$).
+    \item \alert{Original repo's synthetic-trained model, evaluated on this real data: AUC $0.585$} — barely above chance, concretely confirming the circularity problem found in the Phase 1 audit (it claimed 88.8\% accuracy on its own synthetic labels).
+    \item \textbf{SHAP stability} across folds: rank correlation $0.81$ — reasonably stable at this sample size.
   \end{itemize}
-  \small All figures above are placeholders for the methodology, not results — see \texttt{artifacts/metrics.json} (not yet generated) for the real numbers once available.
+  \small Small-sample caveat: wide error bars are expected and honestly reported — read this as a promising early signal, not a validated model. Full sanity checks, ablations, and SHAP figures in \texttt{artifacts/}.
 \end{frame}
 
 % ---------------- Conclusion & Future Work ----------------
@@ -219,7 +219,7 @@
       \textbf{Semester 7 (delivered)}
       \begin{itemize}
         \item Codebase audit \& honesty fixes
-        \item Real-data pilot pipeline (collection, dataset build, evaluation script)
+        \item Real-data pilot: 100 queries collected, 214-row dataset, full cross-validated evaluation \& SHAP analysis
         \item Ethics/cost-safety guardrails
         \item Documentation \& viva prep
       \end{itemize}
@@ -227,8 +227,8 @@
     \begin{column}{0.5\textwidth}
       \textbf{Semester 8 (planned)}
       \begin{itemize}
-        \item Real data collection once API access is finalized
-        \item Full cross-validated evaluation \& SHAP analysis
+        \item Scale to 300+ queries for narrower confidence intervals
+        \item \texttt{--repeats} runs to measure citation-label stability
         \item App polish, offline demo snapshots
         \item Final report, diary, references
       \end{itemize}
