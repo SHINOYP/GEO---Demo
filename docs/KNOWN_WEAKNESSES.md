@@ -7,33 +7,51 @@ Written as a hostile examiner reading the actual code and `docs/AUDIT.md`.
 1. **"Your headline metrics are 0.888 AUC. Prove it."**
    We can't — `docs/AUDIT.md` Q2 confirms these exact numbers appear
    nowhere else in the repo (no log/notebook/artifact) and are also
-   circular even if reproduced (Q1). **UNFIXABLE for the demo model** — our
-   honest answer: we removed them from the UI and replaced with "not yet
-   evaluated" / real pilot numbers once collected.
+   circular even if reproduced (Q1). **UNFIXABLE for that original demo
+   model** — our honest answer: we removed those numbers from the UI and
+   replaced them with real cross-validated metrics from an actual pilot
+   (ROC-AUC 0.65 ± 0.19, see `artifacts/metrics.json`), and we go further —
+   we evaluated the *original* synthetic-trained model on our real data and
+   it scores 0.585, barely above chance, which is the proof that its
+   0.888 never meant anything.
 2. **"So your model has never seen a single real citation?"**
-   Correct, as of this review. **This is the central unresolved weakness.**
-   We built the full real-data pipeline but have not yet run it against a
-   live API key.
+   **No longer true — we fixed this.** As of this review we collected 100
+   real queries (manually via perplexity.ai, since no paid API budget was
+   available) and evaluated on 214 real scraped pages (48 cited / 166 not).
+   The dataset is not flagged underpowered. We are in the process of
+   scaling to 200 queries for tighter confidence intervals.
 3. **"Then what, exactly, did you accomplish this semester?"** A working,
    auditable, honestly-labeled system (scraper, 45-feature extractor,
-   XGBoost+SHAP pipeline, evaluation harness with leakage safeguards) that
-   is *ready* to train on real data the moment it's collected, plus the
-   audit that found and fixed the dishonesty in the inherited codebase.
-   This is a legitimate scope statement for a Phase-1 review.
+   XGBoost+SHAP pipeline, evaluation harness with leakage safeguards),
+   **plus a completed real-data pilot run** with real cross-validated
+   metrics, a passed label-shuffle sanity check, and a concrete
+   demonstration that the inherited synthetic-trained model fails on real
+   data. This is a strong scope statement for a Phase-1 review.
 4. **"Why didn't you just get the API key weeks ago?"** Fair criticism —
-   team process gap, not a technical one. Answer honestly; don't deflect.
+   team process gap, not a technical one. We worked around it by manually
+   collecting citations via the free perplexity.ai website instead of the
+   paid API, which got us real data without the budget. Answer honestly;
+   don't deflect.
 5. **"Your negatives are pages that already rank. Doesn't that make this
    trivial / useless?"** It constrains the claim: we predict
    cited-vs-not-cited *among already-competitive pages*, not
    citable-vs-the-whole-web. **Partially fixable**: documented explicitly,
    not hidden.
 6. **"A single API call per query — how do you know that citation wasn't
-   random noise?"** We don't, with `--repeats 1`. `--repeats 3+` exists to
-   measure this but hasn't been run. **Real limitation until repeats are run.**
-7. **"20 queries. Isn't that absurdly small for 45 features?"** Yes — classic
-   curse-of-dimensionality risk; `underpowered` flag in `metrics.json`
-   exists specifically to surface this rather than hide it behind a single
-   confident-looking number.
+   random noise?"** We don't, with `--repeats 1` (and our manual
+   collection method also only captured one observation per query).
+   `--repeats 3+` exists in the automated path to measure this but hasn't
+   been run. **Real limitation, honestly disclosed** — the label-shuffle
+   control (AUC 0.52, near chance) is indirect evidence the signal isn't
+   pure noise, but it doesn't substitute for measuring citation stability
+   directly.
+7. **"100-200 queries. Isn't that still small for 45 features?"** Yes —
+   classic curse-of-dimensionality risk, though better than the original
+   20-query pilot. The `underpowered` flag in `metrics.json` exists
+   specifically to surface this rather than hide it behind a single
+   confident-looking number; at 214 usable rows it currently reads
+   `false`, but we still present the wide error bars (±0.19 on AUC)
+   honestly as an early signal, not a validated model.
 8. **"Walk me through SHAP — does it prove causation?"** No, and we say so
    explicitly (`docs/WHITEBOARD.md` ex. 8) — correlation only.
 9. **"If I remove `factual_density` from your synthetic model, does
@@ -113,14 +131,20 @@ Written as a hostile examiner reading the actual code and `docs/AUDIT.md`.
     give a fuller picture, which matters since we expect imbalance (more
     non-cited than cited pages) in the real pilot.
 24. **"Does removing `domain_type` change results meaningfully?"**
-    NOT YET MEASURED — this is exactly what `domain_type_leakage_check`
-    will report once real data exists; we can't claim an answer yet.
+    Measured: AUC with the directory-aggregator flag is 0.698 vs. 0.655
+    without it — a modest lift, not a dominant effect. So whether a cited
+    page is a directory (JustDial, MagicPin, etc.) helps a little, but
+    the model isn't just learning "is this a directory," which would be a
+    red flag. See `sanity_checks.domain_type_leakage_check` in
+    `artifacts/metrics.json`.
 25. **"Your tests don't call a live trained model end-to-end — are they
-    real tests or just smoke tests?"** They're unit/contract tests
-    (feature extraction correctness, SSRF rejection, canonicalization,
+    real tests or just smoke tests?"** The pytest suite is unit/contract
+    tests (feature extraction correctness, SSRF rejection, canonicalization,
     split-leakage guarantee, feature-column train/serve match) — genuinely
-    useful, but they do not validate the model's real-world predictive
-    accuracy, which can only come from the pilot evaluation run.
+    useful, but they do not validate real-world predictive accuracy. That
+    now *has* been validated separately, by the actual pilot evaluation
+    run (`pipeline.evaluate` on 214 real rows) — a different kind of
+    check (statistical, not unit-test), but a real one.
 26. **"What happens to your whole claim if Perplexity changes its API
     response schema?"** `collect_citations.py` checks both `citations` and
     `search_results` keys and logs whichever shape is observed to
@@ -141,19 +165,29 @@ Written as a hostile examiner reading the actual code and `docs/AUDIT.md`.
     uniformly rather than erroring — reasonable degraded behavior, not
     tested with a dedicated fixture.
 30. **"If the panel asks you to run `pipeline.evaluate` live right now,
-    what happens?"** It will correctly detect `data/dataset.csv` is
-    missing and write a placeholder `metrics.json` with
-    `"error": "NOT YET MEASURED..."` rather than crash or fabricate
-    numbers — demonstrate this live as proof of the honesty-by-design
-    approach if pressed.
+    what happens?"** It will actually run successfully — `data/dataset.csv`
+    exists (214 real rows) — and reproduce the exact numbers in
+    `artifacts/metrics.json` (ROC-AUC ≈ 0.65, label-shuffle ≈ 0.52, etc.)
+    in under a minute. This is worth offering to demonstrate live: it
+    proves the numbers aren't hand-typed. (Before real data existed, this
+    same script would have written a placeholder `{"error": "NOT YET
+    MEASURED..."}` instead of crashing or fabricating numbers — that
+    honesty-by-design fallback is still there for anyone who clones the
+    repo without the data files.)
 
 ## Summary: unfixable-by-Thursday weaknesses (say so plainly if asked)
 
-- No real citation data collected yet (items 1-2, 6-7) — structural,
-  depends on API access and time, not something more code can fix by the
-  review.
-- Small, convenience-sample query list and selection-biased negatives
-  (items 5, 7, 17) — inherent to a pilot study at this scale.
+- **Resolved since this pass was written:** real citation data has now
+  been collected (100 queries, scaling to 200) and evaluated (items 1-3
+  are no longer live weaknesses — see the real numbers in
+  `artifacts/metrics.json`). Kept here, struck through in spirit, as a
+  record of what the red-team pass originally flagged and how it was
+  actually closed, not just argued around.
+- **Still real:** only one observation per query, no `--repeats` run yet
+  (item 6) — citation non-determinism is not directly measured.
+- Small-by-ML-standards sample size and selection-biased negatives
+  (items 5, 7, 17) — inherent to a pilot study at this scale; wide error
+  bars (±0.19 on AUC) are reported honestly rather than hidden.
 - No rate limiting on the API backend (item 13) — a real gap, mitigated
   only by not exposing it publicly for the demo.
 - Redundant macro/meso/micro composite features inherited from upstream
