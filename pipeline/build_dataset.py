@@ -31,6 +31,13 @@ DIRECTORY_DOMAINS = {
     "yelp.com", "tripadvisor.com", "google.com", "facebook.com", "instagram.com",
     "yellowpages.com", "justdial.com", "sulekha.com", "practo.com", "zomato.com",
     "booking.com", "getyourguide.com", "viator.com", "linkedin.com",
+    # Indian local-business / healthcare listing directories — common
+    # citation targets when a business has no real website of its own.
+    "magicpin.in", "magicpin.com", "yappe.in", "whatclinic.com",
+    "docindia.org", "drlogy.com", "clinicspots.com", "credihealth.com",
+    "apollo247.com", "bajajfinservhealth.in", "quickerala.com",
+    "discover.lyfskills.com", "yellowpages-uae.com", "threebestrated.in",
+    "wanderlog.com",
 }
 SOCIAL_DOMAINS = {"facebook.com", "instagram.com", "twitter.com", "x.com", "linkedin.com", "youtube.com"}
 NEWS_HINTS = ("news", "blog", "magazine", "times", "post", "herald", "medium.com")
