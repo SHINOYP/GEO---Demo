@@ -17,7 +17,9 @@ import json
 import os
 import re
 import sys
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlsplit
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -72,6 +74,7 @@ def html_fingerprint(raw_html: str) -> str:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--delay", type=float, default=1.0, help="Polite delay (s) between requests to the same host.")
+    ap.add_argument("--workers", type=int, default=12, help="Concurrent scraper threads (I/O-bound, safe to parallelize).")
     ap.add_argument("--citations", default=os.path.join(REPO_ROOT, "data", "citations.json"))
     ap.add_argument("--candidates", default=os.path.join(REPO_ROOT, "data", "candidates.json"))
     ap.add_argument("--out", default=os.path.join(REPO_ROOT, "data", "dataset.csv"))
@@ -101,61 +104,69 @@ def main():
         for url in pool:
             rows_to_scrape.append((qid, category, city, url, 1 if url in cited else 0))
 
+    unique_urls = sorted(set(r[3] for r in rows_to_scrape))
     print(f"Candidate pool across all queries: {len(rows_to_scrape)} (query_id, url) pairs, "
-          f"{len(set(r[3] for r in rows_to_scrape))} unique URLs.")
+          f"{len(unique_urls)} unique URLs. Scraping with {args.workers} concurrent threads "
+          f"(I/O-bound waits — this is safe, we're not hammering any single host harder: "
+          f"the per-host polite delay is still enforced across all threads).")
 
-    last_fetch_by_host = {}
     html_cache_dir = os.path.join(REPO_ROOT, "data", "html_cache")
     os.makedirs(html_cache_dir, exist_ok=True)
 
+    host_lock = threading.Lock()
+    last_fetch_by_host = {}
+
+    def fetch_one(url):
+        """Runs in a worker thread. Returns (url, status, reason, feats, fingerprint)."""
+        host = domain_of(url)
+        with host_lock:
+            wait = args.delay - (time.time() - last_fetch_by_host.get(host, 0))
+            if wait > 0:
+                time.sleep(wait)
+            last_fetch_by_host[host] = time.time()
+
+        html_path = os.path.join(html_cache_dir, hashlib.sha256(url.encode()).hexdigest()[:24] + ".html")
+        try:
+            if os.path.exists(html_path):
+                with open(html_path, "r", encoding="utf-8") as f:
+                    raw_html = f.read()
+                soup = BeautifulSoup(raw_html, "lxml")
+            else:
+                res = scrape(url)
+                raw_html = res["raw_html"]
+                soup = res["soup"]
+                with open(html_path, "w", encoding="utf-8") as f:
+                    f.write(raw_html)
+
+            fingerprint = html_fingerprint(raw_html)
+            feats = extract_features(soup, url)["model_features"]
+            return url, "ok", "", feats, fingerprint
+        except ScrapingError as e:
+            return url, "failed", f"ScrapingError: {e}", None, None
+        except Exception as e:
+            return url, "failed", f"{type(e).__name__}: {e}", None, None
+
+    scraped_cache = {}  # url -> (status, reason, features_dict or None, fingerprint or None)
     seen_fingerprints = {}
     duplicate_count = 0
     status_counts = {}
-    out_rows = []
+    done = 0
 
-    scraped_cache = {}  # url -> (status, reason, features_dict or None, fingerprint or None)
-
-    for qid, category, city, url, label in rows_to_scrape:
-        if url not in scraped_cache:
-            host = domain_of(url)
-            delay_needed = args.delay - (time.time() - last_fetch_by_host.get(host, 0))
-            if delay_needed > 0:
-                time.sleep(delay_needed)
-
-            html_path = os.path.join(html_cache_dir, hashlib.sha256(url.encode()).hexdigest()[:24] + ".html")
-            status, reason, feats, fingerprint = "unknown", "", None, None
-            try:
-                if os.path.exists(html_path):
-                    with open(html_path, "r", encoding="utf-8") as f:
-                        raw_html = f.read()
-                    soup = BeautifulSoup(raw_html, "lxml")
-                else:
-                    res = scrape(url)
-                    raw_html = res["raw_html"]
-                    soup = res["soup"]
-                    with open(html_path, "w", encoding="utf-8") as f:
-                        f.write(raw_html)
-                last_fetch_by_host[host] = time.time()
-
-                fingerprint = html_fingerprint(raw_html)
+    with ThreadPoolExecutor(max_workers=args.workers) as pool:
+        futures = {pool.submit(fetch_one, url): url for url in unique_urls}
+        for future in as_completed(futures):
+            url, status, reason, feats, fingerprint = future.result()
+            done += 1
+            if fingerprint:
                 if fingerprint in seen_fingerprints and seen_fingerprints[fingerprint] != url:
                     duplicate_count += 1
-
-                feats = extract_features(soup, url)["model_features"]
-                status, reason = "ok", ""
-            except ScrapingError as e:
-                status, reason = "failed", f"ScrapingError: {e}"
-                last_fetch_by_host[host] = time.time()
-            except Exception as e:
-                status, reason = "failed", f"{type(e).__name__}: {e}"
-                last_fetch_by_host[host] = time.time()
-
-            status_counts[status] = status_counts.get(status, 0) + 1
-            if fingerprint:
                 seen_fingerprints.setdefault(fingerprint, url)
+            status_counts[status] = status_counts.get(status, 0) + 1
             scraped_cache[url] = (status, reason, feats, fingerprint)
-            print(f"[{status}] {url} ({reason[:60] if reason else 'ok'})")
+            print(f"[{done}/{len(unique_urls)}] [{status}] {url} ({reason[:60] if reason else 'ok'})")
 
+    out_rows = []
+    for qid, category, city, url, label in rows_to_scrape:
         status, reason, feats, fingerprint = scraped_cache[url]
         row = {
             "query_id": qid, "category": category, "city": city,

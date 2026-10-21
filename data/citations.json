@@ -1,0 +1,1402 @@
+[
+  {
+    "query_id": "Q01",
+    "category": "gym",
+    "city": "Kochi",
+    "query_text": "best gym in Kochi for weight training",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.sector7.in/"
+    ],
+    "cited_domains": [
+      "www.sector7.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q02",
+    "category": "gym",
+    "city": "Thiruvananthapuram",
+    "query_text": "top rated gym in Thiruvananthapuram with personal trainers",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Thiruvananthapuram/Gyms-in-Poikamukku/nct-11575244"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q03",
+    "category": "gym",
+    "city": "Kozhikode",
+    "query_text": "affordable gym membership Kozhikode",
+    "repeat": 0,
+    "cited_urls": [
+      "https://magicpin.in/india/Kozhikode/All/Fitness"
+    ],
+    "cited_domains": [
+      "magicpin.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q04",
+    "category": "gym",
+    "city": "Thrissur",
+    "query_text": "24 hour gym in Thrissur",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Thrissur/24-Hours-Gyms-in-Avanur/nct-11575258"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q05",
+    "category": "gym",
+    "city": "Kannur",
+    "query_text": "women's only gym in Kannur",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Kannur/Gyms/nct-11575244"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q06",
+    "category": "chauffeur",
+    "city": "Dubai",
+    "query_text": "best chauffeur service in Dubai for airport transfer",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.blacklane.com/en/countries/uae/dubai/airport-transfer"
+    ],
+    "cited_domains": [
+      "www.blacklane.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q07",
+    "category": "chauffeur",
+    "city": "Abu Dhabi",
+    "query_text": "luxury limo rental Abu Dhabi",
+    "repeat": 0,
+    "cited_urls": [
+      "https://prominentlimo.com/"
+    ],
+    "cited_domains": [
+      "prominentlimo.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q08",
+    "category": "chauffeur",
+    "city": "Doha",
+    "query_text": "hourly chauffeur hire Doha",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.blacklane.com/en/countries/qatar"
+    ],
+    "cited_domains": [
+      "www.blacklane.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q09",
+    "category": "chauffeur",
+    "city": "Riyadh",
+    "query_text": "corporate chauffeur service Riyadh",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.chauffiq.com/services/corporate-chauffeur"
+    ],
+    "cited_domains": [
+      "www.chauffiq.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q10",
+    "category": "chauffeur",
+    "city": "Muscat",
+    "query_text": "wedding limousine service Muscat",
+    "repeat": 0,
+    "cited_urls": [
+      "https://omantour.in/luxury-chauffeur-muscat"
+    ],
+    "cited_domains": [
+      "omantour.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q11",
+    "category": "kayaking",
+    "city": "Alleppey",
+    "query_text": "best kayaking tour in Alleppey backwaters",
+    "repeat": 0,
+    "cited_urls": [
+      "https://nadodikayaking.com/"
+    ],
+    "cited_domains": [
+      "nadodikayaking.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q12",
+    "category": "kayaking",
+    "city": "Munnar",
+    "query_text": "guided kayaking experience Munnar",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.universaladventures.in/products/munnar-backwater-kayaking"
+    ],
+    "cited_domains": [
+      "www.universaladventures.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q13",
+    "category": "kayaking",
+    "city": "Goa",
+    "query_text": "sunset kayaking tour Goa",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.kayakgoa.com/"
+    ],
+    "cited_domains": [
+      "www.kayakgoa.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q14",
+    "category": "kayaking",
+    "city": "Varkala",
+    "query_text": "kayaking and snorkeling Varkala",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.tripadvisor.in/Attractions-g17794977-Activities-c61-t191-Varkala_Thiruvananthapuram_District_Kerala.html"
+    ],
+    "cited_domains": [
+      "www.tripadvisor.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q15",
+    "category": "kayaking",
+    "city": "Gokarna",
+    "query_text": "kayak rental Gokarna beach",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.junglelodges.com/resort/om-beach-resort"
+    ],
+    "cited_domains": [
+      "www.junglelodges.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q16",
+    "category": "dental",
+    "city": "Kochi",
+    "query_text": "best dental clinic in Kochi for implants",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.asterhospitals.in/hospitals/aster-medcity-kochi/specialities/dentistry"
+    ],
+    "cited_domains": [
+      "www.asterhospitals.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q17",
+    "category": "dental",
+    "city": "Bangalore",
+    "query_text": "emergency dentist Bangalore open now",
+    "repeat": 0,
+    "cited_urls": [
+      "https://dentickdentalcare.in/emergency-dentist-bengaluru"
+    ],
+    "cited_domains": [
+      "dentickdentalcare.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q18",
+    "category": "dental",
+    "city": "Chennai",
+    "query_text": "pediatric dental clinic Chennai",
+    "repeat": 0,
+    "cited_urls": [
+      "https://kidznteenz.in/about-us"
+    ],
+    "cited_domains": [
+      "kidznteenz.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q19",
+    "category": "dental",
+    "city": "Hyderabad",
+    "query_text": "cosmetic dentist for teeth whitening Hyderabad",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.fmsdental.com/tooth-whitening"
+    ],
+    "cited_domains": [
+      "www.fmsdental.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q20",
+    "category": "dental",
+    "city": "Coimbatore",
+    "query_text": "affordable root canal treatment Coimbatore",
+    "repeat": 0,
+    "cited_urls": [
+      "https://teeth.in/cost/root-canal/coimbatore"
+    ],
+    "cited_domains": [
+      "teeth.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q21",
+    "category": "gym",
+    "city": "Kollam",
+    "query_text": "best gym in Kollam for weight loss",
+    "repeat": 0,
+    "cited_urls": [
+      "https://gym-india.nears.me/listings/india/kerala/kollam/highly-rated-the-fit-nation-gym-in-kollam-kl"
+    ],
+    "cited_domains": [
+      "gym-india.nears.me"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q22",
+    "category": "gym",
+    "city": "Alappuzha",
+    "query_text": "affordable gym membership Alappuzha",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Alappuzha/Men-Gyms-in-Kandiyoor/nct-11575265"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q23",
+    "category": "gym",
+    "city": "Palakkad",
+    "query_text": "top crossfit gym in Palakkad",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Palakkad/Crossfit-Gyms/nct-11614003"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q24",
+    "category": "gym",
+    "city": "Malappuram",
+    "query_text": "24 hour gym in Malappuram",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Malappuram/24-Hours-Gyms/nct-11575258"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q25",
+    "category": "gym",
+    "city": "Kottayam",
+    "query_text": "gym with personal trainer in Kottayam",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Kottayam/Personal-Gym-Trainers-in-Kottayam-Collectorate/nct-1200258"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q26",
+    "category": "gym",
+    "city": "Pathanamthitta",
+    "query_text": "best gym for beginners in Pathanamthitta",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Pathanamthitta/Gyms/nct-11575244"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q27",
+    "category": "gym",
+    "city": "Idukki",
+    "query_text": "fitness center near me in Idukki",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Idukki/Gyms-in-Kuttikkanam/nct-11575244"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q28",
+    "category": "gym",
+    "city": "Wayanad",
+    "query_text": "gym membership plans in Wayanad",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Wayanad/Women-Gyms-in-Tharuvana/nct-11995807"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q29",
+    "category": "gym",
+    "city": "Kasaragod",
+    "query_text": "best gym in Kasaragod for bodybuilding",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Kasaragod/Gyms/nct-11575244"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q30",
+    "category": "gym",
+    "city": "Ernakulam",
+    "query_text": "ladies gym in Ernakulam",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Ernakulam/Women-Gyms/nct-11995807"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q31",
+    "category": "gym",
+    "city": "Kochi",
+    "query_text": "crossfit gym in Kochi",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.sector7.in/"
+    ],
+    "cited_domains": [
+      "www.sector7.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q32",
+    "category": "gym",
+    "city": "Thiruvananthapuram",
+    "query_text": "gym with swimming pool Thiruvananthapuram",
+    "repeat": 0,
+    "cited_urls": [
+      "https://playsport.com/trivandrumclubswimmingpool_ag_2b1e3a2c"
+    ],
+    "cited_domains": [
+      "playsport.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q33",
+    "category": "gym",
+    "city": "Kozhikode",
+    "query_text": "gym near railway station Kozhikode",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Kozhikode/Fitness-Centres-in-Railway-Station-Road-Calicut-Fort-Gate/nct-10208976"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q34",
+    "category": "gym",
+    "city": "Thrissur",
+    "query_text": "best gym for weight loss Thrissur",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Kozhikode/Fitness-Centres-in-Railway-Station-Road-Calicut-Fort-Gate/nct-10208976"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q35",
+    "category": "gym",
+    "city": "Kannur",
+    "query_text": "gym with sauna Kannur",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.goibibo.com/hotels/hotels-in-kannur/near-kannur-railway-station-lh"
+    ],
+    "cited_domains": [
+      "www.goibibo.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q36",
+    "category": "gym",
+    "city": "Kollam",
+    "query_text": "gym open early morning Kollam",
+    "repeat": 0,
+    "cited_urls": [
+      "https://gym-india.nears.me/listings/india/kerala/kollam/highly-rated-the-fit-nation-gym-in-kollam-kl"
+    ],
+    "cited_domains": [
+      "gym-india.nears.me"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q37",
+    "category": "gym",
+    "city": "Alappuzha",
+    "query_text": "gym for seniors Alappuzha",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.findby.in/fitness/gym/the-fit-your-fitness-destination-in-cherthala-alappuzha"
+    ],
+    "cited_domains": [
+      "www.findby.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q38",
+    "category": "gym",
+    "city": "Palakkad",
+    "query_text": "budget gym Palakkad",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Palakkad/Gyms/nct-11575244"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q39",
+    "category": "gym",
+    "city": "Kottayam",
+    "query_text": "gym with yoga classes Kottayam",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Kottayam/Yoga-Classes-in-Kottamuri/nct-10545576"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q40",
+    "category": "gym",
+    "city": "Malappuram",
+    "query_text": "best gym for students Malappuram",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Malappuram/Gyms/nct-11575244"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q41",
+    "category": "chauffeur",
+    "city": "Jeddah",
+    "query_text": "best chauffeur service in Jeddah",
+    "repeat": 0,
+    "cited_urls": [
+      "https://naylam.com/"
+    ],
+    "cited_domains": [
+      "naylam.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q42",
+    "category": "chauffeur",
+    "city": "Dammam",
+    "query_text": "luxury car with driver Dammam",
+    "repeat": 0,
+    "cited_urls": [
+      "https://chauffeursgcc.com/ksa/dammam"
+    ],
+    "cited_domains": [
+      "chauffeursgcc.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q43",
+    "category": "chauffeur",
+    "city": "Manama",
+    "query_text": "chauffeur hire Manama Bahrain",
+    "repeat": 0,
+    "cited_urls": [
+      "https://chauffeursgcc.com/bhr/manama/services/hourly-car-with-driver"
+    ],
+    "cited_domains": [
+      "chauffeursgcc.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q44",
+    "category": "chauffeur",
+    "city": "Kuwait City",
+    "query_text": "corporate chauffeur service Kuwait City",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.swvl.com/luxury-transit/kuwait-city"
+    ],
+    "cited_domains": [
+      "www.swvl.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q45",
+    "category": "chauffeur",
+    "city": "Sharjah",
+    "query_text": "airport transfer chauffeur Sharjah",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.swvl.com/luxury-transit/sharjah"
+    ],
+    "cited_domains": [
+      "www.swvl.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q46",
+    "category": "chauffeur",
+    "city": "Ajman",
+    "query_text": "limo rental Ajman",
+    "repeat": 0,
+    "cited_urls": [
+      "https://limousines.ae/limo-rental-ajman"
+    ],
+    "cited_domains": [
+      "limousines.ae"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q47",
+    "category": "chauffeur",
+    "city": "Ras Al Khaimah",
+    "query_text": "chauffeur service Ras Al Khaimah",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.chauffeurr.ae/chauffeur-service-ras-al-khaimah"
+    ],
+    "cited_domains": [
+      "www.chauffeurr.ae"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q48",
+    "category": "chauffeur",
+    "city": "Al Ain",
+    "query_text": "hourly car hire with driver Al Ain",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.oneclickdrive.com/chauffeur-service-al-ain"
+    ],
+    "cited_domains": [
+      "www.oneclickdrive.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q49",
+    "category": "chauffeur",
+    "city": "Salalah",
+    "query_text": "chauffeur service Salalah Oman",
+    "repeat": 0,
+    "cited_urls": [
+      "https://gorideoman.com/faq"
+    ],
+    "cited_domains": [
+      "gorideoman.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q50",
+    "category": "chauffeur",
+    "city": "Khobar",
+    "query_text": "corporate car service Khobar",
+    "repeat": 0,
+    "cited_urls": [
+      "https://ghtrips.com/saudi-arabia/khobar"
+    ],
+    "cited_domains": [
+      "ghtrips.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q51",
+    "category": "chauffeur",
+    "city": "Dubai",
+    "query_text": "wedding car hire Dubai",
+    "repeat": 0,
+    "cited_urls": [
+      "https://tourtransfer.ae/wedding-car-dubai"
+    ],
+    "cited_domains": [
+      "tourtransfer.ae"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q52",
+    "category": "chauffeur",
+    "city": "Abu Dhabi",
+    "query_text": "executive chauffeur service Abu Dhabi",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.myprivateservice.com/chauffeur-service/private-chauffeur-abu-dhabi"
+    ],
+    "cited_domains": [
+      "www.myprivateservice.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q53",
+    "category": "chauffeur",
+    "city": "Doha",
+    "query_text": "airport pickup chauffeur Doha",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.blacklane.com/en/countries/qatar/doha/chauffeur-service"
+    ],
+    "cited_domains": [
+      "www.blacklane.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q54",
+    "category": "chauffeur",
+    "city": "Riyadh",
+    "query_text": "limousine rental Riyadh",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.blacklane.com/en-gb/countries/saudi-arabia/riyadh/limousine-service"
+    ],
+    "cited_domains": [
+      "www.blacklane.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q55",
+    "category": "chauffeur",
+    "city": "Muscat",
+    "query_text": "corporate car rental with driver Muscat",
+    "repeat": 0,
+    "cited_urls": [
+      "https://slf-drives.com/en/services/corporate-car-rental-oman"
+    ],
+    "cited_domains": [
+      "slf-drives.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q56",
+    "category": "chauffeur",
+    "city": "Jeddah",
+    "query_text": "airport transfer service Jeddah",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.sixt.com/ride/airport-transfer/jeddah"
+    ],
+    "cited_domains": [
+      "www.sixt.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q57",
+    "category": "chauffeur",
+    "city": "Dammam",
+    "query_text": "chauffeur for business travel Dammam",
+    "repeat": 0,
+    "cited_urls": [
+      "https://dammamchauffeur.com/"
+    ],
+    "cited_domains": [
+      "dammamchauffeur.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q58",
+    "category": "chauffeur",
+    "city": "Manama",
+    "query_text": "luxury limo Manama",
+    "repeat": 0,
+    "cited_urls": [
+      "https://skylimobh.com/"
+    ],
+    "cited_domains": [
+      "skylimobh.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q59",
+    "category": "chauffeur",
+    "city": "Kuwait City",
+    "query_text": "chauffeur driven car rental Kuwait City",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.hertz.com.kw/rentacar/productservice/index.jsp?targetPage=ME_KW_Chauffeur_Drive.jsp"
+    ],
+    "cited_domains": [
+      "www.hertz.com.kw"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q60",
+    "category": "chauffeur",
+    "city": "Sharjah",
+    "query_text": "wedding limousine Sharjah",
+    "repeat": 0,
+    "cited_urls": [
+      "https://alinsafbusrental.ae/service/limousine-rental-services"
+    ],
+    "cited_domains": [
+      "alinsafbusrental.ae"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q61",
+    "category": "kayaking",
+    "city": "Kumarakom",
+    "query_text": "kayaking tour in Kumarakom backwaters",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.getyourguide.com/en-gb/alappuzha-l2626/water-sports-tc55?visitor-id=C80673GCY29SLM6F6O3FVI9XF75L8B82&locale_autoredirect_optout=true"
+    ],
+    "cited_domains": [
+      "www.getyourguide.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q62",
+    "category": "kayaking",
+    "city": "Pondicherry",
+    "query_text": "kayaking experience Pondicherry",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.thrillophilia.com/tours/kayaking-in-mangroves-forest-pondicherry"
+    ],
+    "cited_domains": [
+      "www.thrillophilia.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q63",
+    "category": "kayaking",
+    "city": "Port Blair",
+    "query_text": "kayaking tour Andaman Islands",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.andamanislands.com/activity/kayaking-in-havelock-island"
+    ],
+    "cited_domains": [
+      "www.andamanislands.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q64",
+    "category": "kayaking",
+    "city": "Kovalam",
+    "query_text": "kayak rental Kovalam beach",
+    "repeat": 0,
+    "cited_urls": [
+      "https://cruoo.com/blog/kovalam-beach-activities-water-sports-to-try-and-what-each-costs"
+    ],
+    "cited_domains": [
+      "cruoo.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q65",
+    "category": "kayaking",
+    "city": "Bekal",
+    "query_text": "kayaking tour Bekal fort",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.waytoindia.com/travel-guide/kerala/bekal-town"
+    ],
+    "cited_domains": [
+      "www.waytoindia.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q66",
+    "category": "kayaking",
+    "city": "Kollam",
+    "query_text": "kayaking in Ashtamudi lake Kollam",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.keralatourism.org/destination/kollam-aquatourism/264"
+    ],
+    "cited_domains": [
+      "www.keralatourism.org"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q67",
+    "category": "kayaking",
+    "city": "Rameswaram",
+    "query_text": "kayaking tour Rameswaram",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.quest-asia.com/kayaking"
+    ],
+    "cited_domains": [
+      "www.quest-asia.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q68",
+    "category": "kayaking",
+    "city": "Chilika",
+    "query_text": "kayaking tour Chilika lake",
+    "repeat": 0,
+    "cited_urls": [
+      "https://apps.odishatourism.gov.in/water-sports"
+    ],
+    "cited_domains": [
+      "apps.odishatourism.gov.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q69",
+    "category": "kayaking",
+    "city": "Mangalore",
+    "query_text": "kayaking near Mangalore",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.incredibleindia.gov.in/en/karnataka/mangalore/embrace-the-thrill-of-adventure-sports-in-vibrant-mangalore"
+    ],
+    "cited_domains": [
+      "www.incredibleindia.gov.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q70",
+    "category": "kayaking",
+    "city": "Udupi",
+    "query_text": "kayak rental Udupi beach",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.universaladventures.in/city/Udupi"
+    ],
+    "cited_domains": [
+      "www.universaladventures.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q71",
+    "category": "kayaking",
+    "city": "Alleppey",
+    "query_text": "night kayaking tour Alleppey",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.getyourguide.com/en-au/alappuzha-l2626/beach-trips-tc63"
+    ],
+    "cited_domains": [
+      "www.getyourguide.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q72",
+    "category": "kayaking",
+    "city": "Munnar",
+    "query_text": "kayaking and camping Munnar",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.universaladventures.in/state/Kerala"
+    ],
+    "cited_domains": [
+      "www.universaladventures.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q73",
+    "category": "kayaking",
+    "city": "Goa",
+    "query_text": "mangrove kayaking tour Goa",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.peek.com/kandoli-goa-india/r0w4xxn/mangrove-kayak-tour-explore-exotic-green-channels/a09b3by9"
+    ],
+    "cited_domains": [
+      "www.peek.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q74",
+    "category": "kayaking",
+    "city": "Varkala",
+    "query_text": "sunrise kayaking Varkala",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.walkingtrees.in/"
+    ],
+    "cited_domains": [
+      "www.walkingtrees.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q75",
+    "category": "kayaking",
+    "city": "Gokarna",
+    "query_text": "guided kayak tour Gokarna",
+    "repeat": 0,
+    "cited_urls": [
+      "https://monsterwatersports.in/kayaking-gokarna"
+    ],
+    "cited_domains": [
+      "monsterwatersports.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q76",
+    "category": "kayaking",
+    "city": "Kumarakom",
+    "query_text": "bird watching kayak tour Kumarakom",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.tripadvisor.co.uk/Attractions-g678552-Activities-Kumarakom_Kottayam_District_Kerala.html"
+    ],
+    "cited_domains": [
+      "www.tripadvisor.co.uk"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q77",
+    "category": "kayaking",
+    "city": "Pondicherry",
+    "query_text": "backwater kayaking Pondicherry",
+    "repeat": 0,
+    "cited_urls": [
+      "https://southindia-tours.net/kayaking-in-backwaters-of-pondicherry"
+    ],
+    "cited_domains": [
+      "southindia-tours.net"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q78",
+    "category": "kayaking",
+    "city": "Port Blair",
+    "query_text": "snorkeling and kayaking Andaman",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.andamantourism.org/water-sports-in-andaman"
+    ],
+    "cited_domains": [
+      "www.andamantourism.org"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q79",
+    "category": "kayaking",
+    "city": "Kovalam",
+    "query_text": "sunset kayak tour Kovalam",
+    "repeat": 0,
+    "cited_urls": [
+      "https://trekgo.in/blog/kayaking-kerala"
+    ],
+    "cited_domains": [
+      "trekgo.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q80",
+    "category": "kayaking",
+    "city": "Bekal",
+    "query_text": "family kayaking tour Bekal",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.tajhotels.com/en-in/hotels/taj-bekal-kerala/places-to-visit/coir-clams-and-kayaks-bekal-kerala"
+    ],
+    "cited_domains": [
+      "www.tajhotels.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q81",
+    "category": "dental",
+    "city": "Mumbai",
+    "query_text": "best dental clinic in Mumbai for implants",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.dazzle.dental/"
+    ],
+    "cited_domains": [
+      "www.dazzle.dental"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q82",
+    "category": "dental",
+    "city": "Delhi",
+    "query_text": "emergency dentist Delhi open now",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.blkmaxhospital.com/delhi/hospital/emergency-dental-treatment-hospital-delhi"
+    ],
+    "cited_domains": [
+      "www.blkmaxhospital.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q83",
+    "category": "dental",
+    "city": "Pune",
+    "query_text": "pediatric dental clinic Pune",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.panditclinic.com/pediatric-dentistry"
+    ],
+    "cited_domains": [
+      "www.panditclinic.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q84",
+    "category": "dental",
+    "city": "Kolkata",
+    "query_text": "cosmetic dentist Kolkata",
+    "repeat": 0,
+    "cited_urls": [
+      "https://apollodental.in/kolkata/vip-road/our-clinics/apollo-dental-clinic-in-vip-road"
+    ],
+    "cited_domains": [
+      "apollodental.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q85",
+    "category": "dental",
+    "city": "Ahmedabad",
+    "query_text": "affordable root canal treatment Ahmedabad",
+    "repeat": 0,
+    "cited_urls": [
+      "https://brijdentalclinic.com/root-canal-treatment-rct"
+    ],
+    "cited_domains": [
+      "brijdentalclinic.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q86",
+    "category": "dental",
+    "city": "Jaipur",
+    "query_text": "braces and orthodontist Jaipur",
+    "repeat": 0,
+    "cited_urls": [
+      "https://onlybraces.com/"
+    ],
+    "cited_domains": [
+      "onlybraces.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q87",
+    "category": "dental",
+    "city": "Lucknow",
+    "query_text": "wisdom tooth extraction Lucknow",
+    "repeat": 0,
+    "cited_urls": [
+      "https://realtooth.in/wisdom-tooth"
+    ],
+    "cited_domains": [
+      "realtooth.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q88",
+    "category": "dental",
+    "city": "Mysore",
+    "query_text": "dental clinic for veneers Mysore",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.kamaladental.com/"
+    ],
+    "cited_domains": [
+      "www.kamaladental.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q89",
+    "category": "dental",
+    "city": "Thiruvananthapuram",
+    "query_text": "best dentist Thiruvananthapuram",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.kamaladental.com/"
+    ],
+    "cited_domains": [
+      "www.kamaladental.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q90",
+    "category": "dental",
+    "city": "Kozhikode",
+    "query_text": "dental implants Kozhikode",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Kozhikode/Doctors-For-Dental-Implantation-in-Meenchanda/nct-11311983"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q91",
+    "category": "dental",
+    "city": "Madurai",
+    "query_text": "dental clinic Madurai",
+    "repeat": 0,
+    "cited_urls": [
+      "https://apollodental.in/madurai/our-clinics"
+    ],
+    "cited_domains": [
+      "apollodental.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q92",
+    "category": "dental",
+    "city": "Nagpur",
+    "query_text": "gum treatment clinic Nagpur",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.aryasdentalclinic.com/gum-treatment-in-nagpur.php"
+    ],
+    "cited_domains": [
+      "www.aryasdentalclinic.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q93",
+    "category": "dental",
+    "city": "Surat",
+    "query_text": "denture clinic Surat",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.whatclinic.com/dentists/india/surat/dentures"
+    ],
+    "cited_domains": [
+      "www.whatclinic.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q94",
+    "category": "dental",
+    "city": "Indore",
+    "query_text": "dental scaling and cleaning Indore",
+    "repeat": 0,
+    "cited_urls": [
+      "https://teeth.in/dentists/indore"
+    ],
+    "cited_domains": [
+      "teeth.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q95",
+    "category": "dental",
+    "city": "Bhopal",
+    "query_text": "invisalign clinic Bhopal",
+    "repeat": 0,
+    "cited_urls": [
+      "https://toothembrace.com/about-us"
+    ],
+    "cited_domains": [
+      "toothembrace.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q96",
+    "category": "dental",
+    "city": "Mumbai",
+    "query_text": "emergency dental care Mumbai",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.kokilabenhospital.com/departments/clinicaldepartments/dentalsurgery.html"
+    ],
+    "cited_domains": [
+      "www.kokilabenhospital.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q97",
+    "category": "dental",
+    "city": "Delhi",
+    "query_text": "best orthodontist Delhi",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.bestinhood.com/delhi/healthcare/best-orthodontists-in-delhi"
+    ],
+    "cited_domains": [
+      "www.bestinhood.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q98",
+    "category": "dental",
+    "city": "Pune",
+    "query_text": "teeth whitening clinic Pune",
+    "repeat": 0,
+    "cited_urls": [
+      "https://siddhantdentalclinic.com/cosmetic-dentistry/teeth-whitening"
+    ],
+    "cited_domains": [
+      "siddhantdentalclinic.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q99",
+    "category": "dental",
+    "city": "Kolkata",
+    "query_text": "dental crown treatment Kolkata",
+    "repeat": 0,
+    "cited_urls": [
+      "https://teeth.in/dentists/kolkata"
+    ],
+    "cited_domains": [
+      "teeth.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q100",
+    "category": "dental",
+    "city": "Ahmedabad",
+    "query_text": "pediatric dentist Ahmedabad",
+    "repeat": 0,
+    "cited_urls": [
+      "https://kivihealth.com/clinic/vasupujya-pediatric-dental-hospital-3"
+    ],
+    "cited_domains": [
+      "kivihealth.com"
+    ],
+    "collection_method": "manual_web_ui"
+  }
+]
