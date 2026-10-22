@@ -85,9 +85,13 @@ Perplexity's paid API, so we collected real data manually instead:
   Q101-Q200 citations via perplexity.ai. Merged both worksheets
   (`data/manual_citations.txt` + `data/manual_citations_batch2_template.txt`
   → `data/manual_citations_full.txt`) and re-ran
-  `pipeline.import_manual_citations`, `pipeline.build_dataset` (705 unique
-  pages scraped, 374 ok), `pipeline.pilot_stats`, and `pipeline.evaluate`
-  on the full real 200-query dataset.
+  `pipeline.import_manual_citations`, `pipeline.build_dataset` (374 of 705
+  unique URLs scraped successfully), `pipeline.pilot_stats`, and
+  `pipeline.evaluate` on the full real 200-query dataset. Because a
+  successfully-scraped URL can be a candidate for more than one query, this
+  produced 389 usable (ok) rows in `data/dataset.csv` — the row-level count
+  `data/pilot_stats.json` reports (`scrape_status_counts.ok`), not a
+  contradiction of the 374 unique-URL count.
 - **Real numbers at n=200 (389 usable rows, 117 cited / 272 not):**
   XGBoost ROC-AUC **0.69 ± 0.08** (up from 0.65 ± 0.19 at n=100 — the
   error bar roughly halved, exactly as predicted from more data, strong
@@ -109,3 +113,75 @@ Perplexity's paid API, so we collected real data manually instead:
 
 **No blockers** — data collection and evaluation are done at the full
 planned scale. Continuing autonomously on polish/report work.
+
+## 2026-10-22 — Session 3 (final review day)
+
+**Full code/docs hard-run audit** (87 subagents: review → skeptical verify →
+file-scoped fix, 54/55 findings confirmed real, 26 files touched, 0 scope
+violations into the unrelated GetCito monorepo sharing this repo root).
+Genuine bugs found and fixed, not cosmetic — see git log for the full list;
+highlights:
+- `pilot_stats.py` was reporting `api_calls_logged: 200`, falsely implying
+  200 real paid-API calls happened (we made zero — 100% manual collection).
+  Split into `citation_records_collected` / `real_api_calls_logged: 0`.
+- `canonicalize_url()` in `pipeline/common.py` used bare `startswith("ref")`/
+  `startswith("source")` prefix matching to strip tracking params, which
+  also silently corrupted any URL with a param merely starting with those
+  letters (e.g. `reference=`, `sourceLanguage=`) — this is the function that
+  decides whether a scraped URL equals a cited URL, so this was a real
+  ground-truth labeling bug.
+- SSRF guard in `citation-predictor/backend/scraping/scraper.py` had a
+  hand-maintained CIDR list missing the full `127.0.0.0/8` loopback block
+  (only caught the literal `127.0.0.1`) — replaced with `ipaddress`'s
+  built-in `is_private`/`is_loopback`/etc. classification.
+- Several `int(prob * 100)` truncations (vs `round()`) in both
+  `streamlit_app.py` and `citation-predictor/backend/api/analyze.py` caused
+  the displayed score and its tier label to disagree near tier boundaries.
+- `pipeline/build_dataset.py`'s row order and duplicate-template detection
+  depended on Python's hash-randomized set iteration / thread-completion
+  order — non-reproducible from run to run on identical input data. Fixed
+  to a deterministic sorted order.
+- 17 new tests added (30 → 47), `requirements.lock` regenerated as a true
+  full-environment lock (was missing 21 FastAPI-backend pins), a stale
+  tracked `citelytics.db` untracked, several dead imports/unused code
+  removed across the backend.
+
+**Re-ran the full pipeline after the fixes above** (`build_dataset` →
+`pilot_stats` → `evaluate`) since `canonicalize_url`/row-order fixes change
+what the scripts actually produce. This surfaced one more real finding:
+**plain `GroupKFold` with no shuffling assigns folds deterministically from
+row order, so a single run's AUC is an estimate from one arbitrary
+group-to-fold partition, not "the" AUC** — confirmed empirically when the
+row-order fix alone moved XGBoost's reported AUC from 0.69 to 0.63 with the
+exact same data and model. Fixed properly in `pipeline/evaluate.py`:
+`cross_validate()` now repeats GroupKFold 10x over independently shuffled
+row orders and pools all 50 folds into one mean/std, removing that
+single-partition sensitivity.
+
+**Final, authoritative numbers (n=200 queries, 390 usable rows, 118 cited /
+272 not cited):**
+- XGBoost ROC-AUC **0.64 ± 0.12**, F1 0.48 ± 0.12, accuracy 62.6%.
+- Logistic regression ROC-AUC **0.69 ± 0.08** — numerically ahead of
+  XGBoost, but the two overlap and are statistically comparable at this
+  sample size. We report this honestly rather than picking the better-
+  looking number: it says the signal is still mostly linear/simple at this
+  n, and XGBoost's nonlinear capacity isn't paying for itself yet. We keep
+  XGBoost as the deployed/explained model for its native SHAP support.
+- Rule-based checklist baseline: AUC 0.51 (chance) — both learned models
+  clearly beat it.
+- Label-shuffle control: AUC 0.51 ± 0.04 (near-exact chance — no leakage).
+- Feature ablation: authority 0.71, content 0.60, structural 0.56.
+- Domain-type flag: 0.71 with vs 0.64 without (modest lift, not dominant).
+- Original synthetic-trained model on real data: AUC 0.49 (chance) —
+  reinforces the audit's circularity finding.
+- `pipeline.evaluate` now takes ~75s to run (10x the CV work), not under a
+  minute — still fast enough to demonstrate live.
+
+Propagated these final numbers (superseding the Session 2 single-split
+numbers above) to `slides/final_review.tex`, `docs/SLIDE_NUMBERS.md`,
+`docs/VIVA_QA.md`, `docs/KNOWN_WEAKNESSES.md`, `docs/UNDERSTANDING.md`,
+`docs/REPORT_OUTLINE.md`, `docs/DEMO_SCRIPT.md`, `docs/DIARY_DRAFT.md`.
+
+**No blockers.** Full test suite green (47/47). This is the final,
+reproducible number set for today's review — `pipeline.evaluate` run live
+will reproduce it exactly.

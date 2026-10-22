@@ -31,16 +31,12 @@ BACKEND_DIR = os.path.join(REPO_ROOT, "citation-predictor", "backend")
 sys.path.insert(0, BACKEND_DIR)
 
 from models.model_loader import FEATURE_COLUMNS  # noqa: E402
+from pipeline.common import MIN_USABLE_ROWS, MIN_MINORITY_CLASS  # noqa: E402
 
 DATASET_PATH = os.path.join(REPO_ROOT, "data", "dataset.csv")
 ARTIFACTS_DIR = os.path.join(REPO_ROOT, "artifacts")
 FIGURES_DIR = os.path.join(ARTIFACTS_DIR, "figures")
 THRESHOLD = 0.5  # documented decision threshold for precision/recall/F1
-
-# Minimum viable size to call the pilot non-underpowered. Below this, we
-# still compute and report numbers, but flag them clearly as preliminary.
-MIN_USABLE_ROWS = 60
-MIN_MINORITY_CLASS = 15
 
 
 def rule_based_checklist_score(row: pd.Series) -> float:
@@ -83,56 +79,79 @@ def mean_std(values, key):
 
 
 def cross_validate(df: pd.DataFrame, feature_cols: list, group_col: str, model_name: str,
-                    scale_pos_weight_for_xgb: bool = True) -> dict:
-    groups = df[group_col].values
-    y = df["label"].values
-    X = df[feature_cols].fillna(0).values
+                    scale_pos_weight_for_xgb: bool = True,
+                    n_repeats: int = 10, base_seed: int = 42) -> dict:
+    """GroupKFold cross-validation, repeated n_repeats times with the row
+    order independently shuffled (seeded) each repeat, and all
+    n_repeats * k folds pooled into one mean/std.
 
-    n_groups = len(set(groups))
+    Plain GroupKFold with no shuffling assigns folds deterministically from
+    the order groups first appear in `groups` — so a single run's AUC is an
+    estimate from one arbitrary group-to-fold partition, not "the" AUC of
+    this model on this data. At this pilot's sample size, which specific
+    partition you get measurably moves the result (verified empirically:
+    re-running with a different but equally valid row order shifted mean
+    ROC-AUC by several points). Repeating across many random partitions and
+    pooling every fold removes that single-partition-order sensitivity and
+    gives a materially more precise (lower-variance) estimate — the data,
+    model, and hyperparameters are completely unchanged; we are only
+    evaluating them more thoroughly.
+    """
+    n_groups = len(set(df[group_col].values))
     k = min(5, n_groups) if n_groups >= 2 else 1
     if k < 2:
         return {"error": f"Not enough distinct {group_col} groups ({n_groups}) for GroupKFold."}
 
-    gkf = GroupKFold(n_splits=k)
     per_fold = []
-    for train_idx, test_idx in gkf.split(X, y, groups):
-        X_train, X_test = X[train_idx], X[test_idx]
-        y_train, y_test = y[train_idx], y[test_idx]
-        if len(set(y_train)) < 2 or len(set(y_test)) < 2:
-            continue  # skip degenerate folds (can happen with small n)
+    for repeat in range(n_repeats):
+        rng = np.random.default_rng(base_seed + repeat)
+        perm = rng.permutation(len(df))
+        df_r = df.iloc[perm].reset_index(drop=True)
+        groups = df_r[group_col].values
+        y = df_r["label"].values
+        X = df_r[feature_cols].fillna(0).values
 
-        if model_name == "rule_based":
-            df_test = df.iloc[test_idx]
-            y_proba = df_test.apply(rule_based_checklist_score, axis=1).values
-            y_pred = (y_proba >= THRESHOLD).astype(int)
-        elif model_name == "logistic_regression":
-            scaler = StandardScaler()
-            X_train_s = scaler.fit_transform(X_train)
-            X_test_s = scaler.transform(X_test)
-            clf = LogisticRegression(max_iter=1000, class_weight="balanced")
-            clf.fit(X_train_s, y_train)
-            y_proba = clf.predict_proba(X_test_s)[:, 1]
-            y_pred = (y_proba >= THRESHOLD).astype(int)
-        elif model_name == "xgboost":
-            spw = (sum(y_train == 0) / max(sum(y_train == 1), 1)) if scale_pos_weight_for_xgb else 1.0
-            clf = xgb.XGBClassifier(
-                n_estimators=150, max_depth=3, learning_rate=0.05,
-                subsample=0.8, colsample_bytree=0.8, min_child_weight=3,
-                scale_pos_weight=spw, eval_metric="logloss", random_state=42,
-            )
-            clf.fit(X_train, y_train)
-            y_proba = clf.predict_proba(X_test)[:, 1]
-            y_pred = (y_proba >= THRESHOLD).astype(int)
-        else:
-            raise ValueError(model_name)
+        gkf = GroupKFold(n_splits=k)
+        for train_idx, test_idx in gkf.split(X, y, groups):
+            X_train, X_test = X[train_idx], X[test_idx]
+            y_train, y_test = y[train_idx], y[test_idx]
+            if len(set(y_train)) < 2 or len(set(y_test)) < 2:
+                continue  # skip degenerate folds (can happen with small n)
 
-        per_fold.append(fold_metrics(y_test, y_pred, y_proba))
+            if model_name == "rule_based":
+                df_test = df_r.iloc[test_idx]
+                y_proba = df_test.apply(rule_based_checklist_score, axis=1).values
+                y_pred = (y_proba >= THRESHOLD).astype(int)
+            elif model_name == "logistic_regression":
+                scaler = StandardScaler()
+                X_train_s = scaler.fit_transform(X_train)
+                X_test_s = scaler.transform(X_test)
+                clf = LogisticRegression(max_iter=1000, class_weight="balanced")
+                clf.fit(X_train_s, y_train)
+                y_proba = clf.predict_proba(X_test_s)[:, 1]
+                y_pred = (y_proba >= THRESHOLD).astype(int)
+            elif model_name == "xgboost":
+                spw = (sum(y_train == 0) / max(sum(y_train == 1), 1)) if scale_pos_weight_for_xgb else 1.0
+                clf = xgb.XGBClassifier(
+                    n_estimators=150, max_depth=3, learning_rate=0.05,
+                    subsample=0.8, colsample_bytree=0.8, min_child_weight=3,
+                    scale_pos_weight=spw, eval_metric="logloss", random_state=42,
+                )
+                clf.fit(X_train, y_train)
+                y_proba = clf.predict_proba(X_test)[:, 1]
+                y_pred = (y_proba >= THRESHOLD).astype(int)
+            else:
+                raise ValueError(model_name)
+
+            per_fold.append(fold_metrics(y_test, y_pred, y_proba))
 
     if not per_fold:
         return {"error": "All folds degenerate (single-class train or test split)."}
 
     return {
-        "n_folds": len(per_fold),
+        "n_folds": k,
+        "n_repeats": n_repeats,
+        "n_evaluations": len(per_fold),
         "per_fold": per_fold,
         "roc_auc": mean_std(per_fold, "roc_auc"),
         "pr_auc": mean_std(per_fold, "pr_auc"),
@@ -329,6 +348,17 @@ def pct(v):
     return f"{round(v * 100, 1)}%" if v is not None else "not yet evaluated"
 
 
+def format_mean_std(d: dict, decimals: int = 2) -> str:
+    """Render a mean_std() dict as 'MEAN ± STD' at a fixed, documented
+    display precision (2 decimals, matching docs/SLIDE_NUMBERS.md and
+    docs/VIVA_QA.md) — decoupled from the full 4-decimal precision kept in
+    the raw per-fold values in metrics.json for downstream programmatic use.
+    """
+    if d.get("mean") is None:
+        return "not yet evaluated"
+    return f"{round(d['mean'], decimals)} ± {round(d['std'], decimals)}"
+
+
 def main():
     if not os.path.exists(DATASET_PATH):
         metrics = {
@@ -357,7 +387,9 @@ def main():
         "class_balance": {"n_pos": n_pos, "n_neg": n_neg},
         "underpowered": underpowered,
         "threshold": THRESHOLD,
-        "primary_split": "GroupKFold by domain",
+        "primary_split": "GroupKFold by domain (k=5), repeated 10x over independently shuffled "
+                         "row orders and pooled (50 total evaluations per model) for a more "
+                         "precise estimate than a single un-shuffled 5-fold split would give",
     }
 
     if underpowered:
@@ -371,8 +403,8 @@ def main():
     }
     xgb_primary = metrics["models"]["xgboost"]
     if "error" not in xgb_primary:
-        metrics["roc_auc_display"] = f"{xgb_primary['roc_auc']['mean']} ± {xgb_primary['roc_auc']['std']}"
-        metrics["f1_display"] = f"{xgb_primary['f1']['mean']} ± {xgb_primary['f1']['std']}"
+        metrics["roc_auc_display"] = format_mean_std(xgb_primary["roc_auc"])
+        metrics["f1_display"] = format_mean_std(xgb_primary["f1"])
         metrics["accuracy_display"] = f"{pct(xgb_primary['accuracy']['mean'])}"
         metrics["precision_recall_display"] = (
             f"{pct(xgb_primary['precision']['mean'])} / {pct(xgb_primary['recall']['mean'])}"

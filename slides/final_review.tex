@@ -17,7 +17,7 @@
 %          4-up layout baked in) — see that file's header comment.
 %
 % HONESTY NOTE: every number on these slides must trace back to a file
-% in this repo. Real pilot data was collected manually (100 queries via
+% in this repo. Real pilot data was collected manually (200 queries via
 % perplexity.ai, no paid API budget available) and real model metrics
 % now exist in artifacts/metrics.json / data/pilot_stats.json — see
 % docs/SLIDE_NUMBERS.md for the slide-by-slide source map.
@@ -123,7 +123,7 @@
       \item Kayaking/tour operators (35 Indian destinations) \quad\textbullet\quad Dental clinics (45 Indian cities)
     \end{itemize}
     \item \textbf{Label rule}: a page's canonical URL is labeled \texttt{1} if cited by Perplexity's \texttt{sonar} model for that query, else \texttt{0}. Candidate pool = cited URLs $\cup$ organic results.
-    \item \textbf{Status — real data collected}: 200/200 queries collected (citations via \texttt{perplexity.ai}, tagged \texttt{collection\_method="manual\_web\_ui"} — no paid API budget was available); 705 unique candidate pages scraped, \textbf{389 usable rows} (117 cited / 272 not), \textbf{53.1\% scrape success rate}. Not flagged underpowered.
+    \item \textbf{Status — real data collected}: 200/200 queries collected (citations via \texttt{perplexity.ai}, tagged \texttt{collection\_method="manual\_web\_ui"} — no paid API budget was available); 705 unique candidate pages scraped, \textbf{390 usable rows} (118 cited / 272 not), \textbf{53.2\% scrape success rate}. Not flagged underpowered.
     \item Known limitation: negatives are drawn only from already-ranking pages, not a random web sample. 14\% of real citations went to directory/aggregator listings (JustDial, MagicPin, WhatClinic) rather than the business's own site.
   \end{itemize}
 \end{frame}
@@ -176,7 +176,7 @@
       \begin{itemize}
         \item All pipeline stages implemented and run end-to-end on real data.
         \item Cost-safety: \texttt{--dry-run}, \texttt{--max-calls} cap, on-disk caching, retry with backoff on every API call.
-        \item Real pilot statistics: \textbf{200 queries, 389 usable rows, 53.1\% scrape success} (see \texttt{data/pilot\_stats.json}).
+        \item Real pilot statistics: \textbf{200 queries, 390 usable rows, 53.2\% scrape success} (see \texttt{data/pilot\_stats.json}).
         \item \textit{[TODO (team): insert Streamlit app screenshot here]}
         \item \textit{[TODO (team): insert SHAP explanation screenshot here]}
       \end{itemize}
@@ -186,15 +186,15 @@
 
 % ---------------- Results so far ----------------
 \begin{frame}{Results So Far — Real Evaluation}
-  \textbf{Evaluated on 389 real rows} (117 cited / 272 not), GroupKFold by domain ($k=5$), all numbers from \texttt{artifacts/metrics.json}:
+  \textbf{Evaluated on 390 real rows} (118 cited / 272 not), GroupKFold by domain ($k=5$, repeated 10$\times$ over shuffled row orders and pooled for a more precise estimate), all numbers from \texttt{artifacts/metrics.json}:
   \begin{itemize}
-    \item \textbf{XGBoost}: ROC-AUC $0.69 \pm 0.08$, F1 $0.49 \pm 0.08$ — beats logistic regression (AUC $0.66$) and the rule-based checklist baseline.
-    \item \textbf{Label-shuffle sanity check}: AUC $0.45 \pm 0.09$ — correctly at/below chance, confirming \textbf{no leakage}; the real $0.69$ is a genuine signal.
-    \item \textbf{Feature-group ablation}: authority signals (schema, phone, address) are the strongest group (AUC $0.70$), ahead of structure ($0.63$) and content ($0.58$).
-    \item \alert{Original repo's synthetic-trained model, evaluated on this real data: AUC $0.45$} — at or below chance, concretely confirming the circularity problem found in the Phase 1 audit (it claimed 88.8\% accuracy on its own synthetic labels).
+    \item \textbf{XGBoost}: ROC-AUC $0.64 \pm 0.12$, F1 $0.48 \pm 0.12$. \textbf{Logistic regression}: ROC-AUC $0.69 \pm 0.08$ — numerically ahead, but the two overlap and are statistically comparable at this sample size. Both clearly beat the rule-based checklist baseline (AUC $0.51$, chance).
+    \item \textbf{Label-shuffle sanity check}: AUC $0.51 \pm 0.04$ — correctly at chance, confirming \textbf{no leakage}; the real signal is genuine.
+    \item \textbf{Feature-group ablation}: authority signals (schema, phone, address) are the strongest group (AUC $0.71$), ahead of content ($0.60$) and structure ($0.56$).
+    \item \alert{Original repo's synthetic-trained model, evaluated on this real data: AUC $0.49$} — at chance, concretely confirming the circularity problem found in the Phase 1 audit (it claimed 88.8\% accuracy on its own synthetic labels).
     \item \textbf{SHAP stability} across folds: rank correlation $0.79$ — reasonably stable at this sample size.
   \end{itemize}
-  \small Scaling from a 100-query pilot (214 rows) to the full 200-query dataset (389 rows) roughly halved the AUC error bar ($\pm0.19 \to \pm0.08$) — evidence the signal is real, not noise. Full sanity checks, ablations, and SHAP figures in \texttt{artifacts/}.
+  \small At this sample size, a simple linear baseline matches the nonlinear model — an honest signal that XGBoost's extra capacity isn't earning its keep yet; we keep it as the deployed model for its native SHAP support. Full sanity checks, ablations, and SHAP figures in \texttt{artifacts/}.
 \end{frame}
 
 % ---------------- Conclusion & Future Work ----------------
@@ -219,7 +219,7 @@
       \textbf{Semester 7 (delivered)}
       \begin{itemize}
         \item Codebase audit \& honesty fixes
-        \item Real-data pilot: 200 queries collected (full planned scale), 389-row dataset, full cross-validated evaluation \& SHAP analysis
+        \item Real-data pilot: 200 queries collected (full planned scale), 390-row dataset, full cross-validated evaluation \& SHAP analysis
         \item Ethics/cost-safety guardrails
         \item Documentation \& viva prep
       \end{itemize}
