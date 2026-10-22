@@ -1,6 +1,7 @@
 """Database initialisation and session helpers (SQLite via aiosqlite)."""
 
 import aiosqlite
+import json
 import os
 import logging
 
@@ -32,7 +33,6 @@ async def init_db():
 
 
 async def save_analysis(url, timestamp, score, prediction, features, shap_values, recommendations):
-    import json
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute(
             """INSERT INTO analysis_history
@@ -61,7 +61,6 @@ async def get_all_history():
 
 
 async def get_history_by_id(record_id: int):
-    import json
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
         async with db.execute(

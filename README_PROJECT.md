@@ -34,11 +34,11 @@ it is never built or run as part of this project.
 
 ## Python version
 
-Developed and tested against **Python 3.9** (also compatible with 3.10+;
-`citation-predictor/README.md` recommends 3.10+ for the FastAPI backend,
-but the Streamlit app and pipeline run fine on 3.9). Pin your exact
-interpreter version by running `python --version` after creating your
-venv and recording it here once confirmed in your own environment.
+Verified against **Python 3.9.6** in the project `.venv` (also compatible
+with 3.10+; `citation-predictor/README.md` recommends 3.10+ for the
+FastAPI backend, but the Streamlit app and pipeline run fine on 3.9).
+Any 3.9–3.11 interpreter should work; run `python --version` after
+creating your own venv to confirm yours.
 
 ## Install & run
 
@@ -61,6 +61,15 @@ streamlit run streamlit_app.py
 ```
 
 (`run_streamlit.bat` wraps the same command for double-click launching.)
+
+`requirements.txt` gives floor versions for Streamlit Cloud (and is what
+`pip install -r requirements.txt` above uses). `requirements.lock` is an
+optional exact-reproduction pin file — the full `pip freeze` of every
+package needed to run **both** the Streamlit app/pipeline and the FastAPI
+backend (`citation-predictor/backend/requirements.txt`) together in one
+environment. Use it only if you want to reproduce the exact dependency
+versions this project was last verified against:
+`pip install -r requirements.lock`.
 
 ## Running the real-data pilot pipeline
 
@@ -139,9 +148,11 @@ Every number traces to one of these generated files:
 If a number is needed before these scripts have been run with real data
 (e.g. API keys not yet configured), the UI and docs must show
 **"not yet evaluated" / "NOT YET MEASURED"** rather than a placeholder
-figure. As of this writing, real pilot data collection has **not yet
-been run** (blocked on the team providing `PERPLEXITY_API_KEY`) — see
-`STATUS.md` for current status.
+figure. Real pilot data collection has been completed (200 queries,
+collected manually via perplexity.ai since no paid API budget was
+available), and `pipeline.evaluate` has been run on the resulting data —
+see `data/pilot_stats.json` and `artifacts/metrics.json` for the real
+numbers, and `STATUS.md` for the full history.
 
 ## Project structure (our work only)
 
@@ -150,6 +161,7 @@ app.py                     # Streamlit Cloud entrypoint (delegates to streamlit_
 streamlit_app.py           # The actual Streamlit UI
 run_streamlit.bat          # Windows launcher
 requirements.txt           # Python deps for the Streamlit app + pipeline
+requirements.lock          # Exact-reproduction pin file (app + pipeline + FastAPI backend)
 pipeline/                  # Real-data collection + evaluation (see docs/DATA_CARD.md)
 citation-predictor/
   backend/

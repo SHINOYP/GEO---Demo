@@ -1,14 +1,13 @@
 """Main /api/analyze endpoint — full pipeline."""
 
 import logging
-import traceback
 from datetime import datetime, timezone
 
-import numpy as np
 import pandas as pd
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import Response
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel
+from starlette.concurrency import run_in_threadpool
 
 from scraping.scraper import scrape, ScrapingError
 from features.extractor import extract_features
@@ -26,8 +25,8 @@ class AnalyzeRequest(BaseModel):
     url: str
 
 
-def _label(prob: float) -> str:
-    score = int(prob * 100)
+def _label(score: int) -> str:
+    """Map an already-rounded 0-100 score to a human-readable prediction label."""
     if score >= 61:
         return "Likely to be cited"
     if score >= 31:
@@ -35,8 +34,8 @@ def _label(prob: float) -> str:
     return "Less likely to be cited"
 
 
-def _interpret(prob: float) -> str:
-    score = int(prob * 100)
+def _interpret(score: int) -> str:
+    """Map an already-rounded 0-100 score to a likelihood level."""
     if score >= 81:
         return "Very High"
     if score >= 61:
@@ -54,7 +53,7 @@ async def analyze_url(req: AnalyzeRequest):
 
     # ── 1. Scrape ─────────────────────────────────────────────
     try:
-        scrape_result = scrape(url)
+        scrape_result = await run_in_threadpool(scrape, url)
     except ScrapingError as exc:
         raise HTTPException(422, str(exc))
     except Exception as exc:
@@ -83,15 +82,16 @@ async def analyze_url(req: AnalyzeRequest):
     recs = generate_recommendations(features, shap_data)
 
     timestamp = datetime.now(timezone.utc).isoformat()
+    score = int(round(prob * 100))
 
     result = {
         "url":                  url,
         "final_url":            scrape_result["final_url"],
         "timestamp":            timestamp,
         "citation_probability": round(prob, 4),
-        "citation_score":       int(round(prob * 100)),
-        "prediction":           _label(prob),
-        "likelihood_level":     _interpret(prob),
+        "citation_score":       score,
+        "prediction":           _label(score),
+        "likelihood_level":     _interpret(score),
         "features":             features,
         "shap_data":            shap_data,
         "recommendations":      recs,

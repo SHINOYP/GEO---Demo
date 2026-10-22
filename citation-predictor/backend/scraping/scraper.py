@@ -26,15 +26,6 @@ BLOCKED_HOSTS = {
     "0.0.0.0",
 }
 
-BLOCKED_RANGES = [
-    ipaddress.ip_network("10.0.0.0/8"),
-    ipaddress.ip_network("172.16.0.0/12"),
-    ipaddress.ip_network("192.168.0.0/16"),
-    ipaddress.ip_network("169.254.0.0/16"),  # link-local / cloud metadata
-    ipaddress.ip_network("::1/128"),
-    ipaddress.ip_network("fc00::/7"),
-]
-
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (compatible; Citelytics/1.0; "
@@ -76,11 +67,26 @@ def _check_ssrf(url: str) -> None:
     except ValueError:
         raise ScrapingError(f"Invalid IP resolved for '{host}'.")
 
-    for network in BLOCKED_RANGES:
-        if ip in network:
-            raise ScrapingError(
-                f"Requests to private/internal IP addresses are not allowed ({ip_str})."
-            )
+    # Classify via ipaddress' built-in properties rather than a hand-maintained
+    # list of CIDR ranges. The previous list omitted 127.0.0.0/8 (the full
+    # IPv4 loopback block) and only caught the exact literal "127.0.0.1" via
+    # BLOCKED_HOSTS above, so any other loopback address (e.g. 127.0.0.2,
+    # reachable via attacker-controlled DNS or a literal URL) slipped through
+    # this check entirely. is_loopback/is_private/etc. cover every private,
+    # loopback, link-local (incl. cloud metadata), reserved, multicast and
+    # unspecified address for both IPv4 and IPv6 without needing the ranges
+    # to be enumerated by hand.
+    if (
+        ip.is_private
+        or ip.is_loopback
+        or ip.is_link_local
+        or ip.is_reserved
+        or ip.is_multicast
+        or ip.is_unspecified
+    ):
+        raise ScrapingError(
+            f"Requests to private/internal IP addresses are not allowed ({ip_str})."
+        )
 
 
 MAX_REDIRECTS = 5
@@ -108,7 +114,7 @@ def _check_robots_txt(url: str) -> None:
 
     rp = _ROBOTS_CACHE[origin]
     if rp is not None and not rp.can_fetch(HEADERS["User-Agent"], url):
-        raise ScrapingError(f"robots.txt disallows fetching this URL for our user-agent.")
+        raise ScrapingError("robots.txt disallows fetching this URL for our user-agent.")
 
 
 def scrape(url: str) -> dict:

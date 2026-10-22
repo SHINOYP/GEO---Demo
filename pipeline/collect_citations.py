@@ -123,6 +123,7 @@ def main():
     headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
 
     results = []
+    budget_exhausted = False
     for q in queries:
         for rep in range(args.repeats):
             cache_key = f"{q['query_id']}::rep{rep}"
@@ -131,6 +132,17 @@ def main():
                 raw = cached
                 print(f"[cache] {q['query_id']} rep{rep}")
             else:
+                if budget.calls_made >= budget.max_calls:
+                    # Stop cleanly on the first query/repeat that would exceed the
+                    # budget, instead of letting every remaining one hit
+                    # CallBudget.spend()'s RuntimeError and print its own
+                    # misleading [FAILED] line (see pipeline/common.py:CallBudget).
+                    print(f"[stop] --max-calls limit reached ({budget.max_calls}); "
+                          f"skipping remaining queries. Re-run with a higher "
+                          f"--max-calls to continue, or rely on the cache.",
+                          file=sys.stderr)
+                    budget_exhausted = True
+                    break
                 payload = build_payload(q["query_text"])
                 try:
                     raw = post_json_with_retry(PERPLEXITY_URL, headers, payload, budget)
@@ -151,6 +163,8 @@ def main():
                 "cited_urls": citations,
                 "cited_domains": sorted({domain_of(u) for u in citations}),
             })
+        if budget_exhausted:
+            break
 
     out_path = os.path.join(REPO_ROOT, "data", "citations.json")
     os.makedirs(os.path.dirname(out_path), exist_ok=True)

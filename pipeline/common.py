@@ -19,6 +19,13 @@ import urllib.error
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW_DIR = os.path.join(REPO_ROOT, "data", "raw")
 
+# Minimum viable pilot size, shared by pipeline.pilot_stats and pipeline.evaluate
+# so the "underpowered" flag can never disagree between the two outputs.
+# Below these thresholds, numbers are still computed and reported, but flagged
+# clearly as preliminary rather than strong evidence.
+MIN_USABLE_ROWS = 60
+MIN_MINORITY_CLASS = 15
+
 
 def load_env():
     """Load .env from repo root if python-dotenv is available; never prints values."""
@@ -128,10 +135,11 @@ def canonicalize_url(url: str) -> str:
     parts = urlsplit(url.strip())
     host = parts.netloc.lower()
     path = parts.path.rstrip("/") or "/"
-    tracking_prefixes = ("utm_", "gclid", "fbclid", "msclkid", "ref", "source")
+    tracking_prefixes = ("utm_",)
+    tracking_exact = {"gclid", "fbclid", "msclkid", "ref", "source"}
     kept = [
         (k, v) for k, v in parse_qsl(parts.query, keep_blank_values=True)
-        if not any(k.lower().startswith(p) for p in tracking_prefixes)
+        if not (k.lower().startswith(tracking_prefixes) or k.lower() in tracking_exact)
     ]
     query = urlencode(kept)
     return urlunsplit((parts.scheme or "https", host, path, query, ""))

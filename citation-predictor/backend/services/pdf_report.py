@@ -6,6 +6,7 @@ import os
 import io
 import logging
 from datetime import datetime
+from xml.sax.saxutils import escape
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
@@ -59,13 +60,24 @@ def generate_pdf(analysis: dict) -> bytes:
     s      = _styles()
     story  = []
 
-    url         = analysis.get("url", "")
-    score       = analysis.get("citation_probability", 0)
-    prediction  = analysis.get("prediction", "")
+    url         = str(analysis.get("url", ""))
+    score       = analysis.get("citation_probability", 0) or 0
+    prediction  = str(analysis.get("prediction", ""))
     timestamp   = analysis.get("timestamp", datetime.utcnow().isoformat())
-    features    = analysis.get("features", {})
-    shap_data   = analysis.get("shap_data", {})
-    recs        = analysis.get("recommendations", [])
+    features    = analysis.get("features") or {}
+    shap_data   = analysis.get("shap_data") or {}
+    recs        = analysis.get("recommendations") or []
+
+    # Defensive guards: `analysis` is an arbitrary client-supplied dict (the
+    # /api/report route does not enforce a nested schema), so any of these
+    # fields may be missing or the wrong type. Fall back to safe empties
+    # rather than raising deep inside PDF construction below.
+    if not isinstance(features, dict):
+        features = {}
+    if not isinstance(shap_data, dict):
+        shap_data = {}
+    if not isinstance(recs, list):
+        recs = []
 
     # ── Header ───────────────────────────────────────────────
     story.append(Paragraph("Citelytics", s["title"]))
@@ -94,12 +106,21 @@ def generate_pdf(analysis: dict) -> bytes:
 
     # ── Score ─────────────────────────────────────────────────
     story.append(Paragraph("Citation Likelihood", s["h1"]))
-    score_pct = int(score * 100)
+    # Prefer the already-rounded `citation_score` that analyze.py put in the
+    # same dict, so the PDF always shows the same headline number as the
+    # JSON API / web UI for this exact result. Only derive it from the raw
+    # probability (via round(), not truncation) when citation_score is absent
+    # — e.g. a report requested against a hand-built or older-shaped payload.
+    score_pct = analysis.get("citation_score")
+    if not isinstance(score_pct, (int, float)):
+        score_pct = int(round(float(score) * 100))
+    else:
+        score_pct = int(score_pct)
     colour = SECONDARY if score_pct >= 61 else (GRAY if score_pct >= 31 else DANGER)
     score_row = [[
         Paragraph(f"<b>{score_pct} / 100</b>", ParagraphStyle("S", fontSize=26,
                   textColor=colour, alignment=TA_CENTER)),
-        Paragraph(f"<b>{prediction}</b>", ParagraphStyle("P", fontSize=12,
+        Paragraph(f"<b>{escape(prediction)}</b>", ParagraphStyle("P", fontSize=12,
                   textColor=colour, alignment=TA_LEFT, leading=18)),
     ]]
     st = Table(score_row, colWidths=[5*cm, 11*cm])
@@ -118,20 +139,32 @@ def generate_pdf(analysis: dict) -> bytes:
     story.append(Paragraph("SHAP Explainability", s["h1"]))
     story.append(Paragraph("Top positive factors:", s["h2"]))
     for item in (shap_data.get("top_positive") or [])[:6]:
-        fname  = item["feature"].replace("_", " ").title()
-        val    = round(float(item["shap_value"]), 4)
+        if not isinstance(item, dict):
+            continue
+        fname = escape(str(item.get("feature", "unknown")).replace("_", " ").title())
+        try:
+            val = round(float(item.get("shap_value", 0)), 4)
+        except (TypeError, ValueError):
+            val = 0.0
         story.append(Paragraph(f"▲  <b>{fname}</b>  +{val}", s["body"]))
 
     story.append(Paragraph("Top negative factors:", s["h2"]))
     for item in (shap_data.get("top_negative") or [])[:6]:
-        fname  = item["feature"].replace("_", " ").title()
-        val    = round(float(item["shap_value"]), 4)
+        if not isinstance(item, dict):
+            continue
+        fname = escape(str(item.get("feature", "unknown")).replace("_", " ").title())
+        try:
+            val = round(float(item.get("shap_value", 0)), 4)
+        except (TypeError, ValueError):
+            val = 0.0
         story.append(Paragraph(f"▼  <b>{fname}</b>  {val}", s["body"]))
 
     story.append(Spacer(1, 12))
 
     # ── Feature summary ───────────────────────────────────────
-    mf = features.get("model_features", {})
+    mf = features.get("model_features") or {}
+    if not isinstance(mf, dict):
+        mf = {}
     story.append(Paragraph("Feature Summary", s["h1"]))
 
     feat_rows = [["Feature", "Value"]]
@@ -162,10 +195,15 @@ def generate_pdf(analysis: dict) -> bytes:
     # ── Recommendations ───────────────────────────────────────
     story.append(Paragraph("Recommendations", s["h1"]))
     for i, rec in enumerate(recs[:10], 1):
+        if not isinstance(rec, dict):
+            continue
+        priority    = escape(str(rec.get("priority", "unspecified")).upper())
+        title       = escape(str(rec.get("title", "")))
+        description = escape(str(rec.get("description", "")))
         story.append(Paragraph(
-            f"{i}. <b>[{rec['priority'].upper()}]</b> {rec['title']}", s["h2"]
+            f"{i}. <b>[{priority}]</b> {title}", s["h2"]
         ))
-        story.append(Paragraph(rec["description"], s["body"]))
+        story.append(Paragraph(description, s["body"]))
 
     story.append(Spacer(1, 16))
 

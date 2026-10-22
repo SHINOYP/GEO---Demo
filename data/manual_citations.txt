@@ -1,3 +1,10 @@
+# ARCHIVAL SNAPSHOT — Batch 1 only (Q01-Q100), superseded.
+# The canonical, current source of truth is data/manual_citations_full.txt
+# (all 200 queries, Q01-Q200), which is what import_manual_citations.py
+# should be pointed at and what docs/DATA_CARD.md describes. This file is
+# kept only as a record of the original batch-1 collection pass; do not
+# treat it as the file to fill in for a fresh run.
+#
 # Manual citation collection worksheet (free — no API key needed)
 #
 # The "candidate pool" (data/candidates.json) is already done — it was

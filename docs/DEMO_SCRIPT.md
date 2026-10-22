@@ -1,14 +1,20 @@
 # Demo Script (5 minutes)
 
-**Status note (keep this current):** the offline-demo snapshots described in
-Phase 5 of the plan ("3 pages from the pilot — one cited, one not-cited, one
-borderline") require the real-data pilot pipeline to have actually been run.
-As of this writing, that run is blocked on `PERPLEXITY_API_KEY` (see
-`STATUS.md`). Until then, the only safe offline fallback is the two hand-
-written fixtures already in `streamlit_app.py` (`SAMPLE_HTML_FIXTURES`:
-"Apex Dental Clinic" and a thin "Handyman" site), which are clearly labeled
-**DEMO FIXTURE** in the UI, not real pilot pages. Once the pilot runs, swap
-this script's Step 3 to use the 3 real cached snapshots instead and update
+**Status note (keep this current):** the real-data pilot has now run to
+completion (200 queries, 390 usable rows — see `STATUS.md` Session 2 and
+`docs/PILOT_REPORT.md`), via manual citation collection
+(`collection_method="manual_web_ui"`), not the `PERPLEXITY_API_KEY` path
+originally planned — the team had no budget for the paid API. The raw
+scraped pages from that run sit in `data/html_cache/` as content-hashed
+`.html` files with no cited/not-cited label attached to the filename, so
+none of them have been picked out, verified, and wired in as curated
+"one cited, one not-cited, one borderline" demo presets. Until that
+curation happens, Step 3 below intentionally keeps using the two
+hand-written fixtures already in `streamlit_app.py`
+(`SAMPLE_HTML_FIXTURES`: "Apex Dental Clinic" and a thin "Handyman"
+site), which are clearly labeled **DEMO FIXTURE** in the UI, not real
+pilot pages. If someone curates 3 labeled real snapshots into
+`SAMPLE_HTML_FIXTURES`, swap this script's Step 3 to use those and update
 this note.
 
 ## What to click, what to say

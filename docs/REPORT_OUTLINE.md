@@ -14,9 +14,9 @@ reflections, guide feedback, final numbers once the pilot runs).
 | 5 | Existing Methodology | 3 | Derivable now |
 | 6 | Proposed Methodology | 3 | Derivable now |
 | 7 | System Design | 2 | Derivable now |
-| 8 | Dataset and Pipeline | 3 | Partially derivable — real numbers pending pilot run |
+| 8 | Dataset and Pipeline | 3 | Derivable now (real n=200 pilot numbers available) |
 | 9 | Implementation | 2 | Derivable now |
-| 10 | Results and Analysis | 3 | Blocked until pipeline.evaluate has run on real data |
+| 10 | Results and Analysis | 3 | Derivable now |
 | 11 | Limitations | 1 | Derivable now |
 | 12 | Conclusion and Future Work | 1 | Derivable now |
 | 13 | References | 2 | Partially derivable — 9 of ~24 references identified |
@@ -90,14 +90,14 @@ Derivable from the project proposal plus Chapter 2 framing.
 - Data flow diagram for the pipeline (pipeline/*.py).
 
 ## 8. Dataset and Pipeline (3 pages)
-- pipeline/queries.csv: 100 queries, 4 categories (gyms in Kerala,
-  chauffeur services in GCC cities, kayaking tours, dental clinics).
+- pipeline/queries.csv: 200 queries, 4 categories, 50 per category (gyms
+  in Kerala, chauffeur/limo services in GCC cities, kayaking/tour
+  operators, dental clinics).
 - Label rule and known limitations: see docs/DATA_CARD.md verbatim.
-- Real counts (dataset size, scrape success rate, class balance,
-  citations-per-query) are NOT YET MEASURED — pending a real run of
-  pipeline.run_all once PERPLEXITY_API_KEY is available. Pull these
-  automatically from data/pilot_stats.json once it exists; never
-  hand-type them.
+- Real counts are already available in data/pilot_stats.json (390 usable
+  rows, 53.2% scrape success rate, 118/272 class balance) and
+  artifacts/metrics.json — pull these numbers directly from those files;
+  never hand-type them.
 
 ## 9. Implementation (2 pages)
 - Key modules and why each tool was chosen (requests+BeautifulSoup for
@@ -108,8 +108,8 @@ Derivable from the project proposal plus Chapter 2 framing.
   cap (citation-predictor/backend/scraping/scraper.py).
 
 ## 10. Results and Analysis (3 pages)
-Blocked until python -m pipeline.evaluate has been run against real
-pilot data. Once it has:
+Results are now available in artifacts/metrics.json (390 real rows,
+200-query pilot). Pull the following numbers directly from it:
 - Pull ROC-AUC/PR-AUC/F1/precision/recall (mean ± std) for all three
   models (rule-based, logistic regression, XGBoost) directly from
   artifacts/metrics.json.

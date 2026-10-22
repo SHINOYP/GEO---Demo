@@ -1,6 +1,7 @@
 {
   "num_queries": 200,
-  "api_calls_logged": 200,
+  "citation_records_collected": 200,
+  "real_api_calls_logged": 0,
   "citations_per_query": {
     "mean": 1.0,
     "median": 1.0,
@@ -8,12 +9,12 @@
     "max": 1
   },
   "total_candidate_rows": 733,
-  "usable_rows": 389,
+  "usable_rows": 390,
   "scrape_status_counts": {
-    "failed": 344,
-    "ok": 389
+    "failed": 343,
+    "ok": 390
   },
-  "scrape_success_rate": 0.531,
+  "scrape_success_rate": 0.532,
   "class_balance": {
     "positive": 200,
     "negative": 533

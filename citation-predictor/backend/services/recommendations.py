@@ -5,8 +5,6 @@ Generates actionable, feature-driven recommendations from
 detected feature values and SHAP results.
 """
 
-from typing import Any
-
 
 def generate_recommendations(features: dict, shap_data: dict) -> list[dict]:
     """

@@ -15,8 +15,6 @@ import joblib
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
 from sklearn.metrics import (
     accuracy_score, precision_score, recall_score,
     f1_score, roc_auc_score,
@@ -30,7 +28,7 @@ MODEL_PATH  = os.path.join(BASE_DIR, "..", "..", "models", "citation_model.pkl")
 COLS_PATH   = os.path.join(BASE_DIR, "..", "..", "models", "feature_columns.json")
 DATA_PATH   = os.path.join(BASE_DIR, "..", "..", "ml", "data", "webpage_features.csv")
 
-_model      = None   # XGBoost Pipeline (global singleton)
+_model      = None   # XGBoost classifier (global singleton)
 _feat_cols  = None   # ordered list of feature column names
 
 # ─────────────────────────────────────────────
@@ -139,7 +137,7 @@ def _generate_demo_data(n_samples: int = 500) -> pd.DataFrame:
     return df
 
 
-def _train(df: pd.DataFrame) -> Pipeline:
+def _train(df: pd.DataFrame) -> xgb.XGBClassifier:
     X = df[FEATURE_COLUMNS]
     y = df["label"]
 

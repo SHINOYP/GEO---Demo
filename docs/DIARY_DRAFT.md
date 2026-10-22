@@ -56,11 +56,38 @@ starting point, not a substitute.
   Everything else (app fixes, pipeline code, tests, documentation)
   proceeded without needing real data.
 
-## Week of [TODO] -- Real data collection and evaluation
-TODO (team): fill in once `PERPLEXITY_API_KEY` is provided and
-`python -m pipeline.run_all` / `pipeline.evaluate` have actually been run
-against real data. Record: how many queries/API calls were made, what the
-scrape success rate was, and the real model metrics.
+## Week of 2026-10-21 -- Real data collection and evaluation
+No Perplexity/SerpAPI budget was available, so this was done via the
+manual-collection workaround (see `STATUS.md` Session 2) rather than
+`PERPLEXITY_API_KEY` + `python -m pipeline.run_all`. Factual results below
+are read directly from `data/pilot_stats.json` and `artifacts/metrics.json`
+(no API calls logged -- `real_api_calls_logged: 0`):
+- 200 queries, 200 citation records collected (one citation per query,
+  via `collection_method="manual_web_ui"`).
+- 733 candidate rows scraped; scrape success rate 53.2% (390 usable rows:
+  118 cited / 272 not cited).
+- XGBoost ROC-AUC 0.64 +/- 0.12, logistic regression 0.69 +/- 0.08 --
+  numerically ahead of XGBoost but overlapping confidence intervals, so
+  statistically comparable at this sample size; both clearly beat the
+  rule-based baseline (0.51, chance). (We also found and fixed a real bug
+  in the evaluation itself: a single GroupKFold split's fold assignment
+  depends on row order, so one run's AUC was really one arbitrary
+  partition's estimate, not "the" AUC. Fixed by repeating GroupKFold 10x
+  over shuffled row orders and pooling all 50 folds -- the number above is
+  that pooled, more reliable estimate, down from an initial single-split
+  reading of 0.69 +/- 0.08 for XGBoost on the same data.)
+- Label-shuffle control: ROC-AUC 0.51 +/- 0.04 (almost exactly chance --
+  confirms no label leakage).
+- Feature-group ablation: authority 0.71, content 0.60, structural 0.56
+  (authority / local-business-legitimacy signals matter most).
+- Domain-type (directory/aggregator) flag: 0.71 with vs 0.64 without
+  (a modest lift, not a dominant effect).
+- Original synthetic-trained model scored on this real data: ROC-AUC
+  0.49 (essentially chance, reinforcing the Phase 1 audit's circularity
+  finding).
+TODO (team): add the narrative -- who ran which commands and when, how
+long collection took, any blockers hit along the way, and team
+reflections on the manual-collection workaround.
 
 ## Week of [TODO] -- Slides, report, and viva prep
 TODO (team): fill in with actual rehearsal sessions, guide feedback on the

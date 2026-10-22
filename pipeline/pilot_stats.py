@@ -12,6 +12,8 @@ import json
 import os
 from collections import defaultdict, Counter
 
+from pipeline.common import MIN_USABLE_ROWS, MIN_MINORITY_CLASS
+
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -44,7 +46,15 @@ def main():
         return
 
     num_queries = len(citations)
-    calls_logged = sum(1 for _ in citations)  # 1 record per (query, repeat) actually run
+    # Total citation records collected, regardless of how they were collected
+    # (manual copy-paste from the web UI or a real paid API call). This is
+    # NOT a count of paid API calls — see real_api_calls_logged below.
+    citation_records_collected = sum(1 for _ in citations)
+    # Only records whose collection_method is an actual API call count here.
+    # For this project's real pilot (100% manual_web_ui), this is 0.
+    real_api_calls_logged = sum(
+        1 for c in citations if c.get("collection_method") not in (None, "manual_web_ui")
+    )
 
     cites_per_query = [len(c.get("cited_urls", [])) for c in citations]
 
@@ -61,7 +71,8 @@ def main():
 
     stats = {
         "num_queries": num_queries,
-        "api_calls_logged": calls_logged,
+        "citation_records_collected": citation_records_collected,
+        "real_api_calls_logged": real_api_calls_logged,
         "citations_per_query": {
             "mean": round(mean(cites_per_query), 2),
             "median": median(cites_per_query),
@@ -94,9 +105,11 @@ def main():
             "duplicate_domain_rate": round(duplicate_rate, 3),
         })
 
-        # underpowered heuristic: too few usable rows or too few positives/negatives
+        # underpowered heuristic: too few usable rows or too few positives/negatives.
+        # Thresholds come from pipeline.common so this can never disagree with
+        # the same flag computed in pipeline.evaluate.
         min_class = min(positive, n_rows - positive) if n_rows else 0
-        stats["underpowered"] = usable < 60 or min_class < 15
+        stats["underpowered"] = usable < MIN_USABLE_ROWS or min_class < MIN_MINORITY_CLASS
     else:
         stats["underpowered"] = True
         stats["note"] = "NOT YET MEASURED — data/dataset.csv not built yet (run pipeline.build_dataset)."

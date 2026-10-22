@@ -11,8 +11,8 @@ questions every student on the whole project.
 `pipeline/common.py`, `docs/DATA_CARD.md`
 
 **5 things this owner must explain on a whiteboard:**
-1. The query set design: 20 queries, 4 categories (gyms/Kerala,
-   chauffeur/GCC, kayaking, dental), why these categories.
+1. The query set design: 200 queries, 4 categories (50 each:
+   gyms/Kerala, chauffeur/GCC, kayaking, dental), why these categories.
 2. How citations are actually collected (Perplexity `sonar` API call,
    what "search-enabled chat completion" means, how cited URLs are
    extracted from the response).
@@ -33,8 +33,9 @@ questions every student on the whole project.
 2. "What if the same query returns different citations each time you run
    it?" -- `--repeats N` measures this directly; a single run (default)
    is a known noisy label, documented in `docs/DATA_CARD.md`.
-3. "Why only 20 queries?" -- pilot scope and API cost constraints; future
-   work scales this up (see Conclusion/Future Work).
+3. "Why only 200 queries, and why that category mix?" -- scaled up from an
+   original 20-query pilot once the signal held; API cost and time still
+   bound further scale-up (see Conclusion/Future Work).
 4. "What happens if PERPLEXITY_API_KEY is missing?" -- the script fails
    loudly with a clear error, never silently fabricates data.
 5. "Is this data collection ethical/compliant?" -- see

@@ -21,9 +21,18 @@ shipped (`citation-predictor/models/citation_model.pkl`) was trained on a
 label is a hand-written linear formula of the *same* features the model
 is scored on. Any accuracy number from that pipeline is circular. The real
 pilot data pipeline (`pipeline/`) exists to replace this with real
-Perplexity-citation-derived data; as of this writing that collection has
-not been run yet (blocked on `PERPLEXITY_API_KEY` — see `STATUS.md`), so
-anywhere a real metric would go, this document says **NOT YET MEASURED**.
+Perplexity-citation-derived data; that pilot has now been run end-to-end
+at the full 200-query scale (data collected manually, not via the paid
+`PERPLEXITY_API_KEY` — see `STATUS.md`), producing 390 usable real rows
+(118 cited / 272 not) and real cross-validated metrics in
+`artifacts/metrics.json` (XGBoost ROC-AUC 0.64 ± 0.12, pooled across 10
+repeated GroupKFold splits; logistic regression is numerically comparable
+at 0.69 ± 0.08 — see `docs/VIVA_QA.md`, "Evaluation" section, for the full
+breakdown). Scored on this real data, the original synthetic-trained
+model drops to AUC 0.49 — essentially chance — the clearest evidence that
+synthetic-label training doesn't transfer to reality. Anywhere a number
+isn't backed by one of these measured runs, this document still says
+**NOT YET MEASURED**.
 
 ## Module: `citation-predictor/backend/scraping/scraper.py`
 
@@ -107,9 +116,10 @@ anywhere a real metric would go, this document says **NOT YET MEASURED**.
   features. It says nothing about how Perplexity/ChatGPT/Claude actually
   decided what to cite — we never have access to that model's internals.
 
-## Module: `pipeline/` (new — real-data collection, not yet run against a live API key)
+## Module: `pipeline/` (real-data collection, run at full scale — see `docs/DATA_CARD.md`)
 
-- `queries.csv` — 20 fixed local-business queries across 4 categories.
+- `queries.csv` — 200 fixed local-business queries across 4 categories
+  (50 each).
 - `collect_citations.py` — calls Perplexity's `sonar` model per query,
   extracts cited URLs from whichever response fields are actually present
   (`citations` and/or `search_results`), caches raw JSON, enforces

@@ -47,7 +47,7 @@ NEWS_HINTS = ("news", "blog", "magazine", "times", "post", "herald", "medium.com
 
 def classify_domain_type(domain: str) -> str:
     """Simple, transparent rule list — not an ML classifier, so it's easy to audit."""
-    bare = domain.replace("www.", "")
+    bare = domain[4:] if domain.startswith("www.") else domain
     if any(bare.endswith(d) for d in SOCIAL_DOMAINS):
         return "social"
     if any(bare.endswith(d) for d in DIRECTORY_DOMAINS):
@@ -55,6 +55,52 @@ def classify_domain_type(domain: str) -> str:
     if any(hint in bare for hint in NEWS_HINTS):
         return "news_blog"
     return "business_site"
+
+
+def build_rows_to_scrape(citations: list, candidates: dict) -> list:
+    """For each query, build the candidate pool as cited_urls UNION candidates,
+    and label each (query_id, url) pair 1 if the url was cited for that
+    query, else 0. Returns a list of (query_id, category, city, url, label).
+
+    The pool (a set union) is iterated via sorted() rather than directly, so
+    row order is deterministic given the same inputs — CPython's set
+    iteration order depends on hash randomization and is not stable across
+    processes unless PYTHONHASHSEED is pinned.
+    """
+    rows_to_scrape = []
+    for rec in citations:
+        qid, category, city = rec["query_id"], rec["category"], rec["city"]
+        cited = set(rec.get("cited_urls", []))
+        cands = set(canonicalize_url(u) for u in candidates.get(qid, []))
+        pool = cited | cands
+        for url in sorted(pool):
+            rows_to_scrape.append((qid, category, city, url, 1 if url in cited else 0))
+    return rows_to_scrape
+
+
+def assign_duplicate_templates(url_to_fingerprint: dict) -> tuple:
+    """Deterministically pick one 'canonical' URL per structural fingerprint
+    (the alphabetically-first URL sharing that HTML skeleton) and count the
+    rest as duplicates.
+
+    This must not depend on thread/completion order: scraping runs
+    concurrently via ThreadPoolExecutor, and which worker finishes first for
+    a given fingerprint is a race, not a stable ordering. Doing the
+    canonical-vs-duplicate assignment in a separate, sorted pass (instead of
+    inline as results arrive) keeps is_duplicate_template reproducible
+    across runs of the exact same input data.
+    """
+    seen = {}
+    duplicate_count = 0
+    for url in sorted(url_to_fingerprint):
+        fingerprint = url_to_fingerprint[url]
+        if not fingerprint:
+            continue
+        if fingerprint in seen:
+            duplicate_count += 1
+        else:
+            seen[fingerprint] = url
+    return seen, duplicate_count
 
 
 def load_json(path, default):
@@ -92,23 +138,25 @@ def main():
               "`python -m pipeline.collect_citations --yes` first.", file=sys.stderr)
         sys.exit(1)
 
-    # Build per-query union of cited URLs and candidate URLs, plus which
-    # query/category/city a URL belongs to (a URL can appear under multiple
-    # queries; we keep one row per (query_id, url)).
-    rows_to_scrape = []  # (query_id, category, city, url, label)
-    for rec in citations:
-        qid, category, city = rec["query_id"], rec["category"], rec["city"]
-        cited = set(rec.get("cited_urls", []))
-        cands = set(canonicalize_url(u) for u in candidates.get(qid, []))
-        pool = cited | cands
-        for url in pool:
-            rows_to_scrape.append((qid, category, city, url, 1 if url in cited else 0))
+    # (query_id, category, city, url, label) rows: pool = cited_urls UNION candidates per query.
+    rows_to_scrape = build_rows_to_scrape(citations, candidates)
+
+    # A query whose citations+candidates collection both came up empty
+    # contributes zero rows and would otherwise vanish from the dataset
+    # with no trace, so flag it explicitly.
+    queries_with_rows = {r[0] for r in rows_to_scrape}
+    empty_queries = sorted(rec["query_id"] for rec in citations if rec["query_id"] not in queries_with_rows)
+    if empty_queries:
+        print(f"WARNING: {len(empty_queries)} quer{'y' if len(empty_queries) == 1 else 'ies'} "
+              f"contributed zero rows (empty cited_urls and no candidates): {empty_queries}",
+              file=sys.stderr)
 
     unique_urls = sorted(set(r[3] for r in rows_to_scrape))
     print(f"Candidate pool across all queries: {len(rows_to_scrape)} (query_id, url) pairs, "
           f"{len(unique_urls)} unique URLs. Scraping with {args.workers} concurrent threads "
-          f"(I/O-bound waits — this is safe, we're not hammering any single host harder: "
-          f"the per-host polite delay is still enforced across all threads).")
+          f"(I/O-bound waits; a per-host lock spaces out request *start* times by "
+          f"--delay seconds, but does not guarantee two requests to the same host never "
+          f"overlap in flight if a fetch takes longer than --delay).")
 
     html_cache_dir = os.path.join(REPO_ROOT, "data", "html_cache")
     os.makedirs(html_cache_dir, exist_ok=True)
@@ -147,8 +195,6 @@ def main():
             return url, "failed", f"{type(e).__name__}: {e}", None, None
 
     scraped_cache = {}  # url -> (status, reason, features_dict or None, fingerprint or None)
-    seen_fingerprints = {}
-    duplicate_count = 0
     status_counts = {}
     done = 0
 
@@ -157,13 +203,15 @@ def main():
         for future in as_completed(futures):
             url, status, reason, feats, fingerprint = future.result()
             done += 1
-            if fingerprint:
-                if fingerprint in seen_fingerprints and seen_fingerprints[fingerprint] != url:
-                    duplicate_count += 1
-                seen_fingerprints.setdefault(fingerprint, url)
             status_counts[status] = status_counts.get(status, 0) + 1
             scraped_cache[url] = (status, reason, feats, fingerprint)
             print(f"[{done}/{len(unique_urls)}] [{status}] {url} ({reason[:60] if reason else 'ok'})")
+
+    # Decide which URL is "canonical" per structural fingerprint in a
+    # separate, deterministic pass — not by thread-completion order, which
+    # varies run to run even against byte-identical cached HTML.
+    url_to_fingerprint = {url: scraped_cache[url][3] for url in unique_urls}
+    seen_fingerprints, duplicate_count = assign_duplicate_templates(url_to_fingerprint)
 
     out_rows = []
     for qid, category, city, url, label in rows_to_scrape:

@@ -1,5 +1,5 @@
 """
-Convert manually-collected Perplexity citations (data/manual_citations.txt)
+Convert manually-collected Perplexity citations (data/manual_citations_full.txt)
 into data/citations.json — the same shape pipeline/collect_citations.py
 would have produced from the paid API — so build_dataset.py,
 pilot_stats.py, and evaluate.py all work unchanged regardless of which
@@ -16,9 +16,17 @@ docs/DATA_CARD.md).
 The candidate pool (data/candidates.json) is collected separately — see
 docs/DATA_CARD.md for how it was built in this project.
 
+data/manual_citations_full.txt is the authoritative, fully-filled worksheet
+(all 200 queries) and is the default `--in`. data/manual_citations.txt and
+data/manual_citations_template.txt are earlier, partially-filled working
+copies kept only for history — do not pass them with `--in` or this will
+silently regenerate citations.json from an incomplete source (the script
+will now refuse to overwrite a more-complete citations.json with a
+less-complete one; see the --force flag).
+
 Usage:
     python -m pipeline.import_manual_citations
-    python -m pipeline.import_manual_citations --in data/manual_citations.txt
+    python -m pipeline.import_manual_citations --in data/manual_citations_full.txt
 """
 import argparse
 import csv
@@ -64,20 +72,29 @@ def parse_manual_file(path: str) -> dict:
                       file=sys.stderr)
                 continue
             qid, rest = m.group(1), m.group(2)
+            if qid in cited:
+                print(f"WARNING: duplicate query_id {qid!r} at line {lineno} — overwriting "
+                      f"previously parsed citations for this id (worksheets may have been "
+                      f"concatenated with overlapping ids)", file=sys.stderr)
             cited[qid] = parse_urls(rest, qid)
     return cited
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--in", dest="in_path", default=os.path.join(REPO_ROOT, "data", "manual_citations.txt"))
+    ap.add_argument("--in", dest="in_path", default=os.path.join(REPO_ROOT, "data", "manual_citations_full.txt"))
     ap.add_argument("--queries", default=os.path.join(REPO_ROOT, "pipeline", "queries.csv"))
     ap.add_argument("--out-citations", default=os.path.join(REPO_ROOT, "data", "citations.json"))
+    ap.add_argument("--force", action="store_true",
+                     help="Overwrite --out-citations even if the newly-parsed file has fewer "
+                          "queries with citations than the file already there (by default this "
+                          "is refused, to stop an incomplete worksheet from silently clobbering "
+                          "more-complete, already-collected real data).")
     args = ap.parse_args()
 
     if not os.path.exists(args.in_path):
         print(f"ERROR: {args.in_path} not found. Copy data/manual_citations_template.txt to "
-              f"data/manual_citations.txt, fill it in, then re-run.", file=sys.stderr)
+              f"data/manual_citations_full.txt, fill it in, then re-run.", file=sys.stderr)
         sys.exit(1)
 
     queries = load_queries(args.queries)
@@ -101,6 +118,18 @@ def main():
             "cited_domains": sorted({domain_of(u) for u in cited_urls}),
             "collection_method": "manual_web_ui",
         })
+
+    if os.path.exists(args.out_citations) and not args.force:
+        with open(args.out_citations, encoding="utf-8") as f:
+            existing_records = json.load(f)
+        existing_filled = sum(1 for r in existing_records if r.get("cited_urls"))
+        new_filled = sum(1 for r in citation_records if r["cited_urls"])
+        if new_filled < existing_filled:
+            print(f"ERROR: refusing to overwrite {args.out_citations} ({existing_filled} queries "
+                  f"with citations) with a less-complete parse of {args.in_path} ({new_filled} "
+                  f"queries with citations). This usually means --in points at an incomplete "
+                  f"worksheet. Pass --force to overwrite anyway.", file=sys.stderr)
+            sys.exit(1)
 
     with open(args.out_citations, "w", encoding="utf-8") as f:
         json.dump(citation_records, f, indent=2, ensure_ascii=False)

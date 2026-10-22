@@ -2,20 +2,20 @@
 Citelytics — Citation Likelihood Prediction in Generative Answer Engines
 Explainable ML Approach for Local Business Content
 Author: Stephin Arnold
-GitHub: https://github.com/StephinArnold/GEO---Demo
 """
 
+import logging
 import os
 import sys
 import time
-import io
 import json
 from datetime import datetime
 
 import streamlit as st
 import pandas as pd
-import numpy as np
 import altair as alt
+
+logger = logging.getLogger(__name__)
 
 # Ensure local backend modules can be imported
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -241,6 +241,7 @@ try:
     init_system()
 except Exception as e:
     st.error(f"Error loading model: {e}")
+    st.stop()
 
 ARTIFACTS_DIR = os.path.join(CURRENT_DIR, "artifacts")
 DATA_DIR = os.path.join(CURRENT_DIR, "data")
@@ -267,19 +268,42 @@ def load_pilot_stats():
     return load_json_or_none(os.path.join(DATA_DIR, "pilot_stats.json"))
 
 # Helper interpret functions
+# Shared tier thresholds — a single source of truth so the label, the badge,
+# and the KPI tile can never drift out of sync with each other.
+TIER_HIGH_THRESHOLD = 61
+TIER_MED_THRESHOLD = 31
+
+
+def get_tier_name(prob: float) -> str:
+    """Return the tier name ("High" / "Moderate" / "Low") for a probability.
+
+    Rounds to the nearest whole percent (matching every displayed score)
+    before comparing against the tier thresholds, so a probability that
+    displays as e.g. 61% is always classified consistently with what the
+    user sees on screen.
+    """
+    score = round(prob * 100)
+    if score >= TIER_HIGH_THRESHOLD:
+        return "High"
+    if score >= TIER_MED_THRESHOLD:
+        return "Moderate"
+    return "Low"
+
+
 def get_label(prob: float) -> str:
-    score = int(prob * 100)
-    if score >= 61:
+    tier = get_tier_name(prob)
+    if tier == "High":
         return "Likely to be Cited"
-    if score >= 31:
+    if tier == "Moderate":
         return "Moderately Likely to be Cited"
     return "Less Likely to be Cited"
 
 def get_tier_badge(prob: float) -> str:
-    score = int(prob * 100)
-    if score >= 61:
+    score = round(prob * 100)
+    tier = get_tier_name(prob)
+    if tier == "High":
         return f'<span class="prob-badge-high">High Likelihood ({score}%)</span>'
-    if score >= 31:
+    if tier == "Moderate":
         return f'<span class="prob-badge-med">Moderate Likelihood ({score}%)</span>'
     return f'<span class="prob-badge-low">Low Likelihood ({score}%)</span>'
 
@@ -336,6 +360,79 @@ SAMPLE_HTML_FIXTURES = {
     <p>We do great work. Call us today for the best prices in town. We do painting, plumbing, and fixing things around your house.</p>
     <p>No job is too big or too small! Contact us today.</p>
     </body></html>
+    """,
+    "https://sample-italian-bistro.example.com": """
+    <!DOCTYPE html><html><head><title>Luigi's Trattoria - Authentic Italian Restaurant</title>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Restaurant","name":"Luigi's Trattoria",
+     "telephone":"+1-555-312-7788","openingHours":"Tu-Su 11:00-22:00",
+     "address":{"@type":"PostalAddress","streetAddress":"48 Elm Street","addressLocality":"Portland","addressRegion":"OR","postalCode":"97201"},
+     "aggregateRating":{"@type":"AggregateRating","ratingValue":"4.7","reviewCount":"512"}}
+    </script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Do you take reservations?","acceptedAnswer":{"@type":"Answer","text":"Yes, reservations are recommended on weekends and can be made by phone or online."}},
+      {"@type":"Question","name":"Is there outdoor seating?","acceptedAnswer":{"@type":"Answer","text":"Yes, we have a heated patio open year-round with seating for 30 guests."}}
+    ]}
+    </script>
+    </head><body>
+    <header><nav><a href="/">Home</a> | <a href="/menu">Menu</a> | <a href="/contact">Contact</a></nav></header>
+    <main>
+      <h1>Luigi's Trattoria - Family-Owned Italian Dining in Portland, OR</h1>
+      <p>Luigi's Trattoria has served handmade pasta and wood-fired pizza since 1998. Our dining room seats 80 guests and our chefs import ingredients directly from Italy.</p>
+      <h2>Our Menu</h2>
+      <p>From classic Bolognese to seasonal risottos, every dish is prepared fresh daily using recipes passed down three generations.</p>
+      <h3>Pricing & Hours</h3>
+      <table>
+        <tr><th>Item</th><th>Course</th><th>Price</th></tr>
+        <tr><td>Spaghetti Carbonara</td><td>Entree</td><td>$18</td></tr>
+        <tr><td>Margherita Pizza</td><td>Entree</td><td>$16</td></tr>
+      </table>
+      <h2>Frequently Asked Questions</h2>
+      <ul>
+        <li><strong>Private events:</strong> Our back room can be reserved for parties of up to 40.</li>
+        <li><strong>Gluten-free:</strong> Gluten-free pasta is available on request.</li>
+      </ul>
+      <h2>Contact & Operating Hours</h2>
+      <p>Call us at <strong>(555) 312-7788</strong> or visit us at 48 Elm Street, Portland, OR 97201.</p>
+      <p>Hours: Tuesday to Sunday, 11:00 AM - 10:00 PM. Closed Mondays.</p>
+    </main></body></html>
+    """,
+    "https://sample-cloud-tech.example.com": """
+    <!DOCTYPE html><html><head><title>Apex Cloud Solutions - B2B Cloud Infrastructure Platform</title>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Organization","name":"Apex Cloud Solutions",
+     "telephone":"+1-555-998-4420",
+     "address":{"@type":"PostalAddress","streetAddress":"900 Market Ave","addressLocality":"Denver","addressRegion":"CO","postalCode":"80202"},
+     "aggregateRating":{"@type":"AggregateRating","ratingValue":"4.6","reviewCount":"128"}}
+    </script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"What is the pricing model?","acceptedAnswer":{"@type":"Answer","text":"Plans are priced per active workload per month, starting at $499/month for teams of up to 10."}},
+      {"@type":"Question","name":"Do you offer a free trial?","acceptedAnswer":{"@type":"Answer","text":"Yes, a 14-day free trial is available with no credit card required."}}
+    ]}
+    </script>
+    </head><body>
+    <header><nav><a href="/">Home</a> | <a href="/pricing">Pricing</a> | <a href="/contact">Contact</a></nav></header>
+    <main>
+      <h1>Apex Cloud Solutions - Enterprise-Grade Infrastructure for Growing Teams</h1>
+      <p>Apex Cloud Solutions provides managed Kubernetes orchestration and CI/CD pipelines trusted by over 1,200 engineering teams worldwide, with a 99.98% uptime SLA.</p>
+      <h2>Platform Capabilities</h2>
+      <p>Our platform automates deployment, scaling, and observability across multi-cloud environments with built-in SOC 2 compliance.</p>
+      <h3>Plans & Pricing</h3>
+      <table>
+        <tr><th>Plan</th><th>Workloads</th><th>Monthly Price</th></tr>
+        <tr><td>Starter</td><td>Up to 10</td><td>$499</td></tr>
+        <tr><td>Growth</td><td>Up to 50</td><td>$1,999</td></tr>
+      </table>
+      <h2>Frequently Asked Questions</h2>
+      <ul>
+        <li><strong>Onboarding:</strong> Dedicated solutions engineers assist with migration within the first 30 days.</li>
+        <li><strong>Support:</strong> 24/7 support is included on all paid plans.</li>
+      </ul>
+      <h2>Contact</h2>
+      <p>Call us at <strong>(555) 998-4420</strong> or visit our headquarters at 900 Market Ave, Denver, CO 80202.</p>
+    </main></body></html>
     """
 }
 
@@ -429,9 +526,12 @@ if nav_choice == "Analyze":
         prob = float(model.predict_proba(row)[0, 1])
 
         # SHAP calculation
+        shap_error = None
         try:
             shap_data = explain(model, feat_cols, mf)
         except Exception as e:
+            logger.warning("SHAP explanation failed for %s: %s", target_url, e)
+            shap_error = str(e)
             shap_data = {"shap_values": {}, "top_positive": [], "top_negative": [], "base_value": 0.5}
 
         # Recommendations
@@ -457,7 +557,7 @@ if nav_choice == "Analyze":
         if mock_used:
             st.warning("**Demo fixture** — this result is for a hand-written sample page, not a live fetch of a real URL.")
         st.caption("Estimated likelihood from observed correlations, not a guarantee.")
-        score_pct = int(prob * 100)
+        score_pct = round(prob * 100)
 
         # Main Score Header
         kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
@@ -465,10 +565,10 @@ if nav_choice == "Analyze":
         with kpi_col1:
             kpi_tile("Citation probability", f"{score_pct}%", f"{delta_sign}{score_pct - 50}% vs. 50% baseline")
         with kpi_col2:
-            kpi_tile("Citation tier", get_label(prob).split()[0] + " likelihood")
+            kpi_tile("Citation tier", f"{get_tier_name(prob)} likelihood")
         with kpi_col3:
             macro_val = float(features.get("derived", {}).get("macro_score", mf.get("macro_structure_score", 0.5)))
-            macro_s = int(macro_val * 100)
+            macro_s = round(macro_val * 100)
             kpi_tile("Structural quality", f"{macro_s}/100")
         with kpi_col4:
             has_schema = "Active (JSON-LD)" if features["schema"]["schema_present"] else "Missing"
@@ -488,6 +588,11 @@ if nav_choice == "Analyze":
         # TAB 1: SHAP
         with tab_shap:
             st.subheader("Feature impact (SHAP)")
+            if shap_error:
+                st.warning(
+                    f"The SHAP explainer could not compute feature contributions for this page ({shap_error}). "
+                    "The sections below are empty because the explanation failed, not because this page has no strong drivers."
+                )
             st.write(
                 "Why did this page receive this score? SHAP calculates the exact marginal contribution of each webpage feature "
                 "towards pushing the citation probability **higher** (green) or **lower** (red)."
@@ -549,7 +654,7 @@ if nav_choice == "Analyze":
             with c1, st.container(border=True):
                 st.markdown("#### Macro-structure")
                 st.progress(macro_val)
-                st.caption(f"Score: {int(macro_val * 100)}%")
+                st.caption(f"Score: {round(macro_val * 100)}%")
                 st.write(f"- **Word count:** {features['content']['word_count']}")
                 st.write(f"- **Total headings:** {features['structure']['heading_count']}")
                 st.write(f"- **H1 headings:** {features['structure']['h1_count']}")
@@ -558,7 +663,7 @@ if nav_choice == "Analyze":
             with c2, st.container(border=True):
                 st.markdown("#### Meso-structure")
                 st.progress(meso_val)
-                st.caption(f"Score: {int(meso_val * 100)}%")
+                st.caption(f"Score: {round(meso_val * 100)}%")
                 st.write(f"- **Paragraphs:** {features['content']['paragraph_count']}")
                 st.write(f"- **Lists:** {features['content']['list_count']}")
                 st.write(f"- **Tables:** {features['content']['table_count']}")
@@ -567,7 +672,7 @@ if nav_choice == "Analyze":
             with c3, st.container(border=True):
                 st.markdown("#### Micro-structure & signals")
                 st.progress(micro_val)
-                st.caption(f"Score: {int(micro_val * 100)}%")
+                st.caption(f"Score: {round(micro_val * 100)}%")
                 st.write(f"- **Factual density:** {mf['factual_density']:.3f}")
                 st.write(f"- **Numerical claims:** {features['content']['number_count']}")
                 st.write(f"- **Phone detected:** {'Yes' if features['local_business']['has_phone'] else 'No'}")

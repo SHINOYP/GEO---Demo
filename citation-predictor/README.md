@@ -41,7 +41,7 @@ Traditional SEO tools optimise for search-engine rankings. Modern AI answer engi
 | Layer | Technologies |
 |---|---|
 | Frontend | React, Vite, Tailwind CSS, Recharts, Framer Motion |
-| Backend | Python 3.12+, FastAPI, uvicorn |
+| Backend | Python 3.10+, FastAPI, uvicorn |
 | Scraping | requests, BeautifulSoup4, lxml |
 | ML | XGBoost, scikit-learn, SHAP, pandas, numpy |
 | Database | SQLite (aiosqlite) |
