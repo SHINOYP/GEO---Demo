@@ -1,0 +1,366 @@
+@import "tailwindcss";
+
+/* Design tokens — ported verbatim from the original Streamlit app's
+   injected CSS, so the JS rewrite matches the existing visual identity
+   exactly rather than reskinning it. Light theme only (the original app
+   never supported dark mode). */
+:root {
+  --bg: #ffffff;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --border: #e4e4e7;
+  --foreground: #18181b;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --accent: #2563eb;
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --warning: #b45309;
+  --warning-bg: #fffbeb;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --radius: 8px;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --radius-token: var(--radius);
+  --font-sans: var(--font-inter), -apple-system, sans-serif;
+}
+
+html,
+body {
+  font-family: var(--font-inter), -apple-system, sans-serif;
+  color: var(--foreground);
+  background: var(--bg);
+}
+
+/* ── App shell ──────────────────────────────────────────────── */
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--muted);
+  border-right: 1px solid var(--border);
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.sidebar-nav-link {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 0.5rem 0.65rem;
+  font-size: 0.9rem;
+  color: var(--foreground);
+  text-decoration: none;
+  transition: background 0.1s ease;
+}
+
+.sidebar-nav-link:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.sidebar-nav-link.active {
+  background: var(--bg);
+  border-color: var(--border);
+  font-weight: 500;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  padding-top: 0.85rem;
+  color: var(--muted-foreground);
+  font-size: 0.76rem;
+  line-height: 1.7;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1rem 2rem 3rem;
+  max-width: 900px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 0 0 1rem 0;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar .brand-text {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--foreground);
+}
+
+.topbar .crumb {
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+}
+
+/* ── Page header ────────────────────────────────────────────── */
+
+.page-badge {
+  display: inline-block;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0 0 0.4rem 0;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.page-sub {
+  color: var(--muted-foreground);
+  font-size: 0.92rem;
+  margin: 0 0 1.5rem 0;
+  max-width: 620px;
+  line-height: 1.55;
+}
+
+/* ── Cards ──────────────────────────────────────────────────── */
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  padding: 1.1rem 1.25rem;
+}
+
+.card h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.6rem 0;
+}
+
+/* ── Inputs / buttons ───────────────────────────────────────── */
+
+.input,
+.select {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  padding: 0.5rem 0.7rem;
+  font-size: 0.9rem;
+  width: 100%;
+  color: var(--foreground);
+}
+
+.btn {
+  border-radius: var(--radius);
+  font-weight: 500;
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+}
+
+.btn-primary:hover {
+  background: #27272a;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── KPI tiles ──────────────────────────────────────────────── */
+
+.kpi-label {
+  color: var(--muted-foreground);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpi-value {
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-top: 0.3rem;
+  line-height: 1.1;
+}
+
+.kpi-sub {
+  color: var(--muted-foreground);
+  font-size: 0.74rem;
+  margin-top: 0.3rem;
+}
+
+/* ── Verdict badges ─────────────────────────────────────────── */
+
+.prob-badge {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.prob-badge-high {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.prob-badge-med {
+  background: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning);
+}
+
+.prob-badge-low {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+/* ── Recommendation cards ───────────────────────────────────── */
+
+.rec-card {
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius);
+  margin-bottom: 0.6rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid;
+  background: var(--bg);
+}
+
+.rec-high {
+  border-left-color: var(--danger);
+}
+
+.rec-medium {
+  border-left-color: var(--warning);
+}
+
+.rec-low {
+  border-left-color: var(--accent);
+}
+
+/* ── Alerts/banners ─────────────────────────────────────────── */
+
+.alert {
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+  border: 1px solid;
+  margin-bottom: 1rem;
+}
+
+.alert-warning {
+  background: var(--warning-bg);
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
+.alert-error {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.alert-success {
+  background: var(--success-bg);
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.alert-info {
+  background: var(--muted);
+  color: var(--foreground);
+  border-color: var(--border);
+}
+
+/* ── Tabs ───────────────────────────────────────────────────── */
+
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.25rem;
+}
+
+.tab-button {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+
+.tab-button.active {
+  color: var(--foreground);
+  border-bottom-color: var(--primary);
+}
+
+/* ── Progress bar ───────────────────────────────────────────── */
+
+.progress-track {
+  background: var(--muted);
+  border-radius: 9999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 9999px;
+}

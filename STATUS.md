@@ -185,3 +185,57 @@ numbers above) to `slides/final_review.tex`, `docs/SLIDE_NUMBERS.md`,
 **No blockers.** Full test suite green (47/47). This is the final,
 reproducible number set for today's review — `pipeline.evaluate` run live
 will reproduce it exactly.
+
+## 2026-10-26 — Session 4: replaced the web layer with a JS app
+
+User feedback: Python web frameworks (Streamlit, and an unused FastAPI
+backend sitting alongside it) are less flexible for UI than JS; asked for
+the web layer to be rebuilt in JS with Python reserved strictly for ML.
+Planned in plan mode (two Explore passes + a Plan agent mapped the full
+system first), then executed in stages so the repo stayed runnable
+throughout:
+
+1. **Fixed a real pre-existing bug found while planning**: the live
+   Analyze page was predicting using `citation-predictor/models/
+   citation_model.pkl` — the synthetic-trained model this project's own
+   evaluation work proved scores ~0.49 AUC (chance) on real data. The real
+   model (`artifacts/model.pkl`, from `pipeline.evaluate`) was never
+   loaded by the live app. `model_loader.py` now loads it directly and
+   raises a clear error ("run `python -m pipeline.evaluate` first")
+   instead of silently falling back to a synthetic model.
+2. Added `citation-predictor/backend/cli.py` — `analyze`/`report`
+   subcommands replacing the FastAPI routes, invoked as a per-request
+   subprocess (no persistent Python server). Clean JSON-on-stdout error
+   contract; binary-safe PDF output. Verified standalone before any Node
+   code existed.
+3. Built `web/` — a Next.js (TypeScript) app, the only web UI now: three
+   pages (Analyze / Explainability / Model Card) ported 1:1 from the
+   Streamlit app (same design tokens, same tier thresholds, same demo
+   fixtures — verified byte-identical against the Python source). API
+   routes spawn `cli.py` via `child_process.spawn`, never `exec`/shell
+   interpolation.
+4. Removed, only once `web/` was confirmed working end-to-end:
+   `streamlit_app.py`, `app.py`, `run_streamlit.bat`,
+   `citation-predictor/backend/main.py`/`api/`/`database/` (FastAPI app —
+   `database/db.py`'s history feature was never used by the live Streamlit
+   UI either, so no feature parity loss), `services/citation_engine.py`
+   (confirmed dead code), and `citation-predictor/frontend/` (an unused,
+   never-styled Vite+React scaffold).
+5. **Found and fixed a second real bug during cleanup**: `reportlab`
+   was unpinned (`>=4.2.0`) and had quietly started requiring Python
+   3.10+ as of its 5.1.0 release — breaking a fresh install on this
+   project's verified Python 3.9 target. Pinned to `reportlab==5.0.1`
+   (the version actually verified working) in both `requirements.txt`
+   and `citation-predictor/backend/requirements.txt`. Also dropped
+   `streamlit`/`altair` (dead now that Streamlit is gone) and regenerated
+   `requirements.lock` from a genuinely fresh scratch venv — caught this
+   bug precisely because the lock file was rebuilt from scratch rather
+   than trusted as already-correct.
+
+Added `tests/test_cli.py` (subprocess smoke tests mirroring exactly what
+the Node bridge does) and `tests/test_model_loader.py` — 47 → 54 tests,
+all green, re-verified against the fresh trimmed-dependency venv.
+
+**No blockers.** `web/README.md` and `README_PROJECT.md` document the new
+two-terminal dev workflow (`python -m pipeline.evaluate` once, then
+`cd web && npm run dev`).

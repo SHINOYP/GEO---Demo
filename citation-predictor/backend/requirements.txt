@@ -7,4 +7,4 @@ shap>=0.45.0
 pandas>=2.2.0
 numpy>=1.26.0
 joblib>=1.4.0
-reportlab>=4.2.0
+reportlab==5.0.1  # pinned: reportlab>=5.1.0 requires Python 3.10+, this project targets 3.9+

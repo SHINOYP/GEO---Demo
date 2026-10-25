@@ -22,53 +22,55 @@ it is never built or run as part of this project.
 
 **Our work** is everything else:
 
-- `app.py`, `streamlit_app.py`, `run_streamlit.bat` — the Streamlit
-  demo application.
-- `citation-predictor/` — the backend (FastAPI), the ML model/feature
-  extractor, and a separate React frontend.
+- `web/` — the Next.js (TypeScript) web app: the only UI, three pages
+  (Analyze / Explainability / Model Card). See `web/README.md`.
+- `citation-predictor/` — ML-only Python: scraper, feature extractor,
+  model loader, SHAP explainer, and `backend/cli.py` (the subprocess
+  entrypoint the web app calls — there is no persistent Python server).
 - `pipeline/` — the real-data pilot collection and evaluation pipeline
   (new, built for this review).
 - `docs/` — all project documentation (new).
 - `tests/` — the pytest suite (new).
 - `STATUS.md` — running log of what's been done.
 
+The project originally shipped a Streamlit UI with an unused FastAPI
+backend sitting alongside it; both were replaced by `web/` (see STATUS.md's
+most recent session) — Python is now strictly ML, JS is the only web layer.
+
 ## Python version
 
-Verified against **Python 3.9.6** in the project `.venv` (also compatible
-with 3.10+; `citation-predictor/README.md` recommends 3.10+ for the
-FastAPI backend, but the Streamlit app and pipeline run fine on 3.9).
-Any 3.9–3.11 interpreter should work; run `python --version` after
-creating your own venv to confirm yours.
+Verified against **Python 3.9.6** in the project `.venv`. Any 3.9–3.11
+interpreter should work; run `python --version` after creating your own
+venv to confirm yours.
 
 ## Install & run
 
-### macOS / Linux (bash)
+Two terminals — Python trains/serves the model, Node runs the web app.
+Full detail (env var overrides, the Node↔Python error contract) is in
+`web/README.md`.
+
+### Terminal 1 — Python (ML)
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+python3 -m venv .venv                 # macOS/Linux; Windows: python -m venv .venv
+source .venv/bin/activate             # Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-streamlit run streamlit_app.py
+python -m pipeline.evaluate           # trains/saves artifacts/model.pkl + metrics.json
 ```
 
-### Windows (PowerShell)
+### Terminal 2 — Node (web app)
 
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-streamlit run streamlit_app.py
+```bash
+cd web
+npm install
+npm run dev                           # http://localhost:3000 (or next free port)
 ```
 
-(`run_streamlit.bat` wraps the same command for double-click launching.)
-
-`requirements.txt` gives floor versions for Streamlit Cloud (and is what
-`pip install -r requirements.txt` above uses). `requirements.lock` is an
-optional exact-reproduction pin file — the full `pip freeze` of every
-package needed to run **both** the Streamlit app/pipeline and the FastAPI
-backend (`citation-predictor/backend/requirements.txt`) together in one
-environment. Use it only if you want to reproduce the exact dependency
-versions this project was last verified against:
+`requirements.txt` gives floor versions for the pipeline/ML code (and is
+what `pip install -r requirements.txt` above uses). `requirements.lock` is
+an optional exact-reproduction pin file — the full `pip freeze` of every
+package needed to run both the pipeline and `citation-predictor/backend`
+together in one environment:
 `pip install -r requirements.lock`.
 
 ## Running the real-data pilot pipeline
@@ -157,23 +159,23 @@ numbers, and `STATUS.md` for the full history.
 ## Project structure (our work only)
 
 ```
-app.py                     # Streamlit Cloud entrypoint (delegates to streamlit_app.py)
-streamlit_app.py           # The actual Streamlit UI
-run_streamlit.bat          # Windows launcher
-requirements.txt           # Python deps for the Streamlit app + pipeline
-requirements.lock          # Exact-reproduction pin file (app + pipeline + FastAPI backend)
+web/                       # The Next.js web app (the only UI) -- see web/README.md
+requirements.txt           # Python deps for citation-predictor/backend + pipeline
+requirements.lock          # Exact-reproduction pin file (backend + pipeline)
 pipeline/                  # Real-data collection + evaluation (see docs/DATA_CARD.md)
 citation-predictor/
   backend/
+    cli.py                 # Subprocess entrypoint the web app spawns per request
     scraping/              # SSRF + robots.txt safe scraper
     features/              # Feature extraction (45 model features)
-    models/                # Model loader/trainer
+    models/                # Model loader (serves artifacts/model.pkl)
     explainability/        # SHAP wrapper
-    services/              # Recommendations, PDF export, citation engine (mock)
-    api/                   # FastAPI endpoints
-  frontend/                # React + Vite UI (talks to the FastAPI backend)
-  ml/training/             # Standalone training CLI
-  models/                  # Committed model artifact + feature column list
+    services/              # Recommendations, PDF export
+  ml/training/              # Standalone script: regenerates the synthetic
+                             # baseline model used only as a comparison point
+  models/                  # Synthetic baseline model artifact (known-bad
+                             # comparison, not served live -- see
+                             # pipeline/evaluate.py's compare_original_repo_model)
 docs/                      # All project documentation
 tests/                     # pytest suite
 STATUS.md                  # Running log
