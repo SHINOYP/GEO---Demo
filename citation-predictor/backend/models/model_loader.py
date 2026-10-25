@@ -1,38 +1,35 @@
 """
 ML model loader.
 
-On startup, tries to load a pre-trained model from models/citation_model.pkl.
-If not found, generates a synthetic demo dataset and trains one.
+Loads the real, honestly-evaluated model produced by `python -m pipeline.evaluate`
+(trained on the real citation pilot dataset — see artifacts/metrics.json for its
+cross-validated metrics). There is no synthetic-data fallback: if the model hasn't
+been trained yet, this fails loudly with instructions, rather than silently
+serving a demo model trained on fabricated labels.
 
-IMPORTANT:  The demo dataset is clearly documented as synthetic.
-            Replace it with real citation labels for production research.
+Note: citation-predictor/models/citation_model.pkl (the original synthetic-data-
+trained model) is intentionally left untouched on disk — pipeline/evaluate.py's
+compare_original_repo_model check still loads it directly as the known-bad
+baseline for comparison. This module simply no longer serves it for live
+predictions.
 """
 
 import os
-import json
 import logging
+
 import joblib
-import numpy as np
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import (
-    accuracy_score, precision_score, recall_score,
-    f1_score, roc_auc_score,
-)
-import xgboost as xgb
 
 logger = logging.getLogger("citelytics.model")
 
-BASE_DIR    = os.path.dirname(__file__)
-MODEL_PATH  = os.path.join(BASE_DIR, "..", "..", "models", "citation_model.pkl")
-COLS_PATH   = os.path.join(BASE_DIR, "..", "..", "models", "feature_columns.json")
-DATA_PATH   = os.path.join(BASE_DIR, "..", "..", "ml", "data", "webpage_features.csv")
+BASE_DIR = os.path.dirname(__file__)
+REPO_ROOT = os.path.abspath(os.path.join(BASE_DIR, "..", "..", ".."))
+MODEL_PATH = os.path.join(REPO_ROOT, "artifacts", "model.pkl")
 
-_model      = None   # XGBoost classifier (global singleton)
-_feat_cols  = None   # ordered list of feature column names
+_model = None       # XGBoost classifier (global singleton)
+_feat_cols = None   # ordered list of feature column names
 
 # ─────────────────────────────────────────────
-# Feature columns (must match extractor.py)
+# Feature columns (must match extractor.py and pipeline/evaluate.py)
 # ─────────────────────────────────────────────
 FEATURE_COLUMNS = [
     "word_count","sentence_count","paragraph_count",
@@ -54,148 +51,28 @@ FEATURE_COLUMNS = [
 ]
 
 
-def _generate_demo_data(n_samples: int = 500) -> pd.DataFrame:
+def load_model():
+    """Load artifacts/model.pkl, caching it in a module-level singleton.
+
+    Raises RuntimeError (never falls back to a synthetic model) if the real
+    model hasn't been trained yet.
     """
-    Synthetic demo dataset.
-    Labels are assigned by a hand-crafted rule that approximates
-    what features might predict citation likelihood.
-    THIS IS NOT REAL CITATION DATA.
-    """
-    rng = np.random.default_rng(42)
-
-    df = pd.DataFrame({
-        "word_count":              rng.integers(100, 3000, n_samples),
-        "sentence_count":          rng.integers(5, 150, n_samples),
-        "paragraph_count":         rng.integers(1, 50, n_samples),
-        "avg_sentence_length":     rng.uniform(8, 35, n_samples),
-        "avg_paragraph_length":    rng.uniform(20, 200, n_samples),
-        "factual_density":         rng.uniform(0, 0.3, n_samples),
-        "number_count":            rng.integers(0, 60, n_samples),
-        "percentage_count":        rng.integers(0, 15, n_samples),
-        "date_count":              rng.integers(0, 10, n_samples),
-        "quote_count":             rng.integers(0, 10, n_samples),
-        "citation_ref_count":      rng.integers(0, 20, n_samples),
-        "external_link_count":     rng.integers(0, 30, n_samples),
-        "internal_link_count":     rng.integers(0, 50, n_samples),
-        "image_count":             rng.integers(0, 20, n_samples),
-        "list_count":              rng.integers(0, 15, n_samples),
-        "table_count":             rng.integers(0, 5, n_samples),
-        "emphasis_count":          rng.integers(0, 40, n_samples),
-        "emphasis_density":        rng.uniform(0, 0.05, n_samples),
-        "format_diversity":        rng.uniform(0, 1, n_samples),
-        "short_paragraph_count":   rng.integers(0, 20, n_samples),
-        "long_paragraph_count":    rng.integers(0, 10, n_samples),
-        "h1_count":                rng.integers(0, 3, n_samples),
-        "h2_count":                rng.integers(0, 10, n_samples),
-        "h3_count":                rng.integers(0, 10, n_samples),
-        "heading_count":           rng.integers(0, 20, n_samples),
-        "heading_depth":           rng.integers(0, 6, n_samples),
-        "heading_hierarchy_score": rng.uniform(0, 1, n_samples),
-        "section_count":           rng.integers(1, 12, n_samples),
-        "avg_paragraphs_per_section": rng.uniform(1, 8, n_samples),
-        "schema_present":          rng.integers(0, 2, n_samples),
-        "local_business_schema":   rng.integers(0, 2, n_samples),
-        "organization_schema":     rng.integers(0, 2, n_samples),
-        "faq_schema":              rng.integers(0, 2, n_samples),
-        "article_schema":          rng.integers(0, 2, n_samples),
-        "product_schema":          rng.integers(0, 2, n_samples),
-        "breadcrumb_schema":       rng.integers(0, 2, n_samples),
-        "review_schema":           rng.integers(0, 2, n_samples),
-        "number_of_schema_types":  rng.integers(0, 5, n_samples),
-        "has_phone":               rng.integers(0, 2, n_samples),
-        "has_address":             rng.integers(0, 2, n_samples),
-        "has_opening_hours":       rng.integers(0, 2, n_samples),
-        "has_rating":              rng.integers(0, 2, n_samples),
-        "macro_structure_score":   rng.uniform(0, 1, n_samples),
-        "meso_structure_score":    rng.uniform(0, 1, n_samples),
-        "micro_structure_score":   rng.uniform(0, 1, n_samples),
-    })
-
-    # Rule-based labels (transparent heuristic)
-    score = (
-          df["factual_density"] * 8
-        + df["schema_present"] * 2
-        + df["format_diversity"] * 2
-        + df["heading_hierarchy_score"] * 2
-        + df["macro_structure_score"] * 2
-        + df["meso_structure_score"] * 1.5
-        + df["micro_structure_score"] * 1.5
-        + df["citation_ref_count"] * 0.15
-        + df["external_link_count"] * 0.05
-        + df["faq_schema"] * 1.5
-        + df["local_business_schema"] * 1.0
-        + np.log1p(df["word_count"]) * 0.3
-        - df["long_paragraph_count"] * 0.2
-        + rng.normal(0, 0.5, n_samples)          # noise
-    )
-    threshold = np.percentile(score, 50)
-    df["label"] = (score > threshold).astype(int)
-
-    os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
-    df.to_csv(DATA_PATH, index=False)
-    logger.info("Demo dataset written to %s (%d rows)", DATA_PATH, len(df))
-    return df
-
-
-def _train(df: pd.DataFrame) -> xgb.XGBClassifier:
-    X = df[FEATURE_COLUMNS]
-    y = df["label"]
-
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42, stratify=y
-    )
-
-    model = xgb.XGBClassifier(
-        n_estimators=200,
-        max_depth=4,
-        learning_rate=0.05,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        eval_metric="logloss",
-        random_state=42,
-    )
-    model.fit(X_train, y_train)
-
-    y_pred  = model.predict(X_test)
-    y_proba = model.predict_proba(X_test)[:, 1]
-
-    metrics = {
-        "accuracy":  round(accuracy_score(y_test, y_pred), 4),
-        "precision": round(precision_score(y_test, y_pred, zero_division=0), 4),
-        "recall":    round(recall_score(y_test, y_pred, zero_division=0), 4),
-        "f1":        round(f1_score(y_test, y_pred, zero_division=0), 4),
-        "roc_auc":   round(roc_auc_score(y_test, y_proba), 4),
-    }
-    logger.info("Model metrics: %s", metrics)
-
-    os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
-    joblib.dump(model, MODEL_PATH)
-
-    with open(COLS_PATH, "w") as f:
-        json.dump(FEATURE_COLUMNS, f, indent=2)
-
-    logger.info("Model saved to %s", MODEL_PATH)
-    return model
-
-
-def load_or_train_model():
     global _model, _feat_cols
-    if os.path.exists(MODEL_PATH) and os.path.exists(COLS_PATH):
-        logger.info("Loading pre-trained model from %s", MODEL_PATH)
-        _model = joblib.load(MODEL_PATH)
-        with open(COLS_PATH) as f:
-            _feat_cols = json.load(f)
-    else:
-        logger.info("No saved model found — generating demo data and training …")
-        df = _generate_demo_data()
-        _model = _train(df)
-        _feat_cols = FEATURE_COLUMNS
+    if _model is not None:
+        return _model, _feat_cols
 
-    return _model
+    if not os.path.exists(MODEL_PATH):
+        raise RuntimeError(
+            f"No trained model found at {MODEL_PATH}. "
+            "Run `python -m pipeline.evaluate` first to train and save the model."
+        )
+
+    logger.info("Loading real pilot-trained model from %s", MODEL_PATH)
+    _model = joblib.load(MODEL_PATH)
+    _feat_cols = FEATURE_COLUMNS
+    return _model, _feat_cols
 
 
 def get_model():
-    global _model
-    if _model is None:
-        load_or_train_model()
-    return _model, _feat_cols
+    """Stable public entry point used by callers (cli.py, etc.)."""
+    return load_model()

@@ -25,7 +25,7 @@ if BACKEND_DIR not in sys.path:
 
 from scraping.scraper import scrape, ScrapingError
 from features.extractor import extract_features
-from models.model_loader import get_model, FEATURE_COLUMNS, load_or_train_model
+from models.model_loader import get_model, FEATURE_COLUMNS
 from explainability.shap_explainer import explain
 from services.recommendations import generate_recommendations
 from services.pdf_report import generate_pdf
@@ -234,7 +234,7 @@ def kpi_tile(label: str, value: str, sub: str = ""):
 # ─────────────────────────────────────────────────────────────
 @st.cache_resource(show_spinner="Initializing XGBoost Citation Model...")
 def init_system():
-    model = load_or_train_model()
+    model, _ = get_model()
     return model
 
 try:
