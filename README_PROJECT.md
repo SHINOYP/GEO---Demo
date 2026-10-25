@@ -29,7 +29,8 @@ it is never built or run as part of this project.
   entrypoint the web app calls — there is no persistent Python server).
 - `pipeline/` — the real-data pilot collection and evaluation pipeline
   (new, built for this review).
-- `docs/` — all project documentation (new).
+- `docs/` — all project documentation (new). Start at `docs/README.md` for
+  an index of what to read for what.
 - `tests/` — the pytest suite (new).
 - `STATUS.md` — running log of what's been done.
 
@@ -105,10 +106,10 @@ calls, so every step is cost-safe by default.
 
 ### No budget for API keys? Use the free manual path instead
 
-You don't need a paid key to collect real data. Copy
-`data/manual_citations_template.txt` to `data/manual_citations.txt`, fill
-it in by hand-searching each query on the free `perplexity.ai` and
-`google.com` websites (instructions are in the file's comments), then run:
+You don't need a paid key to collect real data. Fill in
+`data/manual_citations_full.txt` by hand-searching each query on the free
+`perplexity.ai` website (full instructions are in the file's own header
+comments), then run:
 
 ```bash
 python -m pipeline.import_manual_citations

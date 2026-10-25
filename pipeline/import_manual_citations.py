@@ -17,12 +17,12 @@ The candidate pool (data/candidates.json) is collected separately — see
 docs/DATA_CARD.md for how it was built in this project.
 
 data/manual_citations_full.txt is the authoritative, fully-filled worksheet
-(all 200 queries) and is the default `--in`. data/manual_citations.txt and
-data/manual_citations_template.txt are earlier, partially-filled working
-copies kept only for history — do not pass them with `--in` or this will
-silently regenerate citations.json from an incomplete source (the script
-will now refuse to overwrite a more-complete citations.json with a
-less-complete one; see the --force flag).
+(all 200 queries) and is the default `--in`. The original two partial
+collection passes are archived at data/manual_citations_archive/ for
+history only — do not pass them with `--in` or this will silently
+regenerate citations.json from an incomplete source (the script will now
+refuse to overwrite a more-complete citations.json with a less-complete
+one; see the --force flag).
 
 Usage:
     python -m pipeline.import_manual_citations
@@ -93,8 +93,8 @@ def main():
     args = ap.parse_args()
 
     if not os.path.exists(args.in_path):
-        print(f"ERROR: {args.in_path} not found. Copy data/manual_citations_template.txt to "
-              f"data/manual_citations_full.txt, fill it in, then re-run.", file=sys.stderr)
+        print(f"ERROR: {args.in_path} not found. Fill in data/manual_citations_full.txt "
+              f"(format documented in its own header comments), then re-run.", file=sys.stderr)
         sys.exit(1)
 
     queries = load_queries(args.queries)

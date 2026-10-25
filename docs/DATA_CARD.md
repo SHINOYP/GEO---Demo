@@ -54,9 +54,11 @@ matters and should be stated plainly in the viva:
   typing the same query into google.com would see (different backend,
   no personalization, no login).
 
-Results were typed/compiled into `data/manual_citations_template.txt`
-format and converted to the standard JSON shape with
-`python -m pipeline.import_manual_citations`.
+Results were typed/compiled into `data/manual_citations_full.txt` (the
+worksheet format is documented in that file's own header comments) and
+converted to the standard JSON shape with
+`python -m pipeline.import_manual_citations`. The original two collection
+passes are archived at `data/manual_citations_archive/` for provenance.
 
 This is genuinely real, non-fabricated data for both halves — just
 collected by a human using a website (citations) and a different search
