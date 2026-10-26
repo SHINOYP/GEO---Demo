@@ -196,7 +196,7 @@ html {
   border-radius: 6px;
   background: linear-gradient(135deg, var(--primary), var(--accent), var(--primary));
   background-size: 200% 200%;
-  animation: logo-gradient-shift 4s ease-in-out infinite;
+  animation: logo-gradient-shift 7s ease-in-out infinite;
   flex-shrink: 0;
 }
 
@@ -215,7 +215,7 @@ html {
   font-size: 0.88rem;
   color: var(--muted-foreground);
   text-decoration: none;
-  transition: color 0.12s ease;
+  transition: color 0.2s ease;
 }
 
 .sidebar-nav-link-content {
@@ -224,7 +224,7 @@ html {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  transition: transform 0.15s ease;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .sidebar-nav-link:hover .sidebar-nav-link-content {
@@ -244,7 +244,7 @@ html {
 .sidebar-nav-link svg {
   flex-shrink: 0;
   opacity: 0.8;
-  transition: opacity 0.12s ease;
+  transition: opacity 0.2s ease;
 }
 
 .sidebar-nav-link:hover {
@@ -518,7 +518,7 @@ html {
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: color 0.15s ease;
+  transition: color 0.25s ease;
 }
 
 .tab-button:hover {
@@ -600,13 +600,13 @@ html {
   height: 100%;
   background: var(--primary);
   border-radius: 9999px;
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ── Hover polish ───────────────────────────────────────────── */
 
 .card {
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (hover: hover) {
@@ -622,16 +622,16 @@ html {
 }
 
 .badge-pulse {
-  animation: badge-pulse 2.2s ease-in-out infinite;
+  animation: badge-pulse 3s ease-in-out infinite;
 }
 
 .btn {
-  transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.25s ease;
 }
 
 .input,
 .select {
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .input:focus,

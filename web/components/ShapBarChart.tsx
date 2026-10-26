@@ -46,7 +46,12 @@ export default function ShapBarChart({
               "SHAP impact",
             ]}
           />
-          <Bar dataKey="shapImpact" radius={[0, 4, 4, 0]}>
+          <Bar
+            dataKey="shapImpact"
+            radius={[0, 4, 4, 0]}
+            animationDuration={1800}
+            animationEasing="ease-out"
+          >
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}

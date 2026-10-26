@@ -30,12 +30,12 @@ const TABS: { id: Tab; label: string }[] = [
 
 const kpiContainerVariants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.06 } },
+  show: { transition: { staggerChildren: 0.1 } },
 };
 
 const kpiItemVariants = {
   hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.25, ease: "easeOut" as const } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 export default function AnalyzePage() {
@@ -185,7 +185,7 @@ export default function AnalyzePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: 0.3 }}
               style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
             >
               {loading ? (
@@ -200,7 +200,7 @@ export default function AnalyzePage() {
                       display: "inline-block",
                     }}
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 0.7, repeat: Infinity, ease: "linear" }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                   />
                   Analyzing…
                 </>
@@ -223,7 +223,7 @@ export default function AnalyzePage() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
             Could not analyze this page: {error}
           </motion.div>
@@ -237,7 +237,7 @@ export default function AnalyzePage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             style={{ scrollMarginTop: "1.5rem" }}
           >
             {mockUsed ? <FixtureBanner /> : null}
@@ -289,7 +289,7 @@ export default function AnalyzePage() {
               style={{ marginBottom: "1.5rem" }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.3 }}
+              transition={{ delay: 0.45, duration: 0.45 }}
             >
               <strong>Verdict:</strong> <TierBadge probability={result.citation_probability} />
             </motion.div>
@@ -303,7 +303,11 @@ export default function AnalyzePage() {
                 >
                   {t.label}
                   {tab === t.id ? (
-                    <motion.div layoutId="tab-underline" className="tab-underline" />
+                    <motion.div
+                      layoutId="tab-underline"
+                      className="tab-underline"
+                      transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                    />
                   ) : null}
                 </button>
               ))}
@@ -315,7 +319,7 @@ export default function AnalyzePage() {
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.18, ease: "easeOut" }}
+                transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
               >
                 {tab === "shap" ? (
                   <div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-function useCountUp(countTo: number | undefined, duration = 700) {
+function useCountUp(countTo: number | undefined, duration = 1100) {
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ function useCountUp(countTo: number | undefined, duration = 700) {
     let raf: number;
     function tick(now: number) {
       const t = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - t, 3);
+      const eased = 1 - Math.pow(1 - t, 4);
       setDisplay(target * eased);
       if (t < 1) raf = requestAnimationFrame(tick);
     }

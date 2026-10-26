@@ -22,19 +22,16 @@ const FEATURE_GROUPS: { name: string; color: string; desc: string }[] = [
 
 const PIPELINE_STEPS: Step[] = [
   {
-    icon: "🌐",
     title: "We fetch the page, safely",
     description:
       "We check the URL isn't a private/internal address and respect the site's robots.txt rules before downloading anything.",
   },
   {
-    icon: "📐",
     title: "We measure 45 things about it",
     description:
       "Word count, headings, whether it has structured data tags, visible phone/address info, and more.",
   },
   {
-    icon: "🌳",
     title: "A trained model scores it",
     description: (
       <>
@@ -45,7 +42,6 @@ const PIPELINE_STEPS: Step[] = [
     ),
   },
   {
-    icon: "💡",
     title: "We explain the score",
     description: (
       <>

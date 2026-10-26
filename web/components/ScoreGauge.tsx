@@ -25,12 +25,12 @@ export default function ScoreGauge({
 
   const [displayValue, setDisplayValue] = useState(0);
   useEffect(() => {
-    const duration = 1000;
+    const duration = 1500;
     const start = performance.now();
     let raf: number;
     function tick(now: number) {
       const t = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - t, 3);
+      const eased = 1 - Math.pow(1 - t, 4);
       setDisplayValue(clamped * eased);
       if (t < 1) raf = requestAnimationFrame(tick);
     }
@@ -61,7 +61,7 @@ export default function ScoreGauge({
             strokeDasharray={circumference}
             initial={{ strokeDashoffset: circumference }}
             animate={{ strokeDashoffset: circumference * (1 - clamped) }}
-            transition={{ duration: 1, ease: "easeOut" }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           />
         </svg>
         <div

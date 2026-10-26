@@ -11,7 +11,7 @@ export default function TierBadge({ probability }: { probability: number }) {
       className={`${tierBadgeClass(tier)} badge-pulse`}
       initial={{ scale: 0.6, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 400, damping: 18 }}
+      transition={{ type: "spring", stiffness: 180, damping: 20 }}
     >
       {tierBadgeLabel(tier)} ({scorePct(probability)}%)
     </motion.span>

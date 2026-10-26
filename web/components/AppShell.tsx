@@ -33,7 +33,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.18 }}
+              transition={{ duration: 0.3 }}
               onClick={() => setMobileNavOpen(false)}
             />
             <motion.div
@@ -41,7 +41,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
-              transition={{ type: "tween", duration: 0.22, ease: "easeOut" }}
+              transition={{ type: "tween", duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
             >
               <Sidebar />
             </motion.div>
@@ -57,7 +57,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
             {children}
           </motion.div>

@@ -62,7 +62,7 @@ export default function Sidebar() {
                 <motion.span
                   layoutId="sidebar-active-pill"
                   className="sidebar-active-pill"
-                  transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                  transition={{ type: "spring", stiffness: 240, damping: 30 }}
                 />
               ) : null}
               <span className="sidebar-nav-link-content">
