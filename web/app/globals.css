@@ -160,6 +160,21 @@ html {
   flex-direction: column;
 }
 
+@media (min-width: 769px) {
+  /* .sidebar-desktop uses display:contents, so this is a direct flex child
+     of .app-shell with no positioning of its own -- it was scrolling away
+     with the main content instead of staying put as a persistent nav.
+     Scoped to desktop widths only: the mobile drawer's own .sidebar
+     instance lives inside .sidebar-mobile (position:fixed) and must not
+     get a second, conflicting position here. */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+}
+
 .sidebar-brand {
   display: flex;
   align-items: center;
