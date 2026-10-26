@@ -126,7 +126,7 @@ def cross_validate(df: pd.DataFrame, feature_cols: list, group_col: str, model_n
                 scaler = StandardScaler()
                 X_train_s = scaler.fit_transform(X_train)
                 X_test_s = scaler.transform(X_test)
-                clf = LogisticRegression(max_iter=1000, class_weight="balanced")
+                clf = LogisticRegression(max_iter=1000, class_weight="balanced", n_jobs=1)
                 clf.fit(X_train_s, y_train)
                 y_proba = clf.predict_proba(X_test_s)[:, 1]
                 y_pred = (y_proba >= THRESHOLD).astype(int)
@@ -136,6 +136,7 @@ def cross_validate(df: pd.DataFrame, feature_cols: list, group_col: str, model_n
                     n_estimators=150, max_depth=3, learning_rate=0.05,
                     subsample=0.8, colsample_bytree=0.8, min_child_weight=3,
                     scale_pos_weight=spw, eval_metric="logloss", random_state=42,
+                    n_jobs=1,
                 )
                 clf.fit(X_train, y_train)
                 y_proba = clf.predict_proba(X_test)[:, 1]
@@ -239,7 +240,7 @@ def run_shap_analysis(df: pd.DataFrame, feature_cols: list):
     model = xgb.XGBClassifier(
         n_estimators=150, max_depth=3, learning_rate=0.05, subsample=0.8,
         colsample_bytree=0.8, min_child_weight=3, scale_pos_weight=spw,
-        eval_metric="logloss", random_state=42,
+        eval_metric="logloss", random_state=42, n_jobs=1,
     )
     model.fit(X, y)
 
@@ -289,7 +290,8 @@ def run_shap_analysis(df: pd.DataFrame, feature_cols: list):
             spw_f = sum(yt == 0) / max(sum(yt == 1), 1)
             m = xgb.XGBClassifier(n_estimators=150, max_depth=3, learning_rate=0.05,
                                    subsample=0.8, colsample_bytree=0.8, min_child_weight=3,
-                                   scale_pos_weight=spw_f, eval_metric="logloss", random_state=42)
+                                   scale_pos_weight=spw_f, eval_metric="logloss", random_state=42,
+                                   n_jobs=1)
             m.fit(Xt, yt)
             sv = shap.TreeExplainer(m).shap_values(Xt)
             importances.append(np.abs(sv).mean(axis=0))

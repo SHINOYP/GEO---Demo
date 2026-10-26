@@ -27,6 +27,22 @@ WORKDIR /app
 # ENV only affects instructions that come after it in the file.
 ENV PYTHONUNBUFFERED=1
 
+# NumPy/SciPy's BLAS backend and OpenMP (used internally by XGBoost/sklearn)
+# auto-detect the HOST machine's full CPU count via os.cpu_count(), not the
+# container's actual cgroup CPU quota -- a classic Docker gotcha. On a
+# constrained free-tier instance this causes massive thread oversubscription
+# (every library independently spinning up a thread per host core, then
+# fighting over a tiny real CPU slice), which can turn a model-training step
+# that takes ~70s locally into something that looks hung for 10+ minutes.
+# Caps every thread pool to 1 so training is CPU-bound but predictable
+# instead of oversubscribed; also applies at runtime, since
+# web/lib/pythonBridge.ts spawns this same python3 as a per-request
+# subprocess on an equally constrained live instance.
+ENV OMP_NUM_THREADS=1
+ENV OPENBLAS_NUM_THREADS=1
+ENV MKL_NUM_THREADS=1
+ENV NUMEXPR_NUM_THREADS=1
+
 # Copy only the requirement files first so this layer -- the slowest part
 # of the build -- stays cached across any change that isn't to the Python
 # dependency list. With the full `COPY . .` this used to live before, any
