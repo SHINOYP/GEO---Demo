@@ -10,19 +10,21 @@ import DriverList from "@/components/DriverList";
 import StructureCard from "@/components/StructureCard";
 import RecommendationCard from "@/components/RecommendationCard";
 import PageHealthPanel from "@/components/PageHealthPanel";
+import CrawlerView from "@/components/CrawlerView";
 import FixtureBanner from "@/components/FixtureBanner";
 import ShapErrorBanner from "@/components/ShapErrorBanner";
 import { DEFAULT_URL, SAMPLE_HTML_FIXTURES, SAMPLE_PRESETS } from "@/lib/fixtures";
 import { getTierName, scorePct } from "@/lib/format";
 import { isErrorPayload, type AnalysisResult } from "@/lib/types";
 
-type Tab = "shap" | "structure" | "recommendations" | "page-health" | "export";
+type Tab = "shap" | "structure" | "recommendations" | "page-health" | "crawler-view" | "export";
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "shap", label: "Why this score" },
   { id: "structure", label: "Structure" },
   { id: "recommendations", label: "Recommendations" },
   { id: "page-health", label: "Page Health" },
+  { id: "crawler-view", label: "What AI sees" },
   { id: "export", label: "Export PDF" },
 ];
 
@@ -386,6 +388,10 @@ export default function AnalyzePage() {
                 ) : null}
 
                 {tab === "page-health" ? <PageHealthPanel pageHealth={result.page_health} /> : null}
+
+                {tab === "crawler-view" ? (
+                  <CrawlerView crawlerView={result.features.crawler_view} />
+                ) : null}
 
                 {tab === "export" ? (
                   <div>

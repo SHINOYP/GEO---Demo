@@ -35,8 +35,16 @@ export interface Recommendation {
   impact: "high" | "medium" | "low";
 }
 
+export interface CrawlerView {
+  visible_text: string;
+  truncated: boolean;
+  full_char_count: number;
+  word_count: number;
+}
+
 export interface Features {
   model_features: Record<string, number>;
+  crawler_view: CrawlerView;
   content: {
     word_count: number;
     paragraph_count: number;

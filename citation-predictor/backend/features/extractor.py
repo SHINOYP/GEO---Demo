@@ -403,12 +403,27 @@ def extract_features(soup: BeautifulSoup, url: str = "") -> dict:
         "micro_structure_score":  micro_score,
     }
 
+    # ── "what an AI crawler sees" preview ──────────────────────
+    # The exact text the model's word/sentence/paragraph counts are computed
+    # from — script/style/nav noise already stripped by the scraper. Shown
+    # to the user as-is (truncated for payload size) so the gap between
+    # "what's on the page visually" and "what the model actually reads" is
+    # concrete, not just asserted.
+    CRAWLER_PREVIEW_CHARS = 4000
+    crawler_view = {
+        "visible_text": text[:CRAWLER_PREVIEW_CHARS],
+        "truncated": len(text) > CRAWLER_PREVIEW_CHARS,
+        "full_char_count": len(text),
+        "word_count": content_feats["word_count"],
+    }
+
     return {
         "model_features":   model_features,
         "content":          content_feats,
         "structure":        structural_feats,
         "schema":           schema_feats,
         "local_business":   local_biz_feats,
+        "crawler_view":     crawler_view,
         "derived": {
             "factual_density":   factual_density,
             "format_diversity":  format_diversity,
