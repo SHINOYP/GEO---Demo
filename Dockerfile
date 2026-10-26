@@ -18,7 +18,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY . .
+
+# Copy only the requirement files first so this layer -- the slowest part
+# of the build -- stays cached across any change that isn't to the Python
+# dependency list. With the full `COPY . .` this used to live before, any
+# edit to web/ or pipeline/ source forced a complete pip reinstall on every
+# build for no reason (whether this actually helps depends on Render
+# retaining Docker layer cache between deploys, but it's strictly better).
+COPY requirements.txt requirements.txt
+COPY citation-predictor/backend/requirements.txt citation-predictor/backend/requirements.txt
 
 # Real venv at the exact path web/lib/paths.ts resolves by default
 # (repoRoot/.venv/bin/python3) — no env var overrides needed at runtime.
@@ -36,6 +44,9 @@ RUN python3 -m venv /app/.venv \
     && /app/.venv/bin/pip install --no-cache-dir -r /tmp/reqs-no-xgb.txt \
     && /app/.venv/bin/pip install --no-cache-dir --no-deps "xgboost>=2.0.0" \
     && rm -f /tmp/reqs-no-xgb.txt
+
+# Now bring in the rest of the repo (app code, data/dataset.csv, web/ source).
+COPY . .
 
 # Train/save artifacts/model.pkl + artifacts/metrics.json from the
 # committed, already-scraped data/dataset.csv (deterministic, no network).
