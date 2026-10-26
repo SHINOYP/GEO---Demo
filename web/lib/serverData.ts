@@ -11,14 +11,30 @@ export async function readJsonOrNull<T>(relativePath: string): Promise<T | null>
   }
 }
 
+interface ModelResult {
+  roc_auc?: { mean?: number; std?: number };
+}
+
 export interface Metrics {
   generated_at?: string;
   underpowered?: boolean;
+  n_usable_rows?: number;
+  class_balance?: { n_pos?: number; n_neg?: number };
   roc_auc_display?: string;
   f1_display?: string;
   accuracy_display?: string;
   precision_recall_display?: string;
-  models?: Record<string, unknown>;
+  models?: {
+    xgboost?: ModelResult;
+    logistic_regression?: ModelResult;
+    rule_based_checklist?: ModelResult;
+    [key: string]: unknown;
+  };
+  sanity_checks?: {
+    label_shuffle_control?: ModelResult;
+    original_repo_model_on_real_data?: { roc_auc?: number };
+    [key: string]: unknown;
+  };
   [key: string]: unknown;
 }
 

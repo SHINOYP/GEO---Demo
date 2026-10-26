@@ -301,9 +301,11 @@ export default function AnalyzePage() {
                   <div>
                     {result.shap_error ? <ShapErrorBanner message={result.shap_error} /> : null}
                     <p style={{ fontSize: "0.88rem", color: "var(--muted-foreground)" }}>
-                      Why did this page receive this score? SHAP calculates the exact marginal
-                      contribution of each webpage feature towards pushing the citation
-                      probability higher (green) or lower (red).
+                      Why did this page get this score? Each bar below is one thing we measured
+                      about the page (like word count or whether it has a phone number). Green
+                      bars pushed the score <strong>up</strong>, red bars pushed it{" "}
+                      <strong>down</strong> — and the length of the bar shows how much it
+                      mattered. (This technique is called SHAP.)
                     </p>
                     <ShapBarChart
                       topPositive={result.shap_data.top_positive.slice(0, 6)}
