@@ -276,12 +276,12 @@ doesn't have.
 
 ## Comparison with existing tools
 
-45. **How is this different from the upstream Getcito/Elmo-style tool this
-    repo was forked from?** That tool (unrelated to our own work — see
-    `README_PROJECT.md`) is a post-hoc AI-visibility *tracker*: it reports
-    whether you were already cited/mentioned across AI platforms, after
-    the fact. Ours is a *pre-publication predictor*: score a page before
-    it's even indexed, with an explicit reason (SHAP) for the score.
+45. **How is this different from a post-hoc AI-visibility tracker (e.g.
+    the unrelated Getcito/Elmo-style tool this repo's root was originally
+    cloned alongside, since removed)?** That style of tool reports whether
+    you were already cited/mentioned across AI platforms, after the fact.
+    Ours is a *pre-publication predictor*: score a page before it's even
+    indexed, with an explicit reason (SHAP) for the score.
 46. **How is this different from a checklist-style GEO auditor?** Checklist
     tools give equal, hand-assigned weight to binary signals (schema
     present? FAQ present?). Our rule-based baseline reproduces that

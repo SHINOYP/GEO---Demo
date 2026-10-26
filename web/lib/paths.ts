@@ -11,7 +11,7 @@ export function cliPath(): string {
   return path.join(repoRoot(), "citation-predictor", "backend", "cli.py");
 }
 
-// The project's existing venv (see README_PROJECT.md) — not the system
+// The project's existing venv (see README.md) — not the system
 // Python, so the ML deps (xgboost/shap/etc.) are guaranteed available.
 export function pythonBin(): string {
   if (process.env.CITELYTICS_PYTHON_BIN) return process.env.CITELYTICS_PYTHON_BIN;

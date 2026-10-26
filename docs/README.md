@@ -47,7 +47,7 @@ Start here if you're new to this project. Grouped by what you're trying to do.
 - **[../STATUS.md](../STATUS.md)** — running session-by-session log of what's
   been done, in what order, and why — the most reliable source for "what's
   the current state of things."
-- **[../README_PROJECT.md](../README_PROJECT.md)** — install/run instructions
-  and what's "our work" vs. the unrelated upstream repo sharing this root.
+- **[../README.md](../README.md)** — install/run instructions and project
+  structure.
 - **[../web/README.md](../web/README.md)** — the web app's architecture and
   dev workflow.

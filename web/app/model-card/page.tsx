@@ -3,6 +3,12 @@ import MetricTile from "@/components/MetricTile";
 import JsonExpander from "@/components/JsonExpander";
 import { loadMetrics, loadPilotStats } from "@/lib/serverData";
 
+// Reads artifacts/metrics.json and data/pilot_stats.json from disk on every
+// request (not at build time) -- these files change whenever
+// `pipeline.evaluate`/`pipeline.pilot_stats` are re-run, and the page must
+// always reflect their current contents, never a stale build-time snapshot.
+export const instant = false;
+
 export default async function ModelCardPage() {
   const [pilotStats, metrics] = await Promise.all([loadPilotStats(), loadMetrics()]);
 

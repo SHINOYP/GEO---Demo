@@ -236,6 +236,6 @@ Added `tests/test_cli.py` (subprocess smoke tests mirroring exactly what
 the Node bridge does) and `tests/test_model_loader.py` — 47 → 54 tests,
 all green, re-verified against the fresh trimmed-dependency venv.
 
-**No blockers.** `web/README.md` and `README_PROJECT.md` document the new
+**No blockers.** `web/README.md` and `README.md` document the new
 two-terminal dev workflow (`python -m pipeline.evaluate` once, then
 `cd web && npm run dev`).

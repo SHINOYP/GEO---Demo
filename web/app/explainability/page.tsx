@@ -2,6 +2,12 @@ import PageHeader from "@/components/PageHeader";
 import MetricTile from "@/components/MetricTile";
 import { loadMetrics } from "@/lib/serverData";
 
+// Reads artifacts/metrics.json from disk on every request (not at build
+// time) -- it changes whenever `pipeline.evaluate` is re-run, and the page
+// must always reflect its current contents, never a stale build-time
+// snapshot.
+export const instant = false;
+
 export default async function ExplainabilityPage() {
   const metrics = await loadMetrics();
 

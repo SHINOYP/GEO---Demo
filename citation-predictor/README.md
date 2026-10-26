@@ -1,7 +1,7 @@
 > **Note:** this README describes the original inherited scaffold's FastAPI +
 > React architecture. That backend API layer and React frontend were removed
 > in favor of `web/` (a Next.js app that calls `citation-predictor/backend/
-> cli.py` as a subprocess, not a running FastAPI server) — see `README_PROJECT.md`
+> cli.py` as a subprocess, not a running FastAPI server) — see `../README.md`
 > and `STATUS.md` for the current architecture. The ML modules described below
 > (scraping/features/models/explainability/services) are unchanged and still
 > accurate; the "Frontend"/"Backend" stack table and the `uvicorn`/Vite dev-
