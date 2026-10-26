@@ -26,6 +26,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import "@xyflow/react/dist/style.css";
+import { useTheme } from "@/lib/useTheme";
 
 type PipelineNodeData = {
   icon: LucideIcon;
@@ -117,6 +118,7 @@ const edgeDefs: [string, string][] = [
 ];
 
 export default function ArchitectureDiagram() {
+  const theme = useTheme();
   const nodes: Node[] = useMemo(
     () =>
       nodeDefs.map((n) => ({
@@ -151,13 +153,14 @@ export default function ArchitectureDiagram() {
           border: "1px solid var(--border)",
           borderRadius: "var(--radius)",
           overflow: "hidden",
-          background: "#fafafa",
+          background: "var(--muted)",
         }}
       >
         <ReactFlow
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
+          colorMode={theme === "dark" ? "dark" : "light"}
           fitView
           fitViewOptions={{ padding: 0.2 }}
           minZoom={0.3}
@@ -168,7 +171,7 @@ export default function ArchitectureDiagram() {
           panOnScroll
           zoomOnScroll={false}
         >
-          <Background variant={BackgroundVariant.Dots} gap={18} size={1.2} color="#e2e2e5" />
+          <Background variant={BackgroundVariant.Dots} gap={18} size={1.2} color="var(--border)" />
           <Controls showInteractive={false} position="bottom-right" />
         </ReactFlow>
       </div>

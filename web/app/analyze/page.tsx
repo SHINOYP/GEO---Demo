@@ -13,6 +13,7 @@ import PageHealthPanel from "@/components/PageHealthPanel";
 import CrawlerView from "@/components/CrawlerView";
 import FixtureBanner from "@/components/FixtureBanner";
 import ShapErrorBanner from "@/components/ShapErrorBanner";
+import { X } from "lucide-react";
 import { DEFAULT_URL, SAMPLE_HTML_FIXTURES, SAMPLE_PRESETS } from "@/lib/fixtures";
 import { getTierName, scorePct } from "@/lib/format";
 import { isErrorPayload, type AnalysisResult } from "@/lib/types";
@@ -41,7 +42,7 @@ const kpiItemVariants = {
 export default function AnalyzePage() {
   const [presetLabel, setPresetLabel] = useState(SAMPLE_PRESETS[0].label);
   const selectedPreset = SAMPLE_PRESETS.find((p) => p.label === presetLabel)!;
-  const [url, setUrl] = useState(DEFAULT_URL);
+  const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AnalysisResult | null>(null);
@@ -49,6 +50,7 @@ export default function AnalyzePage() {
   const [tab, setTab] = useState<Tab>("shap");
   const [pdfDownloading, setPdfDownloading] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const urlInputRef = useRef<HTMLInputElement>(null);
 
   function handlePresetChange(label: string) {
     setPresetLabel(label);
@@ -147,12 +149,29 @@ export default function AnalyzePage() {
             <label className="kpi-label" style={{ display: "block", marginBottom: "0.3rem" }}>
               Webpage URL
             </label>
-            <input
-              className="input"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://example.com/page"
-            />
+            <div className="input-wrap">
+              <input
+                ref={urlInputRef}
+                className="input"
+                style={{ paddingRight: url ? "2.2rem" : undefined }}
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder={DEFAULT_URL}
+              />
+              {url ? (
+                <button
+                  type="button"
+                  className="input-clear-button"
+                  aria-label="Clear URL"
+                  onClick={() => {
+                    setUrl("");
+                    urlInputRef.current?.focus();
+                  }}
+                >
+                  <X size={14} />
+                </button>
+              ) : null}
+            </div>
           </div>
           <div style={{ flex: "2 1 200px", minWidth: 0 }}>
             <label className="kpi-label" style={{ display: "block", marginBottom: "0.3rem" }}>

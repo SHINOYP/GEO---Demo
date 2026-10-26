@@ -20,9 +20,27 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+// Runs before first paint so the page never flashes the wrong theme while
+// React hydrates. Reads the same localStorage key ThemeToggle writes to;
+// falls back to the OS-level preference when nothing's been chosen yet.
+const THEME_INIT_SCRIPT = `
+(function () {
+  try {
+    var stored = localStorage.getItem("citelytics-theme");
+    var theme = stored === "dark" || stored === "light"
+      ? stored
+      : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body>
         <AppShell>{children}</AppShell>
       </body>

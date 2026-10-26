@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { currentPageLabel } from "./Sidebar";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const pathname = usePathname();
@@ -22,6 +23,7 @@ export default function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
       </button>
       <span className="brand-text">Citelytics</span>
       <span className="crumb">&nbsp;/ {currentPageLabel(pathname)}</span>
+      <ThemeToggle />
     </div>
   );
 }
