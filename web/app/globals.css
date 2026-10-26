@@ -61,6 +61,12 @@ html {
   overflow-x: hidden;
 }
 
+@media (min-width: 769px) {
+  html {
+    font-size: 17.5px;
+  }
+}
+
 /* ── App shell ──────────────────────────────────────────────── */
 
 .app-shell {
@@ -218,7 +224,7 @@ html {
 .main-content {
   flex: 1;
   padding: 1rem 2rem 3rem;
-  max-width: 900px;
+  max-width: 1100px;
 }
 
 .topbar {
@@ -255,7 +261,7 @@ html {
 }
 
 .page-title {
-  font-size: 1.6rem;
+  font-size: 1.85rem;
   font-weight: 600;
   color: var(--foreground);
   margin: 0 0 0.4rem 0;
@@ -265,9 +271,9 @@ html {
 
 .page-sub {
   color: var(--muted-foreground);
-  font-size: 0.92rem;
+  font-size: 1.02rem;
   margin: 0 0 1.5rem 0;
-  max-width: 620px;
+  max-width: 680px;
   line-height: 1.55;
 }
 
@@ -277,14 +283,14 @@ html {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--bg);
-  padding: 1.1rem 1.25rem;
+  padding: 1.35rem 1.5rem;
   min-width: 0;
 }
 
 .card h3 {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 600;
-  margin: 0 0 0.6rem 0;
+  margin: 0 0 0.7rem 0;
 }
 
 @media (max-width: 480px) {
@@ -342,7 +348,7 @@ html {
 }
 
 .kpi-value {
-  font-size: 1.55rem;
+  font-size: 1.75rem;
   font-weight: 600;
   color: var(--foreground);
   margin-top: 0.3rem;
