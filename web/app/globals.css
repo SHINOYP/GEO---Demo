@@ -81,6 +81,19 @@ html {
   width: 260px;
   max-width: 82vw;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+  /* Without this, the fixed/full-height box above has nothing stretching
+     it visibly: the inner <Sidebar/> (a plain block-level aside) only
+     takes its own content's height, so the drawer renders as a small
+     floating card at the top instead of a full-height edge-to-edge
+     panel. On desktop this doesn't matter because .sidebar-desktop uses
+     display:contents, making <Sidebar/> a direct flex child of
+     .app-shell, which stretches it via flexbox's default
+     align-items:stretch -- that default never applied here. */
+  display: flex;
+}
+
+.sidebar-mobile > .sidebar {
+  width: 100%;
 }
 
 .mobile-nav-backdrop {
