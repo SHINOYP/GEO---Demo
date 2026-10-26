@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import PageHeader from "@/components/PageHeader";
 import KpiTile from "@/components/KpiTile";
@@ -48,6 +48,7 @@ export default function AnalyzePage() {
   const [mockUsed, setMockUsed] = useState(false);
   const [tab, setTab] = useState<Tab>("shap");
   const [pdfDownloading, setPdfDownloading] = useState(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   function handlePresetChange(label: string) {
     setPresetLabel(label);
@@ -79,6 +80,14 @@ export default function AnalyzePage() {
         setResult(body as AnalysisResult);
         setMockUsed(usingFixture);
         setTab("shap");
+        // Wait two frames so the results section has actually mounted/laid
+        // out before scrolling to it -- scrolling in the same tick as
+        // setResult would still target the pre-update (empty) page.
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        });
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not analyze this page.");
@@ -224,10 +233,12 @@ export default function AnalyzePage() {
       <AnimatePresence>
         {result ? (
           <motion.div
+            ref={resultsRef}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
+            style={{ scrollMarginTop: "1.5rem" }}
           >
             {mockUsed ? <FixtureBanner /> : null}
             <div className="kpi-sub" style={{ marginBottom: "1rem" }}>
