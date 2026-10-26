@@ -22,10 +22,20 @@ COPY . .
 
 # Real venv at the exact path web/lib/paths.ts resolves by default
 # (repoRoot/.venv/bin/python3) — no env var overrides needed at runtime.
+#
+# xgboost's PyPI wheel unconditionally pulls in nvidia-nccl-cu12 (~350MB,
+# GPU-only multi-device training support) even though we only ever run CPU
+# inference here. On a free-tier build that extra weight is enough to blow
+# the disk/memory budget and kill the build with no clean error message.
+# Install everything except xgboost normally, then install xgboost with
+# --no-deps (its real runtime need, numpy, is already pulled in by pandas
+# and scikit-learn above).
 RUN python3 -m venv /app/.venv \
     && /app/.venv/bin/pip install --no-cache-dir --upgrade pip \
-    && /app/.venv/bin/pip install --no-cache-dir \
-       -r requirements.txt -r citation-predictor/backend/requirements.txt
+    && grep -hv '^xgboost' requirements.txt citation-predictor/backend/requirements.txt > /tmp/reqs-no-xgb.txt \
+    && /app/.venv/bin/pip install --no-cache-dir -r /tmp/reqs-no-xgb.txt \
+    && /app/.venv/bin/pip install --no-cache-dir --no-deps "xgboost>=2.0.0" \
+    && rm -f /tmp/reqs-no-xgb.txt
 
 # Train/save artifacts/model.pkl + artifacts/metrics.json from the
 # committed, already-scraped data/dataset.csv (deterministic, no network).
