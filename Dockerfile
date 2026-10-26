@@ -19,6 +19,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
+# Python fully buffers stdout when it isn't attached to a terminal (always
+# true inside Docker), so a long-running script like pipeline.evaluate
+# would print nothing at all until it finished or crashed -- indistinguishable
+# from a genuine hang in the build log. Forces line-by-line flushing instead.
+# Must be set before the pipeline.evaluate RUN step below, not after it --
+# ENV only affects instructions that come after it in the file.
+ENV PYTHONUNBUFFERED=1
+
 # Copy only the requirement files first so this layer -- the slowest part
 # of the build -- stays cached across any change that isn't to the Python
 # dependency list. With the full `COPY . .` this used to live before, any

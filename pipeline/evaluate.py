@@ -396,11 +396,14 @@ def main():
         print(f"WARNING: dataset underpowered (n={n}, min_class={min(n_pos, n_neg)}). "
               f"Computing numbers anyway but flagging them as preliminary.")
 
+    print(f"Loaded {n} usable rows ({n_pos} cited / {n_neg} not) -- starting cross-validation "
+          f"(rule-based, logistic regression, xgboost x 10 repeats each)...")
     metrics["models"] = {
         "rule_based_checklist": cross_validate(df, feature_cols, "domain", "rule_based"),
         "logistic_regression": cross_validate(df, feature_cols, "domain", "logistic_regression"),
         "xgboost": cross_validate(df, feature_cols, "domain", "xgboost"),
     }
+    print("Primary cross-validation done.")
     xgb_primary = metrics["models"]["xgboost"]
     if "error" not in xgb_primary:
         metrics["roc_auc_display"] = format_mean_std(xgb_primary["roc_auc"])
@@ -413,15 +416,21 @@ def main():
         for k in ("roc_auc_display", "f1_display", "accuracy_display", "precision_recall_display"):
             metrics[k] = "not yet evaluated"
 
+    print("Running secondary (query_id-grouped) cross-validation...")
     metrics["secondary_split_by_query"] = cross_validate(df, feature_cols, "query_id", "xgboost")
 
+    print("Running sanity checks (label-shuffle control, ablation, domain-type leakage, "
+          "original-repo-model comparison)...")
     metrics["sanity_checks"] = {
         "label_shuffle_control": label_shuffle_control(df, feature_cols),
         "feature_group_ablation": ablation(df),
         "domain_type_leakage_check": domain_type_check(df),
         "original_repo_model_on_real_data": compare_original_repo_model(df, feature_cols),
     }
+    print("Sanity checks done.")
 
+    print("Training final model and running SHAP explainability analysis "
+          "(this is usually the slowest step)...")
     try:
         shap_results, final_model = run_shap_analysis(df, feature_cols)
         metrics["explainability"] = shap_results
@@ -432,8 +441,10 @@ def main():
         joblib.dump(final_model, os.path.join(ARTIFACTS_DIR, "model.pkl"))
         with open(os.path.join(ARTIFACTS_DIR, "feature_columns.json"), "w") as f:
             json.dump(feature_cols, f, indent=2)
+        print("SHAP analysis and model save done.")
     except Exception as e:
         metrics["explainability"] = {"error": f"SHAP analysis failed: {type(e).__name__}: {e}"}
+        print(f"SHAP analysis failed (continuing without it): {type(e).__name__}: {e}")
 
     os.makedirs(ARTIFACTS_DIR, exist_ok=True)
     with open(os.path.join(ARTIFACTS_DIR, "metrics.json"), "w") as f:
