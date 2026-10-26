@@ -102,13 +102,27 @@ def _check_robots_txt(url: str) -> None:
     parsed = urlparse(url)
     origin = f"{parsed.scheme}://{parsed.netloc}"
     if origin not in _ROBOTS_CACHE:
-        rp = RobotFileParser()
-        rp.set_url(urljoin(origin, "/robots.txt"))
+        robots_url = urljoin(origin, "/robots.txt")
+        rp = None
         try:
-            rp.read()
-        except Exception:
-            # If robots.txt can't be fetched/parsed, default to allow
-            # (most sites with no robots.txt permit crawling).
+            # RobotFileParser.read() does its own fetch with urllib's default
+            # User-Agent ("Python-urllib/x.y"), which sites like Wikipedia
+            # reject with a 403 on robots.txt itself. read() swallows that
+            # HTTP error internally and sets disallow_all=True -- "I couldn't
+            # check" silently becomes "block everything", even though the
+            # real robots.txt (fetched with our actual identified UA, same
+            # as the one making the real page request) would allow the page.
+            # Fetching it ourselves and handing the text to rp.parse() keeps
+            # the real Disallow rules in effect while avoiding that false
+            # fail-closed.
+            resp = requests.get(robots_url, headers=HEADERS, timeout=TIMEOUT)
+            if resp.status_code < 400:
+                rp = RobotFileParser()
+                rp.parse(resp.text.splitlines())
+            # 4xx/5xx on robots.txt itself (including a block on the fetch
+            # attempt) -- default to allow, matching how most sites with no
+            # reachable robots.txt behave.
+        except requests.RequestException:
             rp = None
         _ROBOTS_CACHE[origin] = rp
 
