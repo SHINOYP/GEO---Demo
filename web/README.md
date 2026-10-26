@@ -60,6 +60,35 @@ checklist (meta tags, image alt-text, HTTPS, mobile viewport) computed from
 the same scraped HTML, added after the original port. It's supporting
 context only; it has no effect on `citation_probability` or the model.
 
+## Deploying (Render, free tier)
+
+This app needs a real, persistent server with a Python venv — it is **not**
+deployable to Vercel/Netlify-style serverless functions, since
+`lib/pythonBridge.ts` spawns a real `python3` subprocess (with `xgboost`,
+`shap`, `pandas`, etc. installed) per request, and serverless sandboxes don't
+provide that. [Render](https://render.com) supports Docker-based web services
+with a real filesystem and process model, and has a genuinely free tier
+(spins down after 15 min idle, ~30-60s cold start to wake — fine for a demo,
+not for production traffic).
+
+1. Push this repo to GitHub (already done if you're reading this on
+   `origin/final-review`).
+2. On Render: **New > Blueprint**, point it at the repo — `render.yaml` at
+   the repo root already describes the service (Docker, free plan). Or
+   **New > Web Service** manually and select "Docker" as the runtime; the
+   root `Dockerfile` needs no configuration.
+3. First build takes a few minutes: it builds a Python venv, **retrains the
+   model from the already-committed `data/dataset.csv`** (via
+   `pipeline.evaluate` — `artifacts/model.pkl` isn't committed to git since
+   it's regenerable, so the build produces it fresh, deterministically, with
+   no network access needed), then builds the Next.js app.
+4. No environment variables are required — the Dockerfile puts the venv at
+   the exact path `lib/paths.ts` looks for by default
+   (`<repo-root>/.venv/bin/python3`).
+
+Deploying anywhere else that supports Docker (Railway, Fly.io, a plain VM)
+works the same way — just point it at the root `Dockerfile`.
+
 ## Error contract with `cli.py`
 
 Every CLI invocation prints exactly one thing to stdout: on success, the JSON

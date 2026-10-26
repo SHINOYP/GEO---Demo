@@ -1,0 +1,16 @@
+.git
+.gitignore
+.venv/
+.wheelhouse/
+.pytest_cache/
+**/node_modules/
+web/.next/
+web/node_modules/
+data/raw/
+data/html_cache/
+demo_cache/
+artifacts/*.pkl
+artifacts/figures/
+slides/
+*.md
+!README.md
