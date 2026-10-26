@@ -1,5 +1,6 @@
 import PageHeader from "@/components/PageHeader";
 import MetricTile from "@/components/MetricTile";
+import FadeIn from "@/components/FadeIn";
 import { loadMetrics } from "@/lib/serverData";
 
 // Reads artifacts/metrics.json from disk on every request (not at build
@@ -15,8 +16,8 @@ export default async function ExplainabilityPage() {
     <div>
       <PageHeader badge="How it works" title="Explainability" />
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
-        <div>
+      <div className="grid-2">
+        <FadeIn>
           <div className="card" style={{ marginBottom: "1rem" }}>
             <h3>SEO vs. GEO</h3>
             <p style={{ fontSize: "0.88rem", marginBottom: "0.4rem" }}>
@@ -41,9 +42,9 @@ export default async function ExplainabilityPage() {
               <li>Explainability — SHAP, per-URL</li>
             </ol>
           </div>
-        </div>
+        </FadeIn>
 
-        <div>
+        <FadeIn delay={0.08}>
           <div className="card" style={{ marginBottom: "1rem" }}>
             <h3>Validation metrics</h3>
             {metrics === null ? (
@@ -61,13 +62,7 @@ export default async function ExplainabilityPage() {
                     Model Card page.
                   </div>
                 ) : null}
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "0.6rem",
-                  }}
-                >
+                <div className="grid-2" style={{ gap: "0.6rem" }}>
                   <MetricTile label="ROC-AUC" value={metrics.roc_auc_display ?? "not yet evaluated"} />
                   <MetricTile label="F1" value={metrics.f1_display ?? "not yet evaluated"} />
                   <MetricTile
@@ -105,7 +100,7 @@ export default async function ExplainabilityPage() {
               </li>
             </ul>
           </div>
-        </div>
+        </FadeIn>
       </div>
     </div>
   );

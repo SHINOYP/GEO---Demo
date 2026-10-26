@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import PageHeader from "@/components/PageHeader";
 import KpiTile from "@/components/KpiTile";
 import TierBadge from "@/components/TierBadge";
@@ -16,6 +17,24 @@ import { getTierName, scorePct } from "@/lib/format";
 import { isErrorPayload, type AnalysisResult } from "@/lib/types";
 
 type Tab = "shap" | "structure" | "recommendations" | "page-health" | "export";
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "shap", label: "Why this score" },
+  { id: "structure", label: "Structure" },
+  { id: "recommendations", label: "Recommendations" },
+  { id: "page-health", label: "Page Health" },
+  { id: "export", label: "Export PDF" },
+];
+
+const kpiContainerVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
+};
+
+const kpiItemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.25, ease: "easeOut" as const } },
+};
 
 export default function AnalyzePage() {
   const [presetLabel, setPresetLabel] = useState(SAMPLE_PRESETS[0].label);
@@ -113,7 +132,7 @@ export default function AnalyzePage() {
 
       <div className="card" style={{ marginBottom: "1.5rem" }}>
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-          <div style={{ flex: "3 1 280px" }}>
+          <div style={{ flex: "3 1 240px", minWidth: 0 }}>
             <label className="kpi-label" style={{ display: "block", marginBottom: "0.3rem" }}>
               Webpage URL
             </label>
@@ -124,7 +143,7 @@ export default function AnalyzePage() {
               placeholder="https://example.com/page"
             />
           </div>
-          <div style={{ flex: "2 1 220px" }}>
+          <div style={{ flex: "2 1 200px", minWidth: 0 }}>
             <label className="kpi-label" style={{ display: "block", marginBottom: "0.3rem" }}>
               Try a sample page
             </label>
@@ -141,189 +160,249 @@ export default function AnalyzePage() {
             </select>
           </div>
         </div>
-        <button
+        <motion.button
           className="btn btn-primary"
           style={{ marginTop: "1rem", width: "100%" }}
           onClick={handleAnalyze}
           disabled={loading || !url}
+          whileHover={!loading && url ? { scale: 1.01 } : undefined}
+          whileTap={!loading && url ? { scale: 0.98 } : undefined}
         >
-          {loading ? "Analyzing…" : "Analyze"}
-        </button>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={loading ? "loading" : "idle"}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
+            >
+              {loading ? (
+                <>
+                  <motion.span
+                    style={{
+                      width: 12,
+                      height: 12,
+                      borderRadius: "50%",
+                      border: "2px solid currentColor",
+                      borderTopColor: "transparent",
+                      display: "inline-block",
+                    }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 0.7, repeat: Infinity, ease: "linear" }}
+                  />
+                  Analyzing…
+                </>
+              ) : (
+                "Analyze"
+              )}
+            </motion.span>
+          </AnimatePresence>
+        </motion.button>
         <div className="kpi-sub" style={{ marginTop: "0.6rem" }}>
           Estimated likelihood from observed correlations, not a guarantee. See Model Card for
           details.
         </div>
       </div>
 
-      {error ? <div className="alert alert-error">Could not analyze this page: {error}</div> : null}
-
-      {result ? (
-        <div>
-          {mockUsed ? <FixtureBanner /> : null}
-          <div className="kpi-sub" style={{ marginBottom: "1rem" }}>
-            Estimated likelihood from observed correlations, not a guarantee.
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "0.75rem",
-              marginBottom: "1rem",
-            }}
+      <AnimatePresence>
+        {error ? (
+          <motion.div
+            className="alert alert-error"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
           >
-            <KpiTile
-              label="Citation probability"
-              value={`${scorePct(result.citation_probability)}%`}
-              sub={`${scorePct(result.citation_probability) >= 50 ? "+" : ""}${
-                scorePct(result.citation_probability) - 50
-              }% vs. 50% baseline`}
-            />
-            <KpiTile
-              label="Citation tier"
-              value={`${getTierName(result.citation_probability)} likelihood`}
-            />
-            <KpiTile
-              label="Structural quality"
-              value={`${Math.round(macroVal * 100)}/100`}
-            />
-            <KpiTile
-              label="Schema markup"
-              value={result.features.schema.schema_present ? "Active (JSON-LD)" : "Missing"}
-            />
-          </div>
+            Could not analyze this page: {error}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
-          <div style={{ marginBottom: "1.5rem" }}>
-            <strong>Verdict:</strong> <TierBadge probability={result.citation_probability} />
-          </div>
+      <AnimatePresence>
+        {result ? (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            {mockUsed ? <FixtureBanner /> : null}
+            <div className="kpi-sub" style={{ marginBottom: "1rem" }}>
+              Estimated likelihood from observed correlations, not a guarantee.
+            </div>
 
-          <div className="tabs">
-            <button
-              className={`tab-button${tab === "shap" ? " active" : ""}`}
-              onClick={() => setTab("shap")}
+            <motion.div
+              className="grid-4"
+              style={{ marginBottom: "1rem" }}
+              variants={kpiContainerVariants}
+              initial="hidden"
+              animate="show"
             >
-              Why this score
-            </button>
-            <button
-              className={`tab-button${tab === "structure" ? " active" : ""}`}
-              onClick={() => setTab("structure")}
-            >
-              Structure
-            </button>
-            <button
-              className={`tab-button${tab === "recommendations" ? " active" : ""}`}
-              onClick={() => setTab("recommendations")}
-            >
-              Recommendations
-            </button>
-            <button
-              className={`tab-button${tab === "page-health" ? " active" : ""}`}
-              onClick={() => setTab("page-health")}
-            >
-              Page Health
-            </button>
-            <button
-              className={`tab-button${tab === "export" ? " active" : ""}`}
-              onClick={() => setTab("export")}
-            >
-              Export PDF
-            </button>
-          </div>
+              <motion.div variants={kpiItemVariants}>
+                <KpiTile
+                  label="Citation probability"
+                  value={`${scorePct(result.citation_probability)}%`}
+                  sub={`${scorePct(result.citation_probability) >= 50 ? "+" : ""}${
+                    scorePct(result.citation_probability) - 50
+                  }% vs. 50% baseline`}
+                />
+              </motion.div>
+              <motion.div variants={kpiItemVariants}>
+                <KpiTile
+                  label="Citation tier"
+                  value={`${getTierName(result.citation_probability)} likelihood`}
+                />
+              </motion.div>
+              <motion.div variants={kpiItemVariants}>
+                <KpiTile label="Structural quality" value={`${Math.round(macroVal * 100)}/100`} />
+              </motion.div>
+              <motion.div variants={kpiItemVariants}>
+                <KpiTile
+                  label="Schema markup"
+                  value={result.features.schema.schema_present ? "Active (JSON-LD)" : "Missing"}
+                />
+              </motion.div>
+            </motion.div>
 
-          {tab === "shap" ? (
-            <div>
-              {result.shap_error ? <ShapErrorBanner message={result.shap_error} /> : null}
-              <p style={{ fontSize: "0.88rem", color: "var(--muted-foreground)" }}>
-                Why did this page receive this score? SHAP calculates the exact marginal
-                contribution of each webpage feature towards pushing the citation probability
-                higher (green) or lower (red).
-              </p>
-              <ShapBarChart
-                topPositive={result.shap_data.top_positive.slice(0, 6)}
-                topNegative={result.shap_data.top_negative.slice(0, 6)}
-              />
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "1.5rem",
-                  marginTop: "1rem",
-                }}
+            <motion.div
+              style={{ marginBottom: "1.5rem" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+            >
+              <strong>Verdict:</strong> <TierBadge probability={result.citation_probability} />
+            </motion.div>
+
+            <div className="tabs">
+              {TABS.map((t) => (
+                <button
+                  key={t.id}
+                  className={`tab-button${tab === t.id ? " active" : ""}`}
+                  onClick={() => setTab(t.id)}
+                >
+                  {t.label}
+                  {tab === t.id ? (
+                    <motion.div layoutId="tab-underline" className="tab-underline" />
+                  ) : null}
+                </button>
+              ))}
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={tab}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
               >
-                <DriverList
-                  title="Positive drivers"
-                  drivers={result.shap_data.top_positive.slice(0, 6)}
-                  emptyMessage="No strong positive drivers detected."
-                  variant="success"
-                />
-                <DriverList
-                  title="Negative drivers"
-                  drivers={result.shap_data.top_negative.slice(0, 6)}
-                  emptyMessage="No major negative dragging factors detected."
-                  variant="error"
-                />
-              </div>
-            </div>
-          ) : null}
+                {tab === "shap" ? (
+                  <div>
+                    {result.shap_error ? <ShapErrorBanner message={result.shap_error} /> : null}
+                    <p style={{ fontSize: "0.88rem", color: "var(--muted-foreground)" }}>
+                      Why did this page receive this score? SHAP calculates the exact marginal
+                      contribution of each webpage feature towards pushing the citation
+                      probability higher (green) or lower (red).
+                    </p>
+                    <ShapBarChart
+                      topPositive={result.shap_data.top_positive.slice(0, 6)}
+                      topNegative={result.shap_data.top_negative.slice(0, 6)}
+                    />
+                    <div className="grid-2" style={{ marginTop: "1rem" }}>
+                      <DriverList
+                        title="Positive drivers"
+                        drivers={result.shap_data.top_positive.slice(0, 6)}
+                        emptyMessage="No strong positive drivers detected."
+                        variant="success"
+                      />
+                      <DriverList
+                        title="Negative drivers"
+                        drivers={result.shap_data.top_negative.slice(0, 6)}
+                        emptyMessage="No major negative dragging factors detected."
+                        variant="error"
+                      />
+                    </div>
+                  </div>
+                ) : null}
 
-          {tab === "structure" ? (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem" }}>
-              <StructureCard
-                title="Macro-structure"
-                score={macroVal}
-                bullets={[
-                  `Word count: ${result.features.content.word_count}`,
-                  `Total headings: ${result.features.structure.heading_count}`,
-                  `H1 headings: ${result.features.structure.h1_count}`,
-                  `Heading hierarchy: ${result.features.structure.heading_hierarchy_score.toFixed(2)}`,
-                ]}
-              />
-              <StructureCard
-                title="Meso-structure"
-                score={mesoVal}
-                bullets={[
-                  `Paragraphs: ${result.features.content.paragraph_count}`,
-                  `Lists: ${result.features.content.list_count}`,
-                  `Tables: ${result.features.content.table_count}`,
-                  `Avg paragraph length: ${result.features.content.avg_paragraph_length.toFixed(1)} words`,
-                ]}
-              />
-              <StructureCard
-                title="Micro-structure & signals"
-                score={microVal}
-                bullets={[
-                  `Factual density: ${(mf?.factual_density ?? 0).toFixed(3)}`,
-                  `Numerical claims: ${result.features.content.number_count}`,
-                  `Phone detected: ${result.features.local_business.has_phone ? "Yes" : "No"}`,
-                  `Address detected: ${result.features.local_business.has_address ? "Yes" : "No"}`,
-                ]}
-              />
-            </div>
-          ) : null}
+                {tab === "structure" ? (
+                  <div className="grid-3">
+                    <StructureCard
+                      title="Macro-structure"
+                      score={macroVal}
+                      bullets={[
+                        `Word count: ${result.features.content.word_count}`,
+                        `Total headings: ${result.features.structure.heading_count}`,
+                        `H1 headings: ${result.features.structure.h1_count}`,
+                        `Heading hierarchy: ${result.features.structure.heading_hierarchy_score.toFixed(2)}`,
+                      ]}
+                    />
+                    <StructureCard
+                      title="Meso-structure"
+                      score={mesoVal}
+                      bullets={[
+                        `Paragraphs: ${result.features.content.paragraph_count}`,
+                        `Lists: ${result.features.content.list_count}`,
+                        `Tables: ${result.features.content.table_count}`,
+                        `Avg paragraph length: ${result.features.content.avg_paragraph_length.toFixed(1)} words`,
+                      ]}
+                    />
+                    <StructureCard
+                      title="Micro-structure & signals"
+                      score={microVal}
+                      bullets={[
+                        `Factual density: ${(mf?.factual_density ?? 0).toFixed(3)}`,
+                        `Numerical claims: ${result.features.content.number_count}`,
+                        `Phone detected: ${result.features.local_business.has_phone ? "Yes" : "No"}`,
+                        `Address detected: ${result.features.local_business.has_address ? "Yes" : "No"}`,
+                      ]}
+                    />
+                  </div>
+                ) : null}
 
-          {tab === "recommendations" ? (
-            <div>
-              {result.recommendations.length === 0 ? (
-                <div className="alert alert-success">
-                  Great job! No urgent optimization steps found.
-                </div>
-              ) : (
-                result.recommendations.map((rec, i) => <RecommendationCard key={i} rec={rec} />)
-              )}
-            </div>
-          ) : null}
+                {tab === "recommendations" ? (
+                  <div>
+                    {result.recommendations.length === 0 ? (
+                      <div className="alert alert-success">
+                        Great job! No urgent optimization steps found.
+                      </div>
+                    ) : (
+                      <motion.div
+                        variants={kpiContainerVariants}
+                        initial="hidden"
+                        animate="show"
+                      >
+                        {result.recommendations.map((rec, i) => (
+                          <motion.div key={i} variants={kpiItemVariants}>
+                            <RecommendationCard rec={rec} />
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </div>
+                ) : null}
 
-          {tab === "page-health" ? <PageHealthPanel pageHealth={result.page_health} /> : null}
+                {tab === "page-health" ? <PageHealthPanel pageHealth={result.page_health} /> : null}
 
-          {tab === "export" ? (
-            <div>
-              <button className="btn btn-primary" onClick={handleExportPdf} disabled={pdfDownloading}>
-                {pdfDownloading ? "Generating…" : "Download PDF report"}
-              </button>
-            </div>
-          ) : null}
-        </div>
-      ) : null}
+                {tab === "export" ? (
+                  <div>
+                    <motion.button
+                      className="btn btn-primary"
+                      onClick={handleExportPdf}
+                      disabled={pdfDownloading}
+                      whileHover={!pdfDownloading ? { scale: 1.02 } : undefined}
+                      whileTap={!pdfDownloading ? { scale: 0.97 } : undefined}
+                    >
+                      {pdfDownloading ? "Generating…" : "Download PDF report"}
+                    </motion.button>
+                  </div>
+                ) : null}
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 }
