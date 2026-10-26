@@ -245,6 +245,8 @@ export default function AnalyzePage() {
                 <KpiTile
                   label="Citation probability"
                   value={`${scorePct(result.citation_probability)}%`}
+                  countTo={scorePct(result.citation_probability)}
+                  formatCount={(n) => `${Math.round(n)}%`}
                   sub={`${scorePct(result.citation_probability) >= 50 ? "+" : ""}${
                     scorePct(result.citation_probability) - 50
                   }% vs. 50% baseline`}
@@ -257,7 +259,12 @@ export default function AnalyzePage() {
                 />
               </motion.div>
               <motion.div variants={kpiItemVariants}>
-                <KpiTile label="Structural quality" value={`${Math.round(macroVal * 100)}/100`} />
+                <KpiTile
+                  label="Structural quality"
+                  value={`${Math.round(macroVal * 100)}/100`}
+                  countTo={Math.round(macroVal * 100)}
+                  formatCount={(n) => `${Math.round(n)}/100`}
+                />
               </motion.div>
               <motion.div variants={kpiItemVariants}>
                 <KpiTile

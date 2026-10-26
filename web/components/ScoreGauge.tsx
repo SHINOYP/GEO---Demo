@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 
 /**
@@ -21,6 +22,21 @@ export default function ScoreGauge({
   const circumference = 2 * Math.PI * radius;
   const clamped = Math.max(0, Math.min(1, value));
   const color = clamped >= 0.7 ? "var(--success)" : clamped >= 0.55 ? "var(--warning)" : "var(--danger)";
+
+  const [displayValue, setDisplayValue] = useState(0);
+  useEffect(() => {
+    const duration = 1000;
+    const start = performance.now();
+    let raf: number;
+    function tick(now: number) {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setDisplayValue(clamped * eased);
+      if (t < 1) raf = requestAnimationFrame(tick);
+    }
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [clamped]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
@@ -60,7 +76,7 @@ export default function ScoreGauge({
             color: "var(--foreground)",
           }}
         >
-          {value.toFixed(2)}
+          {displayValue.toFixed(2)}
         </div>
       </div>
       <div style={{ textAlign: "center" }}>

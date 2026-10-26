@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "motion/react";
 
 function AnalyzeIcon() {
   return (
@@ -57,8 +58,17 @@ export default function Sidebar() {
               href={item.href}
               className={`sidebar-nav-link${active ? " active" : ""}`}
             >
-              <Icon />
-              {item.label}
+              {active ? (
+                <motion.span
+                  layoutId="sidebar-active-pill"
+                  className="sidebar-active-pill"
+                  transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                />
+              ) : null}
+              <span className="sidebar-nav-link-content">
+                <Icon />
+                {item.label}
+              </span>
             </Link>
           );
         })}
