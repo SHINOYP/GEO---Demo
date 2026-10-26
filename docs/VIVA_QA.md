@@ -67,19 +67,38 @@ doesn't have.
 
 ## Data and labels
 
-13. **Is your training data real?** The model currently shipped
-    (`citation-predictor/models/citation_model.pkl`) is trained on
-    **synthetic** data (`model_loader.py: _generate_demo_data`), honestly
-    documented in the code and `docs/AUDIT.md`. We built a separate
-    real-data pipeline (`pipeline/`) to collect actual Perplexity citations;
-    **as of this review, real collection has not been run yet** because it
-    requires a paid `PERPLEXITY_API_KEY` we hadn't configured — see
-    `STATUS.md`. This is the single most important fact to state plainly
-    if asked.
-14. **If it's synthetic, is the reported accuracy meaningful?** No — the
-    synthetic label is a linear function of the same features the model
-    sees, so any AUC/F1 from it is circular (see `docs/AUDIT.md` Q1). We
-    do not claim it as evidence of real-world predictive power.
+13. **Is your training data real?** Yes, now. **This answer changed over
+    the project's lifetime and both states matter for the viva:** the
+    model originally shipped with this codebase
+    (`citation-predictor/models/citation_model.pkl`) was trained on
+    **synthetic** data (`model_loader.py: _generate_demo_data`) — honestly
+    documented in `docs/AUDIT.md` as circular/non-evidentiary (Q14 below).
+    We then built and ran a real-data pipeline (`pipeline/`): manually
+    collected real Perplexity citations for 300 queries (no paid API
+    budget was available, so collection was manual via perplexity.ai, not
+    automated), scraped the resulting candidate pages, and trained a new
+    model (`artifacts/model.pkl`) on that real data —
+    `citation-predictor/backend/models/model_loader.py` now loads *only*
+    this real-data model for live predictions and raises a loud error
+    instead of ever falling back to the synthetic one. The old synthetic
+    model file is kept on disk on purpose, solely as the "known-bad"
+    comparison baseline in `pipeline/evaluate.py`'s
+    `compare_original_repo_model` check (Q35) — it is never served live.
+13a. **If the pipeline was already built, why did the synthetic model ship
+    first?** Collecting real citations required a Perplexity API key the
+    team didn't have paid budget for; the synthetic model was a
+    placeholder so the UI/pipeline could be built and tested end-to-end
+    before real data existed. We flagged this as a limitation in
+    `docs/AUDIT.md` rather than hiding it, then closed the gap by
+    collecting data manually once the paid-API path proved infeasible.
+14. **Was the synthetic model's reported accuracy ever meaningful?** No —
+    the synthetic label was a linear function of the same features the
+    model was scored on, so its AUC/F1 (e.g. the 0.888 the original repo
+    quoted) was circular by construction (see `docs/AUDIT.md` Q1). We
+    never claimed it as evidence of real-world predictive power, and we
+    have direct proof it didn't transfer: that exact synthetic-trained
+    model scores **AUC 0.49 (chance)** when evaluated on our real 592-row
+    pilot data (Q35).
 15. **How would the real label be created?** `label=1` if a page's
     canonical URL appears among Perplexity's citations for a query, else
     0 — see `docs/DATA_CARD.md`.

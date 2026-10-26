@@ -14,7 +14,7 @@ reflections, guide feedback, final numbers once the pilot runs).
 | 5 | Existing Methodology | 3 | Derivable now |
 | 6 | Proposed Methodology | 3 | Derivable now |
 | 7 | System Design | 2 | Derivable now |
-| 8 | Dataset and Pipeline | 3 | Derivable now (real n=200 pilot numbers available) |
+| 8 | Dataset and Pipeline | 3 | Derivable now (real n=300 pilot numbers available, 592 usable rows) |
 | 9 | Implementation | 2 | Derivable now |
 | 10 | Results and Analysis | 3 | Derivable now |
 | 11 | Limitations | 1 | Derivable now |
