@@ -2798,5 +2798,1405 @@
       "apollodental.in"
     ],
     "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q201",
+    "category": "gym",
+    "city": "Varanasi",
+    "query_text": "best gym in Varanasi for weight training",
+    "repeat": 0,
+    "cited_urls": [
+      "https://threebestrated.in/gym-in-varanasi-up"
+    ],
+    "cited_domains": [
+      "threebestrated.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q202",
+    "category": "gym",
+    "city": "Vadodara",
+    "query_text": "top rated gym in Vadodara with personal trainers",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.bearbicepsgymandfitness.in/"
+    ],
+    "cited_domains": [
+      "www.bearbicepsgymandfitness.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q203",
+    "category": "gym",
+    "city": "Nashik",
+    "query_text": "affordable gym membership Nashik",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.plumint.com/nashik-maharashtra/gym"
+    ],
+    "cited_domains": [
+      "www.plumint.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q204",
+    "category": "gym",
+    "city": "Bhubaneswar",
+    "query_text": "24 hour gym Bhubaneswar",
+    "repeat": 0,
+    "cited_urls": [
+      "https://atfgym.com/"
+    ],
+    "cited_domains": [
+      "atfgym.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q205",
+    "category": "gym",
+    "city": "Raipur",
+    "query_text": "best gym in Raipur for weight training",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.gotmefit.com/"
+    ],
+    "cited_domains": [
+      "www.gotmefit.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q206",
+    "category": "gym",
+    "city": "Jodhpur",
+    "query_text": "ladies gym Jodhpur",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.anytimefitness.com/en-in/locations/jodhpur-rajasthan-in-1079"
+    ],
+    "cited_domains": [
+      "www.anytimefitness.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q207",
+    "category": "gym",
+    "city": "Agra",
+    "query_text": "best crossfit gym Agra",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/hi/Agra/Crossfit-Gyms-in-Dayal-Bagh/nct-11614003"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q208",
+    "category": "gym",
+    "city": "Meerut",
+    "query_text": "gym with personal trainer Meerut",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.anytimefitness.com/en-in/locations/meerut-uttar-pradesh-in-1148"
+    ],
+    "cited_domains": [
+      "www.anytimefitness.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q209",
+    "category": "gym",
+    "city": "Faridabad",
+    "query_text": "affordable gym membership Faridabad",
+    "repeat": 0,
+    "cited_urls": [
+      "https://makesaral.com/store/fitxone"
+    ],
+    "cited_domains": [
+      "makesaral.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q210",
+    "category": "gym",
+    "city": "Ludhiana",
+    "query_text": "24 hour gym Ludhiana",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.anytimefitness.com/en-in/locations/ludhiana-punjab-in-1205"
+    ],
+    "cited_domains": [
+      "www.anytimefitness.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q211",
+    "category": "gym",
+    "city": "Amritsar",
+    "query_text": "best gym in Amritsar for weight training",
+    "repeat": 0,
+    "cited_urls": [
+      "https://threebestrated.in/gym-in-amritsar-pb"
+    ],
+    "cited_domains": [
+      "threebestrated.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q212",
+    "category": "gym",
+    "city": "Jalandhar",
+    "query_text": "ladies gym Jalandhar",
+    "repeat": 0,
+    "cited_urls": [
+      "https://smartfitnessguru.com/"
+    ],
+    "cited_domains": [
+      "smartfitnessguru.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q213",
+    "category": "gym",
+    "city": "Dehradun",
+    "query_text": "best crossfit gym Dehradun",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.crossfit.com/gym/36062/crossfit-fitage"
+    ],
+    "cited_domains": [
+      "www.crossfit.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q214",
+    "category": "gym",
+    "city": "Shimla",
+    "query_text": "gym with personal trainer Shimla",
+    "repeat": 0,
+    "cited_urls": [
+      "https://dafitness.in/"
+    ],
+    "cited_domains": [
+      "dafitness.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q215",
+    "category": "gym",
+    "city": "Jammu",
+    "query_text": "affordable gym membership Jammu",
+    "repeat": 0,
+    "cited_urls": [
+      "https://fitpass.co.in/activities/gym/greater-kailash-jammu"
+    ],
+    "cited_domains": [
+      "fitpass.co.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q216",
+    "category": "gym",
+    "city": "Gurgaon",
+    "query_text": "24 hour gym Gurgaon",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Gurgaon/24-Hours-Gyms-in-Gurgaon-Sector-105/nct-11575258"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q217",
+    "category": "gym",
+    "city": "Noida",
+    "query_text": "best gym in Noida for weight training",
+    "repeat": 0,
+    "cited_urls": [
+      "http://plusfitness.co.in/gyms/sec-89-gurugram"
+    ],
+    "cited_domains": [
+      "plusfitness.co.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q218",
+    "category": "gym",
+    "city": "Rajkot",
+    "query_text": "ladies gym Rajkot",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Rajkot/Women-Gyms/nct-11995807"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q219",
+    "category": "gym",
+    "city": "Aurangabad",
+    "query_text": "best crossfit gym Aurangabad",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Aurangabad-Maharashtra/Crossfit-Gyms-in-Trimurti-Chowk/nct-11614003"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q220",
+    "category": "gym",
+    "city": "Belgaum",
+    "query_text": "gym with personal trainer Belgaum",
+    "repeat": 0,
+    "cited_urls": [
+      "https://goldsgym.in/our-gyms/gold-s-gym-belgaum"
+    ],
+    "cited_domains": [
+      "goldsgym.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q221",
+    "category": "gym",
+    "city": "Hubli",
+    "query_text": "affordable gym membership Hubli",
+    "repeat": 0,
+    "cited_urls": [
+      "https://fitpass.co.in/hubballi"
+    ],
+    "cited_domains": [
+      "fitpass.co.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q222",
+    "category": "gym",
+    "city": "Vellore",
+    "query_text": "24 hour gym Vellore",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.muscleflexfitness.in/"
+    ],
+    "cited_domains": [
+      "www.muscleflexfitness.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q223",
+    "category": "gym",
+    "city": "Salem",
+    "query_text": "best gym in Salem for weight training",
+    "repeat": 0,
+    "cited_urls": [
+      "https://theabsolutefitness.com/"
+    ],
+    "cited_domains": [
+      "theabsolutefitness.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q224",
+    "category": "gym",
+    "city": "Tiruchirappalli",
+    "query_text": "ladies gym Tiruchirappalli",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.joonsquare.com/gym-and-fitness-centre/wonder-women-fitness-tiruchirapalli"
+    ],
+    "cited_domains": [
+      "www.joonsquare.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q225",
+    "category": "gym",
+    "city": "Warangal",
+    "query_text": "best crossfit gym Warangal",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/hi/Warangal/Crossfit-Gyms/nct-11614003"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q226",
+    "category": "chauffeur",
+    "city": "Al Khor",
+    "query_text": "best chauffeur service in Al Khor for airport transfer",
+    "repeat": 0,
+    "cited_urls": [
+      "https://mychauffeur.com/en/qatar"
+    ],
+    "cited_domains": [
+      "mychauffeur.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q227",
+    "category": "chauffeur",
+    "city": "Al Rayyan",
+    "query_text": "luxury limo rental Al Rayyan",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.dohacabs.com/limo-hire-near-me-qatar"
+    ],
+    "cited_domains": [
+      "www.dohacabs.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q228",
+    "category": "chauffeur",
+    "city": "Al Wakrah",
+    "query_text": "hourly chauffeur hire Al Wakrah",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.chauffeur-services.com/destinations/qatar/al-wakrah"
+    ],
+    "cited_domains": [
+      "www.chauffeur-services.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q229",
+    "category": "chauffeur",
+    "city": "Ibri",
+    "query_text": "best chauffeur service in Ibri for airport transfer",
+    "repeat": 0,
+    "cited_urls": [
+      "https://city-airport-taxis.com/airporttransfers/pickup/Ibri-City-taxi"
+    ],
+    "cited_domains": [
+      "city-airport-taxis.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q230",
+    "category": "chauffeur",
+    "city": "Sur",
+    "query_text": "luxury limo rental Sur",
+    "repeat": 0,
+    "cited_urls": [
+      "https://taxiyo.com/en/transfers/muscat-to-sur-rides"
+    ],
+    "cited_domains": [
+      "taxiyo.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q231",
+    "category": "chauffeur",
+    "city": "Rustaq",
+    "query_text": "hourly chauffeur hire Rustaq",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.chauffeur-services.com/destinations/oman/sohar"
+    ],
+    "cited_domains": [
+      "www.chauffeur-services.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q232",
+    "category": "chauffeur",
+    "city": "Seeb",
+    "query_text": "best chauffeur service in Seeb for airport transfer",
+    "repeat": 0,
+    "cited_urls": [
+      "https://city-airport-taxis.com/airporttransfers/pickup/Seeb-taxi"
+    ],
+    "cited_domains": [
+      "city-airport-taxis.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q233",
+    "category": "chauffeur",
+    "city": "Bahla",
+    "query_text": "luxury limo rental Bahla",
+    "repeat": 0,
+    "cited_urls": [
+      "https://routxplore.com/"
+    ],
+    "cited_domains": [
+      "routxplore.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q234",
+    "category": "chauffeur",
+    "city": "Al Hofuf",
+    "query_text": "hourly chauffeur hire Al Hofuf",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.rent2you.com/ChauffeurService"
+    ],
+    "cited_domains": [
+      "www.rent2you.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q235",
+    "category": "chauffeur",
+    "city": "Tabuk",
+    "query_text": "best chauffeur service in Tabuk for airport transfer",
+    "repeat": 0,
+    "cited_urls": [
+      "https://ghtrips.com/saudi-arabia/car-with-driver-in-tabuk"
+    ],
+    "cited_domains": [
+      "ghtrips.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q236",
+    "category": "chauffeur",
+    "city": "Yanbu",
+    "query_text": "luxury limo rental Yanbu",
+    "repeat": 0,
+    "cited_urls": [
+      "https://lumirental.com/en/car-rental/cities/yanbu"
+    ],
+    "cited_domains": [
+      "lumirental.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q237",
+    "category": "chauffeur",
+    "city": "Najran",
+    "query_text": "hourly chauffeur hire Najran",
+    "repeat": 0,
+    "cited_urls": [
+      "https://ghtrips.com/saudi-arabia/najran"
+    ],
+    "cited_domains": [
+      "ghtrips.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q238",
+    "category": "chauffeur",
+    "city": "Abha",
+    "query_text": "best chauffeur service in Abha for airport transfer",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.transfeero.com/en/city/abha"
+    ],
+    "cited_domains": [
+      "www.transfeero.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q239",
+    "category": "chauffeur",
+    "city": "Jubail",
+    "query_text": "luxury limo rental Jubail",
+    "repeat": 0,
+    "cited_urls": [
+      "https://ksaelitelimo.com/"
+    ],
+    "cited_domains": [
+      "ksaelitelimo.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q240",
+    "category": "chauffeur",
+    "city": "Buraydah",
+    "query_text": "hourly chauffeur hire Buraydah",
+    "repeat": 0,
+    "cited_urls": [
+      "https://blog.roldrive.com/book-intercity-chauffeur-service-in-saudi-arabia"
+    ],
+    "cited_domains": [
+      "blog.roldrive.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q241",
+    "category": "chauffeur",
+    "city": "Duqm",
+    "query_text": "best chauffeur service in Duqm for airport transfer",
+    "repeat": 0,
+    "cited_urls": [
+      "https://airssist.com/transportation-services/duqm-international-airport-dqm-in-duqm"
+    ],
+    "cited_domains": [
+      "airssist.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q242",
+    "category": "chauffeur",
+    "city": "Hatta",
+    "query_text": "luxury limo rental Hatta",
+    "repeat": 0,
+    "cited_urls": [
+      "https://limousines.ae/blog/10-scenic-routes-in-dubai-every-traveler-must-experience"
+    ],
+    "cited_domains": [
+      "limousines.ae"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q243",
+    "category": "chauffeur",
+    "city": "Dibba",
+    "query_text": "hourly chauffeur hire Dibba",
+    "repeat": 0,
+    "cited_urls": [
+      "https://gccdrive.com/rent-a-car-with-driver-in-fujairah"
+    ],
+    "cited_domains": [
+      "gccdrive.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q244",
+    "category": "chauffeur",
+    "city": "Liwa",
+    "query_text": "best chauffeur service in Liwa for airport transfer",
+    "repeat": 0,
+    "cited_urls": [
+      "https://fairwayuae.com/private-car-service"
+    ],
+    "cited_domains": [
+      "fairwayuae.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q245",
+    "category": "chauffeur",
+    "city": "Khasab",
+    "query_text": "luxury limo rental Khasab",
+    "repeat": 0,
+    "cited_urls": [
+      "https://taxiyo.com/en/transfers/khasab-taxi-rides"
+    ],
+    "cited_domains": [
+      "taxiyo.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q246",
+    "category": "chauffeur",
+    "city": "Barka",
+    "query_text": "hourly chauffeur hire Barka",
+    "repeat": 0,
+    "cited_urls": [
+      "https://taxiyo.com/en/transfers/barka-taxi-rides"
+    ],
+    "cited_domains": [
+      "taxiyo.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q247",
+    "category": "chauffeur",
+    "city": "Khamis Mushait",
+    "query_text": "best chauffeur service in Khamis Mushait for airport transfer",
+    "repeat": 0,
+    "cited_urls": [
+      "https://alfaris.sa/chauffeur-service"
+    ],
+    "cited_domains": [
+      "alfaris.sa"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q248",
+    "category": "chauffeur",
+    "city": "Hail",
+    "query_text": "luxury limo rental Hail",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.saudisuvrentals.com/"
+    ],
+    "cited_domains": [
+      "www.saudisuvrentals.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q249",
+    "category": "chauffeur",
+    "city": "Jizan",
+    "query_text": "hourly chauffeur hire Jizan",
+    "repeat": 0,
+    "cited_urls": [
+      "https://ghtrips.com/saudi-arabia/mercedes-benz-e-class"
+    ],
+    "cited_domains": [
+      "ghtrips.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q250",
+    "category": "chauffeur",
+    "city": "Ibra",
+    "query_text": "best chauffeur service in Ibra for airport transfer",
+    "repeat": 0,
+    "cited_urls": [
+      "https://taxiyo.com/en/transfers/muscat-to-ibra-rides"
+    ],
+    "cited_domains": [
+      "taxiyo.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q251",
+    "category": "kayaking",
+    "city": "Havelock Island",
+    "query_text": "best kayaking tour in Havelock Island backwaters",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.experienceandamans.com/water-sports/kayaking/night-kayaking-in-havelock"
+    ],
+    "cited_domains": [
+      "www.experienceandamans.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q252",
+    "category": "kayaking",
+    "city": "Neil Island",
+    "query_text": "guided kayaking experience Neil Island",
+    "repeat": 0,
+    "cited_urls": [
+      "https://trytrabby.com/blog/kayaking-in-the-andaman-islands"
+    ],
+    "cited_domains": [
+      "trytrabby.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q253",
+    "category": "kayaking",
+    "city": "Mandvi",
+    "query_text": "sunset kayaking tour Mandvi",
+    "repeat": 0,
+    "cited_urls": [
+      "https://tourgrids.com/packages/gujarat/gujarat-4-nights-5-days-package-396"
+    ],
+    "cited_domains": [
+      "tourgrids.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q254",
+    "category": "kayaking",
+    "city": "Dwarka",
+    "query_text": "best kayaking tour in Dwarka backwaters",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.universaladventures.in/products/kayaking-in-dwarka"
+    ],
+    "cited_domains": [
+      "www.universaladventures.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q255",
+    "category": "kayaking",
+    "city": "Somnath",
+    "query_text": "guided kayaking experience Somnath",
+    "repeat": 0,
+    "cited_urls": [
+      "https://tourtravelworld.com/packages/somnath_water-sports-activity-holidays.htm"
+    ],
+    "cited_domains": [
+      "tourtravelworld.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q256",
+    "category": "kayaking",
+    "city": "Veraval",
+    "query_text": "sunset kayaking tour Veraval",
+    "repeat": 0,
+    "cited_urls": [
+      "https://kayakhudson.com/product/sunset-kayak-tour"
+    ],
+    "cited_domains": [
+      "kayakhudson.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q257",
+    "category": "kayaking",
+    "city": "Ratnagiri",
+    "query_text": "best kayaking tour in Ratnagiri backwaters",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.tataneu.com/pages/travel/flights/7-thrilling-kayaking-spots-in-ratnagiri-to-explore"
+    ],
+    "cited_domains": [
+      "www.tataneu.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q258",
+    "category": "kayaking",
+    "city": "Sindhudurg",
+    "query_text": "guided kayaking experience Sindhudurg",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.universaladventures.in/tours/kayaking-in-khavane-beach"
+    ],
+    "cited_domains": [
+      "www.universaladventures.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q259",
+    "category": "kayaking",
+    "city": "Malpe",
+    "query_text": "sunset kayaking tour Malpe",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.tripoto.com/karnataka/trips/a-coastal-affair-part-1-600296745ad6d"
+    ],
+    "cited_domains": [
+      "www.tripoto.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q260",
+    "category": "kayaking",
+    "city": "Kundapura",
+    "query_text": "best kayaking tour in Kundapura backwaters",
+    "repeat": 0,
+    "cited_urls": [
+      "https://promallu.com/toprated/india/out-to-nature-g0pwlm"
+    ],
+    "cited_domains": [
+      "promallu.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q261",
+    "category": "kayaking",
+    "city": "Bhatkal",
+    "query_text": "guided kayaking experience Bhatkal",
+    "repeat": 0,
+    "cited_urls": [
+      "https://hiddenroutes.in/beach/bhatkal-beach"
+    ],
+    "cited_domains": [
+      "hiddenroutes.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q262",
+    "category": "kayaking",
+    "city": "Karwar",
+    "query_text": "sunset kayaking tour Karwar",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.outlooktraveller.com/destinations/india/trip-to-karwar-offbeat-destination-near-goa"
+    ],
+    "cited_domains": [
+      "www.outlooktraveller.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q263",
+    "category": "kayaking",
+    "city": "Chorao Island",
+    "query_text": "best kayaking tour in Chorao Island backwaters",
+    "repeat": 0,
+    "cited_urls": [
+      "https://refuje.com/blog/goa-backwaters-mangroves-by-kayak"
+    ],
+    "cited_domains": [
+      "refuje.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q264",
+    "category": "kayaking",
+    "city": "Divar Island",
+    "query_text": "guided kayaking experience Divar Island",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.klook.com/en-IN/activity/185118-dona-paula-ultimate-water-adventure-bundle"
+    ],
+    "cited_domains": [
+      "www.klook.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q265",
+    "category": "kayaking",
+    "city": "Kappad",
+    "query_text": "sunset kayaking tour Kappad",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.keralatourism.org/destination/kappad-beach-unique/710"
+    ],
+    "cited_domains": [
+      "www.keralatourism.org"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q266",
+    "category": "kayaking",
+    "city": "Nileshwaram",
+    "query_text": "best kayaking tour in Nileshwaram backwaters",
+    "repeat": 0,
+    "cited_urls": [
+      "https://nileshwarhouseboatclub.com/kavvayi-backwater-kayaking"
+    ],
+    "cited_domains": [
+      "nileshwarhouseboatclub.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q267",
+    "category": "kayaking",
+    "city": "Beypore",
+    "query_text": "guided kayaking experience Beypore",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.trodly.com/activity-1640-heritage-kayaking-tour"
+    ],
+    "cited_domains": [
+      "www.trodly.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q268",
+    "category": "kayaking",
+    "city": "Ponnani",
+    "query_text": "sunset kayaking tour Ponnani",
+    "repeat": 0,
+    "cited_urls": [
+      "https://roampedia.com/india/kerala/malappuram/ponnani/place/biyyam-kayal"
+    ],
+    "cited_domains": [
+      "roampedia.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q269",
+    "category": "kayaking",
+    "city": "Chavakkad",
+    "query_text": "best kayaking tour in Chavakkad backwaters",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.keralatourism.org/destination/chavakkad-beach-thrissur/547"
+    ],
+    "cited_domains": [
+      "www.keralatourism.org"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q270",
+    "category": "kayaking",
+    "city": "Marari",
+    "query_text": "guided kayaking experience Marari",
+    "repeat": 0,
+    "cited_urls": [
+      "https://nadodikayaking.com/things-to-do-in-marari-beach"
+    ],
+    "cited_domains": [
+      "nadodikayaking.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q271",
+    "category": "kayaking",
+    "city": "Poovar",
+    "query_text": "sunset kayaking tour Poovar",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.tataneu.com/pages/travel/flights/7-best-kayaking-spots-in-poovar-backwaters-to-explore"
+    ],
+    "cited_domains": [
+      "www.tataneu.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q272",
+    "category": "kayaking",
+    "city": "Neendakara",
+    "query_text": "best kayaking tour in Neendakara backwaters",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.keralatourism.org/adventure-tourism/kayaking-canoeing"
+    ],
+    "cited_domains": [
+      "www.keralatourism.org"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q273",
+    "category": "kayaking",
+    "city": "Kasaragod",
+    "query_text": "guided kayaking experience Kasaragod",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.keralatourism.org/adventure-tourism/kayaking-canoeing/kasaragod"
+    ],
+    "cited_domains": [
+      "www.keralatourism.org"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q274",
+    "category": "kayaking",
+    "city": "Kavaratti",
+    "query_text": "sunset kayaking tour Kavaratti",
+    "repeat": 0,
+    "cited_urls": [
+      "https://jollyholidays.org/tour/kavaratti-island-tour-packages"
+    ],
+    "cited_domains": [
+      "jollyholidays.org"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q275",
+    "category": "kayaking",
+    "city": "Minicoy",
+    "query_text": "best kayaking tour in Minicoy backwaters",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.incredibleindia.gov.in/en/lakshadweep/kavaratti/minicoy"
+    ],
+    "cited_domains": [
+      "www.incredibleindia.gov.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q276",
+    "category": "dental",
+    "city": "Jalandhar",
+    "query_text": "best dental clinic in Jalandhar for implants",
+    "repeat": 0,
+    "cited_urls": [
+      "https://jalandhardentist.com/"
+    ],
+    "cited_domains": [
+      "jalandhardentist.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q277",
+    "category": "dental",
+    "city": "Jodhpur",
+    "query_text": "emergency dentist Jodhpur open now",
+    "repeat": 0,
+    "cited_urls": [
+      "https://smilemaxdentaljodhpur.com/"
+    ],
+    "cited_domains": [
+      "smilemaxdentaljodhpur.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q278",
+    "category": "dental",
+    "city": "Noida",
+    "query_text": "pediatric dental clinic Noida",
+    "repeat": 0,
+    "cited_urls": [
+      "http://www.happyteeth.co.in/home.html"
+    ],
+    "cited_domains": [
+      "www.happyteeth.co.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q279",
+    "category": "dental",
+    "city": "Gurgaon",
+    "query_text": "best dental clinic in Gurgaon for implants",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.cosmodontistindia.com/"
+    ],
+    "cited_domains": [
+      "www.cosmodontistindia.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q280",
+    "category": "dental",
+    "city": "Faridabad",
+    "query_text": "emergency dentist Faridabad open now",
+    "repeat": 0,
+    "cited_urls": [
+      "https://omdentalfaridabad.com/"
+    ],
+    "cited_domains": [
+      "omdentalfaridabad.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q281",
+    "category": "dental",
+    "city": "Meerut",
+    "query_text": "pediatric dental clinic Meerut",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.ananddentalclinic.com/pedodontics.html"
+    ],
+    "cited_domains": [
+      "www.ananddentalclinic.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q282",
+    "category": "dental",
+    "city": "Dehradun",
+    "query_text": "best dental clinic in Dehradun for implants",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.dentocareindia.com/dental-implant"
+    ],
+    "cited_domains": [
+      "www.dentocareindia.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q283",
+    "category": "dental",
+    "city": "Jammu",
+    "query_text": "emergency dentist Jammu open now",
+    "repeat": 0,
+    "cited_urls": [
+      "https://kivihealth.com/clinic/jammu-teeth-clinic-24x7-dental-emergency"
+    ],
+    "cited_domains": [
+      "kivihealth.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q284",
+    "category": "dental",
+    "city": "Raipur",
+    "query_text": "pediatric dental clinic Raipur",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.sitadental.com/"
+    ],
+    "cited_domains": [
+      "www.sitadental.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q285",
+    "category": "dental",
+    "city": "Bhilai",
+    "query_text": "best dental clinic in Bhilai for implants",
+    "repeat": 0,
+    "cited_urls": [
+      "https://threebestrated.in/hi-dental-clinics-in-bhilai-cg"
+    ],
+    "cited_domains": [
+      "threebestrated.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q286",
+    "category": "dental",
+    "city": "Durgapur",
+    "query_text": "emergency dentist Durgapur open now",
+    "repeat": 0,
+    "cited_urls": [
+      "https://apollodental.in/durgapur/durgapur-12/our-clinics/apollo-dental-durgapur"
+    ],
+    "cited_domains": [
+      "apollodental.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q287",
+    "category": "dental",
+    "city": "Siliguri",
+    "query_text": "pediatric dental clinic Siliguri",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.yuvaandentofacial.in/"
+    ],
+    "cited_domains": [
+      "www.yuvaandentofacial.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q288",
+    "category": "dental",
+    "city": "Jamshedpur",
+    "query_text": "best dental clinic in Jamshedpur for implants",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.practo.com/jamshedpur/clinics/dental-implant-clinics"
+    ],
+    "cited_domains": [
+      "www.practo.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q289",
+    "category": "dental",
+    "city": "Dhanbad",
+    "query_text": "emergency dentist Dhanbad open now",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.hexahealth.com/dhanbad/hospital/teeth-n-pearl-dental-clinic-nagnagar"
+    ],
+    "cited_domains": [
+      "www.hexahealth.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q290",
+    "category": "dental",
+    "city": "Gwalior",
+    "query_text": "pediatric dental clinic Gwalior",
+    "repeat": 0,
+    "cited_urls": [
+      "https://youdent.in/dental-clinic-in-gwalior"
+    ],
+    "cited_domains": [
+      "youdent.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q291",
+    "category": "dental",
+    "city": "Jabalpur",
+    "query_text": "best dental clinic in Jabalpur for implants",
+    "repeat": 0,
+    "cited_urls": [
+      "https://dentalplanetjabalpur.com/"
+    ],
+    "cited_domains": [
+      "dentalplanetjabalpur.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q292",
+    "category": "dental",
+    "city": "Ujjain",
+    "query_text": "emergency dentist Ujjain open now",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.hexahealth.com/ujjain/hospital/niramaya-multispeciality-dental-hospital-mahakal-vanijya"
+    ],
+    "cited_domains": [
+      "www.hexahealth.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q293",
+    "category": "dental",
+    "city": "Kota",
+    "query_text": "pediatric dental clinic Kota",
+    "repeat": 0,
+    "cited_urls": [
+      "https://drjayadentalclinic.com/"
+    ],
+    "cited_domains": [
+      "drjayadentalclinic.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q294",
+    "category": "dental",
+    "city": "Udaipur",
+    "query_text": "best dental clinic in Udaipur for implants",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.justdial.com/Udaipur-Rajasthan/Dentists-for-Implant-Insertion/nct-10156331"
+    ],
+    "cited_domains": [
+      "www.justdial.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q295",
+    "category": "dental",
+    "city": "Ajmer",
+    "query_text": "emergency dentist Ajmer open now",
+    "repeat": 0,
+    "cited_urls": [
+      "https://sharmahospital.in/"
+    ],
+    "cited_domains": [
+      "sharmahospital.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q296",
+    "category": "dental",
+    "city": "Bikaner",
+    "query_text": "pediatric dental clinic Bikaner",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.dencitydentalclinic.in/"
+    ],
+    "cited_domains": [
+      "www.dencitydentalclinic.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q297",
+    "category": "dental",
+    "city": "Shimla",
+    "query_text": "best dental clinic in Shimla for implants",
+    "repeat": 0,
+    "cited_urls": [
+      "https://shivadentalcare.in/"
+    ],
+    "cited_domains": [
+      "shivadentalcare.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q298",
+    "category": "dental",
+    "city": "Srinagar",
+    "query_text": "emergency dentist Srinagar open now",
+    "repeat": 0,
+    "cited_urls": [
+      "https://www.smilekashmir.com/contact"
+    ],
+    "cited_domains": [
+      "www.smilekashmir.com"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q299",
+    "category": "dental",
+    "city": "Asansol",
+    "query_text": "pediatric dental clinic Asansol",
+    "repeat": 0,
+    "cited_urls": [
+      "https://confidentalclinic.co.in/"
+    ],
+    "cited_domains": [
+      "confidentalclinic.co.in"
+    ],
+    "collection_method": "manual_web_ui"
+  },
+  {
+    "query_id": "Q300",
+    "category": "dental",
+    "city": "Bokaro",
+    "query_text": "best dental clinic in Bokaro for implants",
+    "repeat": 0,
+    "cited_urls": [
+      "https://confidentalclinic.co.in/"
+    ],
+    "cited_domains": [
+      "confidentalclinic.co.in"
+    ],
+    "collection_method": "manual_web_ui"
   }
 ]

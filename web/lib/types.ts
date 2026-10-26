@@ -14,6 +14,19 @@ export interface ShapData {
   base_value: number;
 }
 
+export interface PageHealthCheck {
+  id: string;
+  label: string;
+  status: "pass" | "warn" | "fail";
+  detail: string;
+}
+
+export interface PageHealth {
+  checks: PageHealthCheck[];
+  passed: number;
+  total: number;
+}
+
 export interface Recommendation {
   priority: "high" | "medium" | "low";
   category: string;
@@ -70,6 +83,7 @@ export interface AnalysisResult {
   shap_data: ShapData;
   shap_error: string | null;
   recommendations: Recommendation[];
+  page_health: PageHealth;
   model_note: string;
   mock_used?: boolean; // set client-side when a demo fixture was used
 }

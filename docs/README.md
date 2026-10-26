@@ -11,7 +11,7 @@ Start here if you're new to this project. Grouped by what you're trying to do.
 
 ## Understand the data
 
-- **[DATA_CARD.md](DATA_CARD.md)** — how the 200 queries were chosen, how
+- **[DATA_CARD.md](DATA_CARD.md)** — how the 300 queries were chosen, how
   citations/candidates were collected, the label rule, and known limitations.
 - **[PILOT_REPORT.md](PILOT_REPORT.md)** — the collection-stage numbers
   (scrape success rate, class balance), generated directly from

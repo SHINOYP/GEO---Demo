@@ -1,0 +1,316 @@
+# Manual citation collection worksheet -- BATCH 3 (Q201-Q300)
+#
+# Same process as before: go to https://www.perplexity.ai, paste the
+# query text shown in the comment, hit enter, wait for the answer, copy
+# the REAL cited source url(s), fill in the "Q201:" line as:
+#   Q201: https://example.com/page1, https://example.com/page2
+#
+# - Separate multiple urls with a comma. Full https://... urls only.
+# - If Perplexity genuinely cited nothing usable (rare), leave it blank --
+#   don't invent one.
+# - Fine to spread this across many sittings.
+#
+# When done: cat this file onto the end of data/manual_citations_full.txt
+# (or tell Claude you're done and it'll merge it), then re-run
+# pipeline.import_manual_citations / build_dataset / pilot_stats / evaluate.
+
+# Query: best gym in Varanasi for weight training
+Q201:https://threebestrated.in/gym-in-varanasi-up
+
+# Query: top rated gym in Vadodara with personal trainers
+Q202:https://www.bearbicepsgymandfitness.in/
+
+# Query: affordable gym membership Nashik
+Q203:https://www.plumint.com/nashik-maharashtra/gym/
+
+# Query: 24 hour gym Bhubaneswar
+Q204:https://atfgym.com/
+
+# Query: best gym in Raipur for weight training
+Q205:https://www.gotmefit.com/
+
+# Query: ladies gym Jodhpur
+Q206:https://www.anytimefitness.com/en-in/locations/jodhpur-rajasthan-in-1079
+
+# Query: best crossfit gym Agra
+Q207:https://www.justdial.com/hi/Agra/Crossfit-Gyms-in-Dayal-Bagh/nct-11614003
+
+# Query: gym with personal trainer Meerut
+Q208:https://www.anytimefitness.com/en-in/locations/meerut-uttar-pradesh-in-1148
+
+# Query: affordable gym membership Faridabad
+Q209:https://makesaral.com/store/fitxone/
+
+# Query: 24 hour gym Ludhiana
+Q210:https://www.anytimefitness.com/en-in/locations/ludhiana-punjab-in-1205
+
+# Query: best gym in Amritsar for weight training
+Q211:https://threebestrated.in/gym-in-amritsar-pb
+
+# Query: ladies gym Jalandhar
+Q212:https://smartfitnessguru.com/
+
+# Query: best crossfit gym Dehradun
+Q213:https://www.crossfit.com/gym/36062/crossfit-fitage
+
+# Query: gym with personal trainer Shimla
+Q214:https://dafitness.in/
+
+# Query: affordable gym membership Jammu
+Q215:https://fitpass.co.in/activities/gym/greater-kailash-jammu
+
+# Query: 24 hour gym Gurgaon
+Q216:https://www.justdial.com/Gurgaon/24-Hours-Gyms-in-Gurgaon-Sector-105/nct-11575258
+
+# Query: best gym in Noida for weight training
+Q217:http://plusfitness.co.in/gyms/sec-89-gurugram/
+
+# Query: ladies gym Rajkot
+Q218:https://www.justdial.com/Rajkot/Women-Gyms/nct-11995807
+
+# Query: best crossfit gym Aurangabad
+Q219:https://www.justdial.com/Aurangabad-Maharashtra/Crossfit-Gyms-in-Trimurti-Chowk/nct-11614003
+
+# Query: gym with personal trainer Belgaum
+Q220:https://goldsgym.in/our-gyms/gold-s-gym-belgaum/
+
+# Query: affordable gym membership Hubli
+Q221:https://fitpass.co.in/hubballi
+
+# Query: 24 hour gym Vellore
+Q222:https://www.muscleflexfitness.in/
+
+# Query: best gym in Salem for weight training
+Q223:https://theabsolutefitness.com/
+
+# Query: ladies gym Tiruchirappalli
+Q224:https://www.joonsquare.com/gym-and-fitness-centre/wonder-women-fitness-tiruchirapalli
+
+# Query: best crossfit gym Warangal
+Q225:https://www.justdial.com/hi/Warangal/Crossfit-Gyms/nct-11614003
+
+# Query: best chauffeur service in Al Khor for airport transfer
+Q226:https://mychauffeur.com/en/qatar
+
+# Query: luxury limo rental Al Rayyan
+Q227:https://www.dohacabs.com/limo-hire-near-me-qatar/
+
+# Query: hourly chauffeur hire Al Wakrah
+Q228:https://www.chauffeur-services.com/destinations/qatar/al-wakrah/
+
+# Query: best chauffeur service in Ibri for airport transfer
+Q229:https://city-airport-taxis.com/airporttransfers/pickup/Ibri-City-taxi
+
+# Query: luxury limo rental Sur
+Q230:https://taxiyo.com/en/transfers/muscat-to-sur-rides
+
+# Query: hourly chauffeur hire Rustaq
+Q231:https://www.chauffeur-services.com/destinations/oman/sohar/
+
+# Query: best chauffeur service in Seeb for airport transfer
+Q232:https://city-airport-taxis.com/airporttransfers/pickup/Seeb-taxi
+
+# Query: luxury limo rental Bahla
+Q233:https://routxplore.com/
+
+# Query: hourly chauffeur hire Al Hofuf
+Q234:https://www.rent2you.com/ChauffeurService
+
+# Query: best chauffeur service in Tabuk for airport transfer
+Q235:https://ghtrips.com/saudi-arabia/car-with-driver-in-tabuk/
+
+# Query: luxury limo rental Yanbu
+Q236:https://lumirental.com/en/car-rental/cities/yanbu
+
+# Query: hourly chauffeur hire Najran
+Q237:https://ghtrips.com/saudi-arabia/najran/
+
+# Query: best chauffeur service in Abha for airport transfer
+Q238:https://www.transfeero.com/en/city/abha/
+
+# Query: luxury limo rental Jubail
+Q239:https://ksaelitelimo.com/
+
+# Query: hourly chauffeur hire Buraydah
+Q240:https://blog.roldrive.com/book-intercity-chauffeur-service-in-saudi-arabia/
+
+# Query: best chauffeur service in Duqm for airport transfer
+Q241:https://airssist.com/transportation-services/duqm-international-airport-dqm-in-duqm/
+
+# Query: luxury limo rental Hatta
+Q242:https://limousines.ae/blog/10-scenic-routes-in-dubai-every-traveler-must-experience/
+
+# Query: hourly chauffeur hire Dibba
+Q243:https://gccdrive.com/rent-a-car-with-driver-in-fujairah/
+
+# Query: best chauffeur service in Liwa for airport transfer
+Q244:https://fairwayuae.com/private-car-service/
+
+# Query: luxury limo rental Khasab
+Q245:https://taxiyo.com/en/transfers/khasab-taxi-rides
+
+# Query: hourly chauffeur hire Barka
+Q246:https://taxiyo.com/en/transfers/barka-taxi-rides
+
+# Query: best chauffeur service in Khamis Mushait for airport transfer
+Q247:https://alfaris.sa/chauffeur-service/
+
+# Query: luxury limo rental Hail
+Q248:https://www.saudisuvrentals.com/
+
+# Query: hourly chauffeur hire Jizan
+Q249:https://ghtrips.com/saudi-arabia/mercedes-benz-e-class/
+
+# Query: best chauffeur service in Ibra for airport transfer
+Q250:https://taxiyo.com/en/transfers/muscat-to-ibra-rides
+
+# Query: best kayaking tour in Havelock Island backwaters
+Q251:https://www.experienceandamans.com/water-sports/kayaking/night-kayaking-in-havelock
+
+# Query: guided kayaking experience Neil Island
+Q252:https://trytrabby.com/blog/kayaking-in-the-andaman-islands
+
+# Query: sunset kayaking tour Mandvi
+Q253:https://tourgrids.com/packages/gujarat/gujarat-4-nights-5-days-package-396
+
+# Query: best kayaking tour in Dwarka backwaters
+Q254:https://www.universaladventures.in/products/kayaking-in-dwarka
+
+# Query: guided kayaking experience Somnath
+Q255:https://tourtravelworld.com/packages/somnath_water-sports-activity-holidays.htm
+
+# Query: sunset kayaking tour Veraval
+Q256:https://kayakhudson.com/product/sunset-kayak-tour/
+
+# Query: best kayaking tour in Ratnagiri backwaters
+Q257:https://www.tataneu.com/pages/travel/flights/7-thrilling-kayaking-spots-in-ratnagiri-to-explore
+
+# Query: guided kayaking experience Sindhudurg
+Q258:https://www.universaladventures.in/tours/kayaking-in-khavane-beach
+
+# Query: sunset kayaking tour Malpe
+Q259:https://www.tripoto.com/karnataka/trips/a-coastal-affair-part-1-600296745ad6d
+
+# Query: best kayaking tour in Kundapura backwaters
+Q260:https://promallu.com/toprated/india/out-to-nature-g0pwlm/
+
+# Query: guided kayaking experience Bhatkal
+Q261:https://hiddenroutes.in/beach/bhatkal-beach
+
+# Query: sunset kayaking tour Karwar
+Q262:https://www.outlooktraveller.com/destinations/india/trip-to-karwar-offbeat-destination-near-goa
+
+# Query: best kayaking tour in Chorao Island backwaters
+Q263:https://refuje.com/blog/goa-backwaters-mangroves-by-kayak
+
+# Query: guided kayaking experience Divar Island
+Q264:https://www.klook.com/en-IN/activity/185118-dona-paula-ultimate-water-adventure-bundle/
+
+# Query: sunset kayaking tour Kappad
+Q265:https://www.keralatourism.org/destination/kappad-beach-unique/710/
+
+# Query: best kayaking tour in Nileshwaram backwaters
+Q266:https://nileshwarhouseboatclub.com/kavvayi-backwater-kayaking/
+
+# Query: guided kayaking experience Beypore
+Q267:https://www.trodly.com/activity-1640-heritage-kayaking-tour
+
+# Query: sunset kayaking tour Ponnani
+Q268:https://roampedia.com/india/kerala/malappuram/ponnani/place/biyyam-kayal
+
+# Query: best kayaking tour in Chavakkad backwaters
+Q269:https://www.keralatourism.org/destination/chavakkad-beach-thrissur/547/
+
+# Query: guided kayaking experience Marari
+Q270:https://nadodikayaking.com/things-to-do-in-marari-beach/
+
+# Query: sunset kayaking tour Poovar
+Q271:https://www.tataneu.com/pages/travel/flights/7-best-kayaking-spots-in-poovar-backwaters-to-explore
+
+# Query: best kayaking tour in Neendakara backwaters
+Q272:https://www.keralatourism.org/adventure-tourism/kayaking-canoeing
+
+# Query: guided kayaking experience Kasaragod
+Q273:https://www.keralatourism.org/adventure-tourism/kayaking-canoeing/kasaragod
+
+# Query: sunset kayaking tour Kavaratti
+Q274:https://jollyholidays.org/tour/kavaratti-island-tour-packages/
+
+# Query: best kayaking tour in Minicoy backwaters
+Q275:https://www.incredibleindia.gov.in/en/lakshadweep/kavaratti/minicoy
+
+# Query: best dental clinic in Jalandhar for implants
+Q276:https://jalandhardentist.com/
+
+# Query: emergency dentist Jodhpur open now
+Q277:https://smilemaxdentaljodhpur.com/
+
+# Query: pediatric dental clinic Noida
+Q278:http://www.happyteeth.co.in/home.html
+
+# Query: best dental clinic in Gurgaon for implants
+Q279:https://www.cosmodontistindia.com/
+
+# Query: emergency dentist Faridabad open now
+Q280:https://omdentalfaridabad.com/
+
+# Query: pediatric dental clinic Meerut
+Q281:https://www.ananddentalclinic.com/pedodontics.html
+
+# Query: best dental clinic in Dehradun for implants
+Q282:https://www.dentocareindia.com/dental-implant
+
+# Query: emergency dentist Jammu open now
+Q283:https://kivihealth.com/clinic/jammu-teeth-clinic-24x7-dental-emergency
+
+# Query: pediatric dental clinic Raipur
+Q284:https://www.sitadental.com/
+
+# Query: best dental clinic in Bhilai for implants
+Q285:https://threebestrated.in/hi-dental-clinics-in-bhilai-cg
+
+# Query: emergency dentist Durgapur open now
+Q286:https://apollodental.in/durgapur/durgapur-12/our-clinics/apollo-dental-durgapur
+
+# Query: pediatric dental clinic Siliguri
+Q287:https://www.yuvaandentofacial.in/
+
+# Query: best dental clinic in Jamshedpur for implants
+Q288:https://www.practo.com/jamshedpur/clinics/dental-implant-clinics
+
+# Query: emergency dentist Dhanbad open now
+Q289:https://www.hexahealth.com/dhanbad/hospital/teeth-n-pearl-dental-clinic-nagnagar
+
+# Query: pediatric dental clinic Gwalior
+Q290:https://youdent.in/dental-clinic-in-gwalior/
+
+# Query: best dental clinic in Jabalpur for implants
+Q291:https://dentalplanetjabalpur.com/
+
+# Query: emergency dentist Ujjain open now
+Q292:https://www.hexahealth.com/ujjain/hospital/niramaya-multispeciality-dental-hospital-mahakal-vanijya
+
+# Query: pediatric dental clinic Kota
+Q293:https://drjayadentalclinic.com/
+
+# Query: best dental clinic in Udaipur for implants
+Q294:https://www.justdial.com/Udaipur-Rajasthan/Dentists-for-Implant-Insertion/nct-10156331
+
+# Query: emergency dentist Ajmer open now
+Q295:https://sharmahospital.in/
+
+# Query: pediatric dental clinic Bikaner
+Q296:https://www.dencitydentalclinic.in/
+
+# Query: best dental clinic in Shimla for implants
+Q297:https://shivadentalcare.in/
+
+# Query: emergency dentist Srinagar open now
+Q298:https://www.smilekashmir.com/contact/
+
+# Query: pediatric dental clinic Asansol
+Q299:https://confidentalclinic.co.in/
+
+# Query: best dental clinic in Bokaro for implants
+Q300:https://confidentalclinic.co.in/
+

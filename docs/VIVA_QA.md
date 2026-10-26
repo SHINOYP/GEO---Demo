@@ -90,14 +90,14 @@ doesn't have.
     already rank organically for the query, not a random web sample — the
     model therefore learns "cited vs. not-cited among already-competitive
     pages," not "citable vs. the entire web."
-18. **How many queries/rows do you have?** 200 queries, real citations
+18. **How many queries/rows do you have?** 300 queries, real citations
     collected manually via perplexity.ai (no paid API budget was
-    available), candidates via automated web search. 705 unique pages
-    were scraped, 390 succeeded (53.2% success rate — most failures were
-    honest robots.txt disallows or rate limits, not hidden), giving 390
-    usable rows (118 cited / 272 not cited). Not flagged underpowered.
-    See `data/pilot_stats.json`. (Scaled up from an initial 100-query
-    pilot of 214 usable rows — see Q36 for how the error bars tightened.)
+    available), candidates via automated web search. 978 unique pages
+    were scraped, 568 succeeded (58% success rate — most failures were
+    honest robots.txt disallows or rate limits, not hidden), giving 592
+    usable rows (189 cited / 403 not cited). Not flagged underpowered.
+    See `data/pilot_stats.json`. (Scaled up in three passes — 100 → 200 →
+    300 queries — see Q36 for how the error bars tightened each time.)
 19. **Is a single observation per query enough?** No — citation is
     non-deterministic; `--repeats N` in `collect_citations.py` exists
     specifically to measure how often the same query returns the same
@@ -138,24 +138,22 @@ doesn't have.
     nonlinear XGBoost model is actually buying predictive power over a
     simple, fully-interpretable linear model — if LR performs comparably,
     that's a sign the relationships are mostly linear/simple, which is
-    itself informative given our small n. **Real result: at this sample
-    size, LR (ROC-AUC 0.69 ± 0.08) numerically edges out XGBoost (0.64 ±
-    0.12), though their confidence intervals overlap, so this reads as
-    "statistically comparable" rather than a clear win for either.** We
-    report this honestly rather than picking whichever number looks better:
-    it says the signal so far is mostly simple/linear, and XGBoost's
-    nonlinear capacity isn't paying for itself yet at n=390 — which is
-    exactly the kind of result a logistic regression baseline exists to
-    surface. We keep XGBoost as the deployed/explained model anyway because
-    of its native SHAP TreeExplainer support and because it should have
-    more room to improve as the dataset grows, not because it currently
-    scores higher.
+    itself informative given our small n. **Real result: at n=592, LR
+    (ROC-AUC 0.70 ± 0.08) is still numerically just ahead of XGBoost
+    (0.69 ± 0.06), but the gap has narrowed as the dataset grew (it was
+    0.69 vs 0.64 at n=390) and their confidence intervals overlap
+    substantially — still "statistically comparable," trending toward
+    parity.** We report this honestly rather than picking whichever number
+    looks better: the trend as data grows is XGBoost closing the gap,
+    consistent with a nonlinear model needing more data to show its
+    advantage. We keep XGBoost as the deployed/explained model for its
+    native SHAP TreeExplainer support.
 26. **Why also a rule-based checklist baseline?** Because that's what
     existing commercial/open-source GEO-audit tools effectively do
     (binary "has schema / has FAQ" checks); we need to show our learned
     model beats that bar to justify the added complexity. **Real result:
-    the checklist baseline scores AUC 0.51 — essentially chance — so both
-    learned models (XGBoost 0.64, LR 0.69) clearly beat it.**
+    the checklist baseline scores AUC 0.47 — at/below chance — so both
+    learned models (XGBoost 0.69, LR 0.70) clearly beat it.**
 27. **What hyperparameters, and why conservative?** `n_estimators=150,
     max_depth=3, min_child_weight=3, subsample=0.8, colsample_bytree=0.8`
     (`pipeline/evaluate.py`) — shallow trees and subsampling to resist
@@ -191,8 +189,8 @@ doesn't have.
     fixed the evaluation itself by repeating GroupKFold 10 times over
     independently shuffled row orders and pooling all 50 folds (`k=5 x 10
     repeats`) into one mean/std, which removes that single-partition
-    sensitivity — the number we now report (0.64 ± 0.12) is the average
-    over many partitions, not one arbitrary draw.**
+    sensitivity — the number we now report (0.69 ± 0.06 at n=592) is the
+    average over many partitions, not one arbitrary draw.**
 32. **Why also check PR-AUC, not just ROC-AUC?** PR-AUC is far less
     sensitive to a large number of true negatives, so it doesn't get
     artificially inflated under class imbalance the way ROC-AUC can.
@@ -200,40 +198,62 @@ doesn't have.
     features but randomly shuffled labels; if AUC collapses to ~0.5, that
     confirms the real (unshuffled) model's performance isn't an artifact
     of data leakage or evaluation bugs — it's actually learning from the
-    label. **Real result (n=200 queries, 390 rows, pooled across 10
-    repeated GroupKFold splits): shuffled AUC = 0.51 ± 0.04**, almost
-    exactly chance, which is exactly what we want to see — it confirms our
-    real XGBoost AUC of 0.64 (and LR's 0.69) is a genuine signal, not
+    label. **Real result (n=300 queries, 592 rows, pooled across 10
+    repeated GroupKFold splits): shuffled AUC = 0.56 ± 0.05**, close to
+    chance (a little above the ideal 0.5 — see Q36a below for an honest
+    discussion of why), which still supports that our real XGBoost AUC of
+    0.69 (and LR's 0.70) is substantially a genuine signal, not pure
     leakage.
 34. **What's the feature-group ablation for?** Running XGBoost on
     structural-only, content-only, and authority-only feature subsets
     separately shows which feature family actually carries predictive
     signal, rather than attributing everything to "the model." **Real
     result: authority signals (schema markup, phone, address) scored
-    highest alone (AUC 0.71), ahead of content (0.60) and structure
-    (0.56)** — local-business "legitimacy" signals carry more predictive
-    weight than how the text is written.
+    highest alone (AUC 0.69), ahead of structure (0.66) and content
+    (0.61)** — local-business "legitimacy" signals carry more predictive
+    weight than how the text is written, consistent across every scale
+    we've tested (100/200/300 queries).
 35. **How do you compare against the original synthetic-trained model?**
     `evaluate.py`'s `compare_original_repo_model` loads the existing
     `citation_model.pkl` and scores it directly on real pilot data,
     reporting the (expected) performance gap versus its inflated synthetic
     numbers. **Real result: the original model scores AUC 0.49 on the full
-    390-row real dataset** — essentially chance, versus the 0.888 it
+    592-row real dataset** — essentially chance, versus the 0.888 it
     claimed on its own synthetic labels. This is the single clearest piece
-    of evidence that synthetic-label training doesn't transfer to reality.
+    of evidence that synthetic-label training doesn't transfer to reality,
+    and it's held steady (0.59 → 0.45 → 0.49) across every real-data scale
+    we've tested.
 36. **What if the dataset is too small to draw conclusions?** We say so
     explicitly — `metrics.json["underpowered"] = true` when usable rows or
     minority-class count fall below documented thresholds, and the UI/docs
-    surface that flag rather than hiding it. **For this pilot: 390 usable
-    rows, 118 positives — above both thresholds, so `underpowered = false`**.
-    Scaling from 100 to 200 queries, and then fixing the evaluation itself
-    to pool 10 repeated GroupKFold splits instead of trusting one arbitrary
-    split, took the AUC error bar from ±0.19 (n=100, single split) down to
-    ±0.12 (n=200, pooled) — real progress, though not as dramatic as a
-    naive "more data always means a tighter bar" story would suggest, since
-    pooling multiple splits also surfaced partition-to-partition variance
-    that a single split had been hiding. We present this honestly as a
-    tightening trend, not a fully resolved number.
+    surface that flag rather than hiding it. **For this pilot: 592 usable
+    rows, 189 positives — above both thresholds, so `underpowered = false`**.
+    Scaling 100 → 200 → 300 queries, and fixing the evaluation itself to
+    pool 10 repeated GroupKFold splits instead of trusting one arbitrary
+    split, took the AUC error bar from ±0.19 (n=100) to ±0.12 (n=200) to
+    ±0.06 (n=300) — a real, consistent tightening trend — while the AUC
+    point estimate itself moved from 0.65 → 0.64 → 0.69. Accuracy at the
+    default 0.5 threshold, however, has stayed essentially flat at ~63%
+    across all three scales — an honest finding we don't hide: more data
+    is sharpening the model's *ranking* ability (AUC) faster than its
+    *threshold-accuracy*, which is itself informative about where the
+    remaining ceiling is (see Q36a).
+36a. **Why hasn't accuracy moved past ~63% even as AUC improved?**
+    Three honest, non-mutually-exclusive reasons: (1) a single observation
+    per query means some of what looks like "model error" is actually
+    citation non-determinism in the label itself — no model can beat a
+    noisy label's ceiling (see Q19); (2) our features describe on-page
+    content/structure/schema only, not off-page signals (backlinks/domain
+    authority, freshness, real semantic similarity to the query) that
+    likely also drive real citation decisions; (3) the negatives are
+    already-ranking competitor pages, not random web pages, which is
+    intrinsically a harder discrimination task than "good page vs. spam."
+    Reaching materially higher accuracy would require more data, repeated
+    observations per query (to filter label noise), and genuinely new
+    features (e.g. a semantic-similarity score or authority signal) — not
+    further hyperparameter tuning on this same dataset, which we
+    deliberately avoid (see Q27) because it would inflate the number
+    without the model actually getting better at the underlying task.
 
 ## Limitations
 

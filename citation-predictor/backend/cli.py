@@ -38,6 +38,7 @@ from bs4 import BeautifulSoup
 
 from scraping.scraper import scrape, ScrapingError
 from features.extractor import extract_features
+from features.page_health import check_page_health
 from models.model_loader import get_model
 from explainability.shap_explainer import explain
 from services.recommendations import generate_recommendations
@@ -112,6 +113,7 @@ def cmd_analyze(args) -> int:
         shap_error = str(exc)
 
     recommendations = generate_recommendations(features, shap_data)
+    page_health = check_page_health(soup, final_url)
 
     timestamp = datetime.now(timezone.utc).isoformat()
     score = int(round(prob * 100))
@@ -128,8 +130,9 @@ def cmd_analyze(args) -> int:
         "shap_data": shap_data,
         "shap_error": shap_error,
         "recommendations": recommendations,
-        "model_note": "Trained on real pilot data (200 queries, 390 rows) — "
-                       "see artifacts/metrics.json for cross-validated metrics.",
+        "page_health": page_health,
+        "model_note": "Trained on real pilot data — see artifacts/metrics.json "
+                       "for cross-validated metrics.",
     }
     print(json.dumps(result))
     return 0

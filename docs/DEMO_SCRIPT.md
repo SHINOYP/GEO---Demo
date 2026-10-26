@@ -1,7 +1,7 @@
 # Demo Script (5 minutes)
 
 **Status note (keep this current):** the real-data pilot has now run to
-completion (200 queries, 390 usable rows — see `STATUS.md` Session 2 and
+completion (300 queries, 592 usable rows — see `STATUS.md` and
 `docs/PILOT_REPORT.md`), via manual citation collection
 (`collection_method="manual_web_ui"`), not the `PERPLEXITY_API_KEY` path
 originally planned — the team had no budget for the paid API. The raw

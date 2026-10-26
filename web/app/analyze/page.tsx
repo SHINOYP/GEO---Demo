@@ -8,13 +8,14 @@ import ShapBarChart from "@/components/ShapBarChart";
 import DriverList from "@/components/DriverList";
 import StructureCard from "@/components/StructureCard";
 import RecommendationCard from "@/components/RecommendationCard";
+import PageHealthPanel from "@/components/PageHealthPanel";
 import FixtureBanner from "@/components/FixtureBanner";
 import ShapErrorBanner from "@/components/ShapErrorBanner";
 import { DEFAULT_URL, SAMPLE_HTML_FIXTURES, SAMPLE_PRESETS } from "@/lib/fixtures";
 import { getTierName, scorePct } from "@/lib/format";
 import { isErrorPayload, type AnalysisResult } from "@/lib/types";
 
-type Tab = "shap" | "structure" | "recommendations" | "export";
+type Tab = "shap" | "structure" | "recommendations" | "page-health" | "export";
 
 export default function AnalyzePage() {
   const [presetLabel, setPresetLabel] = useState(SAMPLE_PRESETS[0].label);
@@ -216,6 +217,12 @@ export default function AnalyzePage() {
               Recommendations
             </button>
             <button
+              className={`tab-button${tab === "page-health" ? " active" : ""}`}
+              onClick={() => setTab("page-health")}
+            >
+              Page Health
+            </button>
+            <button
               className={`tab-button${tab === "export" ? " active" : ""}`}
               onClick={() => setTab("export")}
             >
@@ -305,6 +312,8 @@ export default function AnalyzePage() {
               )}
             </div>
           ) : null}
+
+          {tab === "page-health" ? <PageHealthPanel pageHealth={result.page_health} /> : null}
 
           {tab === "export" ? (
             <div>

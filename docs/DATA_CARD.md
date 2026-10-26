@@ -2,12 +2,12 @@
 
 ## Queries
 
-`pipeline/queries.csv` — 200 realistic local-business queries, 50 per category
+`pipeline/queries.csv` — 300 realistic local-business queries, 75 per category
 across 4 categories: gyms (Indian cities), chauffeur/limo services (GCC
 cities), kayaking/tour operators (Indian destinations), dental clinics
 (Indian cities). Editable by the team. (Started as a 100-query pilot,
-25/category; scaled to 200 after the first real evaluation showed a
-promising but wide-error-bar signal.)
+25/category; scaled to 200, then to 300, each time the error bars tightened
+further without a diminishing-returns sign yet.)
 
 ## Collection
 
@@ -40,7 +40,7 @@ of the data, and they are NOT the same kind of source — this distinction
 matters and should be stated plainly in the viva:
 
 - **Citations** (`data/citations.json`, `cited_urls`): a team member
-  manually searched each of the 200 queries on the free `perplexity.ai`
+  manually searched each of the 300 queries on the free `perplexity.ai`
   website and copied down the URLs Perplexity's AI actually cited in its
   answer. This is the part that has to be a real AI answer engine's own
   behavior — nothing else can substitute for it, since the whole research
@@ -57,7 +57,7 @@ matters and should be stated plainly in the viva:
 Results were typed/compiled into `data/manual_citations_full.txt` (the
 worksheet format is documented in that file's own header comments) and
 converted to the standard JSON shape with
-`python -m pipeline.import_manual_citations`. The original two collection
+`python -m pipeline.import_manual_citations`. The original three collection
 passes are archived at `data/manual_citations_archive/` for provenance.
 
 This is genuinely real, non-fabricated data for both halves — just

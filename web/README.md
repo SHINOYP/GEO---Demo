@@ -55,6 +55,10 @@ Browser <--> Next.js (this app) <-- spawn --> citation-predictor/backend/cli.py
 Three pages (`app/analyze`, `app/explainability`, `app/model-card`) port the
 original Streamlit app 1:1 — same design tokens (`app/globals.css`), same
 tier thresholds (`lib/format.ts`), same demo-fixture HTML (`lib/fixtures.ts`).
+The Analyze page also has a fifth tab, "Page Health" — a small secondary
+checklist (meta tags, image alt-text, HTTPS, mobile viewport) computed from
+the same scraped HTML, added after the original port. It's supporting
+context only; it has no effect on `citation_probability` or the model.
 
 ## Error contract with `cli.py`
 

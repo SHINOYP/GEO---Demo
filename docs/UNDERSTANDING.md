@@ -10,28 +10,37 @@ a hand-typed guess about behavior.
 Citelytics takes a webpage URL, scrapes it, extracts ~45 numeric features
 describing its content/structure/schema/local-business signals, feeds
 those features to a trained XGBoost classifier, and explains the resulting
-probability with SHAP. There are two parallel deployments of the same
-backend logic: a Streamlit app (`streamlit_app.py`, the one actually
-launched by `run_streamlit.bat`) and a FastAPI + React stack
-(`citation-predictor/backend` + `citation-predictor/frontend`).
+probability with SHAP. The web UI is a Next.js (TypeScript) app (`web/`) —
+Python is used strictly for ML. Each analysis request spawns
+`citation-predictor/backend/cli.py` as a short-lived subprocess (not a
+persistent server — no FastAPI, no `uvicorn`); the CLI does the
+scrape → extract → predict → explain pipeline and prints one JSON result,
+which `web/lib/pythonBridge.ts` reads via `child_process.spawn`. (An
+earlier version of this project used a Streamlit UI with an unused FastAPI
+backend sitting alongside it — both were replaced by `web/`; see
+`STATUS.md` for that migration.)
 
 **Important honesty note (see `docs/AUDIT.md` Q1):** the model currently
 shipped (`citation-predictor/models/citation_model.pkl`) was trained on a
-100% synthetic dataset (`model_loader.py: _generate_demo_data`) whose
-label is a hand-written linear formula of the *same* features the model
-is scored on. Any accuracy number from that pipeline is circular. The real
-pilot data pipeline (`pipeline/`) exists to replace this with real
-Perplexity-citation-derived data; that pilot has now been run end-to-end
-at the full 200-query scale (data collected manually, not via the paid
-`PERPLEXITY_API_KEY` — see `STATUS.md`), producing 390 usable real rows
-(118 cited / 272 not) and real cross-validated metrics in
-`artifacts/metrics.json` (XGBoost ROC-AUC 0.64 ± 0.12, pooled across 10
-repeated GroupKFold splits; logistic regression is numerically comparable
-at 0.69 ± 0.08 — see `docs/VIVA_QA.md`, "Evaluation" section, for the full
+100% synthetic dataset (`citation-predictor/ml/training/train.py:
+generate_demo_data`) whose label is a hand-written linear formula of the
+*same* features the model is scored on. Any accuracy number from that
+pipeline is circular. The real pilot data pipeline (`pipeline/`) exists to
+replace this with real Perplexity-citation-derived data; that pilot has
+now been run end-to-end at a 300-query scale (data collected manually, not
+via the paid `PERPLEXITY_API_KEY` — see `STATUS.md`), producing 592 usable
+real rows (189 cited / 403 not) and real cross-validated metrics in
+`artifacts/metrics.json` (XGBoost ROC-AUC 0.69 ± 0.06, pooled across 10
+repeated GroupKFold splits; logistic regression is still numerically a
+touch ahead at 0.70 ± 0.08, though the gap has narrowed as the dataset
+grew — see `docs/VIVA_QA.md`, "Evaluation" section, for the full
 breakdown). Scored on this real data, the original synthetic-trained
 model drops to AUC 0.49 — essentially chance — the clearest evidence that
-synthetic-label training doesn't transfer to reality. Anywhere a number
-isn't backed by one of these measured runs, this document still says
+synthetic-label training doesn't transfer to reality. The live app now
+correctly serves predictions from `artifacts/model.pkl` (this real model),
+not the synthetic one — see `citation-predictor/backend/models/
+model_loader.py`. Anywhere a number isn't backed by one of these measured
+runs, this document still says
 **NOT YET MEASURED**.
 
 ## Module: `citation-predictor/backend/scraping/scraper.py`
@@ -87,22 +96,33 @@ isn't backed by one of these measured runs, this document still says
 
 ## Module: `citation-predictor/backend/models/model_loader.py`
 
-- **Purpose:** load a pretrained XGBoost pipeline, or (if none exists)
-  generate synthetic training data and train one in-process.
-- **Key functions:** `load_or_train_model()`, `_generate_demo_data()`,
-  `_train()`, `get_model()`.
+- **Purpose:** load the real, pilot-trained XGBoost model (`artifacts/
+  model.pkl`, produced by `python -m pipeline.evaluate`). No synthetic
+  fallback — if the model hasn't been trained yet, `load_model()` raises a
+  clear `RuntimeError` telling you to run `pipeline.evaluate` first, rather
+  than silently serving a demo model.
+- **Key functions:** `load_model()`, `get_model()` (the stable public entry
+  point every other module imports; its body is just `return load_model()`).
 - **`FEATURE_COLUMNS`** — the fixed, ordered list of 45 column names every
   other module must agree on (see `tests/test_feature_model_match.py`,
   which checks the extractor actually produces every one of these columns
   and that the app feeds them to the model in this exact order).
-- **The synthetic-data problem (restated plainly):** `_generate_demo_data`
-  draws all 45 features from `numpy` random distributions, then computes
+  `pipeline/evaluate.py` imports this exact same list to train with, so
+  there's no train/serve feature-order mismatch risk.
+- **The synthetic-data problem (restated plainly, now historical):** this
+  project also ships a *separate*, deliberately-synthetic baseline model
+  (`citation-predictor/models/citation_model.pkl`), generated by
+  `citation-predictor/ml/training/train.py`, which draws all 45 features
+  from `numpy` random distributions and computes
   `label = 1 if (factual_density*8 + schema_present*2 + ... + noise) > median else 0`
   — a formula built from the same columns the model is trained on. XGBoost
-  therefore learns to re-derive a known linear formula, which is a
-  different (and much easier) problem than predicting real citation
-  behavior. This is why the pilot pipeline (`pipeline/`) exists: to replace
-  this with labels derived from actual Perplexity citations.
+  therefore learns to re-derive a known linear formula, a different (and
+  much easier) problem than predicting real citation behavior. This model
+  is **not served by the live app** — it exists purely so
+  `pipeline/evaluate.py`'s `compare_original_repo_model` check can show,
+  concretely, that it scores only ~0.49 AUC on real data despite its
+  inflated 0.888 synthetic-data score. This is the single clearest piece of
+  evidence for why the real pilot pipeline (`pipeline/`) was necessary.
 
 ## Module: `citation-predictor/backend/explainability/shap_explainer.py`
 
@@ -116,9 +136,35 @@ isn't backed by one of these measured runs, this document still says
   features. It says nothing about how Perplexity/ChatGPT/Claude actually
   decided what to cite — we never have access to that model's internals.
 
+## Module: `citation-predictor/backend/features/page_health.py`
+
+- **Purpose:** a small, secondary "site health" checklist shown alongside
+  the citation prediction — meta title/description presence and length,
+  image alt-text coverage, HTTPS, and mobile viewport meta tag. These are
+  the kind of basic on-page checks every general SEO audit tool shows.
+- **Key function:** `check_page_health(soup, final_url) -> {"checks": [...], "passed": int, "total": int}`.
+- **Deliberately NOT part of the ML pipeline:** none of these checks are in
+  `FEATURE_COLUMNS` and none influence `citation_probability` at all — they
+  are computed for free from the same scraped HTML, purely as supporting
+  context for the user, not a second model or a competing score.
+
+## Module: `citation-predictor/backend/cli.py`
+
+- **Purpose:** the subprocess entrypoint the Next.js web app spawns per
+  request — replaces what used to be FastAPI routes.
+- **Subcommands:** `analyze <url> [--html-stdin]` (runs the full
+  scrape/parse → extract → predict → explain → recommend → page-health
+  pipeline, prints one JSON document to stdout) and `report` (reads an
+  analysis JSON from stdin, calls `pdf_report.generate_pdf`, writes raw PDF
+  bytes to stdout in binary mode).
+- **Contract:** exit 0 + the JSON/PDF payload on success; non-zero exit +
+  `{"error": true, "kind": "scraping"|"validation"|"internal", "message": "..."}`
+  as the *only* stdout content on failure, so `web/lib/pythonBridge.ts` can
+  always safely `JSON.parse` stdout. All logging goes to stderr.
+
 ## Module: `pipeline/` (real-data collection, run at full scale — see `docs/DATA_CARD.md`)
 
-- `queries.csv` — 200 fixed local-business queries across 4 categories
+- `queries.csv` — 300 fixed local-business queries across 4 categories
   (50 each).
 - `collect_citations.py` — calls Perplexity's `sonar` model per query,
   extracts cited URLs from whichever response fields are actually present
@@ -192,19 +238,23 @@ exercise 5 for a fully-worked numeric example of this additive arithmetic.
 
 ```mermaid
 flowchart TD
-    U[User enters a URL] --> S[streamlit_app.py]
-    S --> SC[scraper.py: scrape url]
+    U[User enters a URL in the browser] --> W[web/: Next.js Analyze page]
+    W -->|POST /api/analyze| API[web/app/api/analyze/route.ts]
+    API -->|spawn subprocess| CLI[cli.py analyze]
+    CLI --> SC[scraper.py: scrape url]
     SC -->|SSRF + robots.txt checked| HTML[Parsed HTML]
     HTML --> FE[extractor.py: extract_features]
     FE --> MF[45 model_features]
     MF --> MD[model_loader.py: get_model]
     MD --> PRED[XGBoost predict_proba]
     PRED --> SHAP[shap_explainer.py: explain]
+    HTML --> PH[page_health.py: check_page_health]
     SHAP --> REC[recommendations.py]
-    PRED --> UI[Results dashboard]
-    REC --> UI
-    SHAP --> UI
-    UI --> PDF[pdf_report.py: optional PDF export]
+    CLI -->|one JSON document on stdout| API
+    API --> UI[Results dashboard in the browser]
+    UI -->|POST /api/report, reuses the JSON above| API2[web/app/api/report/route.ts]
+    API2 -->|spawn subprocess| CLI2[cli.py report]
+    CLI2 --> PDF[pdf_report.py: generate_pdf, PDF bytes on stdout]
 ```
 
 ### Data-collection flow (`pipeline/`)

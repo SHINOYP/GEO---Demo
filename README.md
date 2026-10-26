@@ -148,7 +148,7 @@ Every number traces to one of these generated files:
 If a number is needed before these scripts have been run with real data
 (e.g. API keys not yet configured), the UI and docs must show
 **"not yet evaluated" / "NOT YET MEASURED"** rather than a placeholder
-figure. Real pilot data collection has been completed (200 queries,
+figure. Real pilot data collection has been completed (300 queries,
 collected manually via perplexity.ai since no paid API budget was
 available), and `pipeline.evaluate` has been run on the resulting data —
 see `data/pilot_stats.json` and `artifacts/metrics.json` for the real

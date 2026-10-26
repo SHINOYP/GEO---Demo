@@ -239,3 +239,79 @@ all green, re-verified against the fresh trimmed-dependency venv.
 **No blockers.** `web/README.md` and `README.md` document the new
 two-terminal dev workflow (`python -m pipeline.evaluate` once, then
 `cd web && npm run dev`).
+
+## 2026-10-26 — Session 5: repo cleanup, 300-query scale-up, Page Health
+
+**Repo cleanup (user-requested):** discovered the repo root also contained
+a large, completely unrelated upstream open-source monorepo (apps/,
+packages/, e2e/, docker/, brand/, scripts/, .github/, .changeset/, and
+root-level package.json/pnpm-lock.yaml/pnpm-workspace.yaml/turbo.json/
+biome.json/knip.json/tsconfig.json, plus its own env files and
+LICENSE.md/CLA.md/etc.) that this coursework was never built from — it had
+been documented as "not our work" since the Phase-1 audit but never
+removed. Deleted entirely (548 files) after confirming nothing in this
+project depends on any of it. Rewrote `.gitignore` to drop ~40 lines of
+now-meaningless rules. Renamed `README_PROJECT.md` -> `README.md` (the
+naming collision with the removed repo's own README.md is gone). Found and
+fixed a real production-build bug while verifying: Next.js 16's Cache
+Components rejected the Explainability/Model Card pages for reading live
+JSON files without declaring themselves dynamic (`next build` catches
+this, `next dev` doesn't) — added `export const instant = false` to both.
+
+Also decluttered `data/` (one duplicate worksheet deleted, two superseded
+ones moved to `data/manual_citations_archive/`) and added `docs/README.md`
+as a one-page index of the 14 docs files, grouped by purpose.
+
+**Scaled to 300 queries.** Added 100 more queries (Q201-Q300, 25/category),
+collected their candidate pool automatically, and the team collected all
+100 citations via perplexity.ai. Caught and the team fixed 3 genuine
+copy-paste data-entry errors in the worksheet (a city's citation pointing
+to a different city's page — found by an automated consistency scan before
+import, not silently accepted). One URL missing its `https://` prefix was
+also fixed. Merged, re-imported, re-scraped (978 unique pages, 568 ok),
+re-ran `pilot_stats` and `evaluate` (repeated-GroupKFold methodology) on
+the full real 300-query dataset: 592 usable rows (189 cited / 403 not).
+
+**Real numbers at n=300:**
+- XGBoost ROC-AUC **0.69 ± 0.06** (up from 0.64 ± 0.12 at n=200 — both the
+  point estimate rose and the error bar nearly halved again, continuing
+  the trend: 0.65±0.19 (n=100) -> 0.64±0.12 (n=200) -> 0.69±0.06 (n=300)).
+- Logistic regression 0.70 ± 0.08 — still a touch ahead of XGBoost, but
+  the gap has narrowed as the dataset grew (consistent with XGBoost
+  needing more data than LR to show its nonlinear advantage).
+- Accuracy at the default threshold: 62.7% — essentially unchanged across
+  all three scales (62.6% at n=200 too). **Honest finding:** more data is
+  improving the model's *ranking* ability (AUC) faster than its
+  *threshold-accuracy*. Reaching materially higher accuracy (e.g. 80%)
+  would need more real data, `--repeats` to filter citation-label noise,
+  and genuinely new off-page features (backlink/authority data, semantic
+  similarity to the query) — not hyperparameter tuning on this dataset,
+  which we deliberately avoid since it would inflate the number without
+  the model learning anything real (the exact mistake the original
+  inherited model made).
+- Label-shuffle control: 0.56 ± 0.05 (close to, though not exactly at,
+  chance — reported honestly, not rounded down to "0.5").
+- Feature ablation: authority 0.69, structural 0.66, content 0.61.
+- Domain-type flag: 0.77 with vs 0.69 without.
+- Original synthetic-trained model on real data: still AUC 0.49 (chance).
+- SHAP stability: 0.84.
+
+Propagated these final numbers everywhere they're referenced:
+`slides/final_review.tex`, `docs/SLIDE_NUMBERS.md`, `docs/VIVA_QA.md`,
+`docs/KNOWN_WEAKNESSES.md`, `docs/DATA_CARD.md`, `docs/UNDERSTANDING.md`
+(which also hadn't been updated since the Streamlit->web/ migration —
+fixed its architecture diagram and module descriptions too),
+`docs/REPORT_OUTLINE.md`, `docs/DEMO_SCRIPT.md`, `docs/DIARY_DRAFT.md`,
+`docs/INDIVIDUAL_CONTRIBUTIONS.md`, `README.md`, `docs/README.md`.
+
+**Added a "Page Health" feature** (user-requested, after researching how
+comparable SEO/AEO/GEO tools present single-page analysis): a small,
+secondary checklist — meta title/description presence+length, image
+alt-text coverage, HTTPS, mobile viewport tag — computed for free from the
+HTML we already scrape, shown as a 5th Analyze-page tab. New
+`citation-predictor/backend/features/page_health.py` module, deliberately
+kept separate from `extract_features()`/`FEATURE_COLUMNS` — these checks
+do not feed the model or influence `citation_probability` in any way; they
+are pure supporting context. 4 new tests, all passing.
+
+Full pytest suite: 58/58 passing throughout this session.

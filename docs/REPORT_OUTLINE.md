@@ -90,12 +90,12 @@ Derivable from the project proposal plus Chapter 2 framing.
 - Data flow diagram for the pipeline (pipeline/*.py).
 
 ## 8. Dataset and Pipeline (3 pages)
-- pipeline/queries.csv: 200 queries, 4 categories, 50 per category (gyms
-  in Kerala, chauffeur/limo services in GCC cities, kayaking/tour
+- pipeline/queries.csv: 300 queries, 4 categories, 75 per category (gyms
+  in Indian cities, chauffeur/limo services in GCC cities, kayaking/tour
   operators, dental clinics).
 - Label rule and known limitations: see docs/DATA_CARD.md verbatim.
-- Real counts are already available in data/pilot_stats.json (390 usable
-  rows, 53.2% scrape success rate, 118/272 class balance) and
+- Real counts are already available in data/pilot_stats.json (592 usable
+  rows, 57.8% scrape success rate, 189/403 class balance) and
   artifacts/metrics.json — pull these numbers directly from those files;
   never hand-type them.
 
@@ -108,8 +108,8 @@ Derivable from the project proposal plus Chapter 2 framing.
   cap (citation-predictor/backend/scraping/scraper.py).
 
 ## 10. Results and Analysis (3 pages)
-Results are now available in artifacts/metrics.json (390 real rows,
-200-query pilot). Pull the following numbers directly from it:
+Results are now available in artifacts/metrics.json (592 real rows,
+300-query pilot). Pull the following numbers directly from it:
 - Pull ROC-AUC/PR-AUC/F1/precision/recall (mean ± std) for all three
   models (rule-based, logistic regression, XGBoost) directly from
   artifacts/metrics.json.

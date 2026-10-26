@@ -62,29 +62,35 @@ manual-collection workaround (see `STATUS.md` Session 2) rather than
 `PERPLEXITY_API_KEY` + `python -m pipeline.run_all`. Factual results below
 are read directly from `data/pilot_stats.json` and `artifacts/metrics.json`
 (no API calls logged -- `real_api_calls_logged: 0`):
-- 200 queries, 200 citation records collected (one citation per query,
-  via `collection_method="manual_web_ui"`).
-- 733 candidate rows scraped; scrape success rate 53.2% (390 usable rows:
-  118 cited / 272 not cited).
-- XGBoost ROC-AUC 0.64 +/- 0.12, logistic regression 0.69 +/- 0.08 --
-  numerically ahead of XGBoost but overlapping confidence intervals, so
-  statistically comparable at this sample size; both clearly beat the
-  rule-based baseline (0.51, chance). (We also found and fixed a real bug
-  in the evaluation itself: a single GroupKFold split's fold assignment
-  depends on row order, so one run's AUC was really one arbitrary
-  partition's estimate, not "the" AUC. Fixed by repeating GroupKFold 10x
-  over shuffled row orders and pooling all 50 folds -- the number above is
-  that pooled, more reliable estimate, down from an initial single-split
-  reading of 0.69 +/- 0.08 for XGBoost on the same data.)
-- Label-shuffle control: ROC-AUC 0.51 +/- 0.04 (almost exactly chance --
-  confirms no label leakage).
-- Feature-group ablation: authority 0.71, content 0.60, structural 0.56
-  (authority / local-business-legitimacy signals matter most).
-- Domain-type (directory/aggregator) flag: 0.71 with vs 0.64 without
+- 300 queries, 300 citation records collected (one citation per query,
+  via `collection_method="manual_web_ui"`), scaled up in three passes
+  (100 -> 200 -> 300).
+- 978 candidate rows scraped; scrape success rate 57.8% (592 usable rows:
+  189 cited / 403 not cited).
+- XGBoost ROC-AUC 0.69 +/- 0.06, logistic regression 0.70 +/- 0.08 --
+  still numerically just ahead of XGBoost but the gap has narrowed as the
+  dataset grew (it was 0.69 vs 0.64 at n=390); both clearly beat the
+  rule-based baseline (0.47, at/below chance). (We also found and fixed a
+  real bug in the evaluation itself: a single GroupKFold split's fold
+  assignment depends on row order, so one run's AUC was really one
+  arbitrary partition's estimate, not "the" AUC. Fixed by repeating
+  GroupKFold 10x over shuffled row orders and pooling all 50 folds --
+  the error bar has tightened at every scale: +/-0.19 (n=100) ->
+  +/-0.12 (n=200) -> +/-0.06 (n=300).)
+- Label-shuffle control: ROC-AUC 0.56 +/- 0.05 (close to chance, though a
+  bit above the ideal 0.5 -- reported honestly rather than rounded down).
+- Feature-group ablation: authority 0.69, structural 0.66, content 0.61
+  (authority / local-business-legitimacy signals matter most, consistent
+  across all three scales tested).
+- Domain-type (directory/aggregator) flag: 0.77 with vs 0.69 without
   (a modest lift, not a dominant effect).
 - Original synthetic-trained model scored on this real data: ROC-AUC
   0.49 (essentially chance, reinforcing the Phase 1 audit's circularity
   finding).
+- Added a small "Page Health" checklist (meta title/description, image
+  alt-text coverage, HTTPS, mobile viewport) as a secondary panel in the
+  Analyze page -- supporting context only, not part of the citation model
+  or its score.
 TODO (team): add the narrative -- who ran which commands and when, how
 long collection took, any blockers hit along the way, and team
 reflections on the manual-collection workaround.
